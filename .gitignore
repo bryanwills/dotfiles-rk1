@@ -1,0 +1,28 @@
+.zsh_history
+.bash_history
+__pycache__
+
+# --- System Junk ---
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# --- App Specific Junk ---
+**/*.tmp
+.cache/
+**/socket
+*.log
+
+# --- Sensitive Data (CRITICAL) ---
+**/.ssh/
+**/.gnupg/
+**/credentials
+**/token.txt
+**/*.pem
+**/*.key
+
+# --- Large Binary Files ---
+*.mp4
+*.zip
+*.tar.gz

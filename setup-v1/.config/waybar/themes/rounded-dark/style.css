@@ -1,0 +1,159 @@
+@import url("file:///home/rk1/.cache/wal/colors-waybar.css");
+
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 12px;
+    border: none;
+    border-radius: 0;
+}
+
+/* 1. THE MAIN BAR - Transparent so islands 'float' */
+window#waybar {
+    background-color: transparent;
+    margin: 1px 1px 0 1px;
+
+}
+
+/* 2. THE ISLAND CONTAINERS - Parallel Slants using Gradients */
+.modules-left,
+.modules-center,
+.modules-right {
+    background-color: @background; /* The classic dark transparent */
+    border: 0px solid @color2; /* Your Pywal accent border */
+    border-radius: 5px; /* The rounded 'pill' look */
+    
+    margin: 0 1px;
+    padding: 1px 1px;
+}
+
+/* Internal spacing for center modules */
+.modules-center widget {
+    margin: 0 10px; 
+}
+
+.modules-center label {
+    padding: 0 2px;
+    font-size: 11px;
+    background-color: transparent;
+}
+
+.modules-right label {
+    padding: 0 2px;
+    font-size: 11px;
+    background-color: transparent;
+}
+
+.modules-left label {
+    padding: 0 2px;
+    font-size: 11px;
+    background-color: transparent;
+}
+
+/* 3. WORKSPACES ISLAND */
+#workspaces {
+    background: transparent;
+    padding: 0 10px;
+    margin: 0;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: @color14;
+    background: transparent;
+    font-size: 12px;
+}
+
+#workspaces button.active {
+    color: #00a550;
+    border-bottom: 2px solid #00a550;
+    border-radius: 5px;
+}
+
+#workspaces button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 5. INDIVIDUAL MODULES (Cleanup) */
+#network, #bluetooth, #battery, #temperature, #tray, #custom-music, #clock, #custom-sync, #custom-gallery, #custom-wallpaper, #custom-notification, #custom-keybinds, #custom-power, #custom-rtm, #custom-budget, #submap {
+    background: transparent;
+    color: @color14;
+    padding: 5px 8px;
+    margin: 0;
+}
+
+#taskbar button.active {
+    background-color: #605c5c;
+    border-bottom: 0px solid #00a550;
+    border-radius: 5px;
+}
+
+#custom-launcher {
+    background: transparent;
+    font-size: 16px;
+    color: #1e90ff;
+    border: 2px solid #1e90ff;
+    border-radius: 5px;
+    padding: 0 10px;
+}
+
+#custom-rtm {
+    padding: 0 10px;
+    color: @color14;
+}
+
+#custom-rtm.pending {
+    border-bottom: 1px solid #fab387;
+}
+
+#custom-rtm.empty {
+    color: #a6adc8;
+    border-right: 1px solid #a6e3a1;
+}
+
+#custom-power {
+	border: 2px solid #ff0000;
+	border-radius: 5px;
+    font-size: 14px;
+	padding: 0 10px;
+}
+
+#taskbar {
+	background-color: transparent;
+}
+
+#custom-notification {
+	font-size: 14px;
+	color: #89b4fa;
+	padding: 0 10px;
+	border: 2px solid #1e90ff;
+	border-radius: 5px;
+
+}
+
+#battery.critical:not(.charging) {
+    color: #f38ba8; /* Red alert color */
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#bluetooth.connected {
+    color: #89b4fa; /* Blue Accent */
+}
+
+#bluetooth.off, #bluetooth.disabled {
+    color: #ff0000;
+}
+
+@keyframes blink {
+    to {
+        color: #000000;
+    }
+}
+
+/* 6. TRAY */
+#tray {
+    padding-left: 5px;
+}

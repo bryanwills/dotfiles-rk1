@@ -1,0 +1,63 @@
+/* Import the Pywal colors from your home directory */
+@import "../../.cache/wal/colors-waybar.css";
+
+window#waybar.desktop-widget {
+    background: transparent;
+}
+
+#group-conky-style {
+    /* Use the @background variable from Pywal */
+    background-color: @background;
+    border-radius: 0;
+    padding: 30px 40px;
+    border: none;
+}
+
+#clock.time {
+    font-size: 38px;
+    font-weight: 600;
+    /* Use @foreground for the main clock color */
+    color: @foreground;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 1), 2px 2px 2px rgba(0, 0, 0, 1.0);
+    font-weight: bold;
+    font-family: "JetBrains Mono Nerd Font";
+}
+
+#clock.date {
+    font-size: 16px;
+    font-weight: 200;
+    /* Use one of the accent colors for the date */
+    color: @foreground;
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.8), 0px 0px 2px rgba(0, 0, 0, 0.8);
+    font-style: italic;
+    font-weight: 400;
+    font-family: "JetBrains Mono Nerd Font";
+    margin-top: -5px;
+}
+
+/* System info styling */
+#cpu, #memory, #temperature, #battery {
+    color: @foreground;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+    min-width: 250px;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 18px;
+    text-decoration: underline;
+    font-style: italic;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8), 
+                 2px 2px 2px rgba(0, 0, 0, 1.0);
+}
+
+#battery.warning {
+    color: #ffaa00; /* Orange for low battery */
+}
+
+#battery.critical:not(.charging) {
+    color: #f53c3c; /* Red for critical */
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+

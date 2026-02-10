@@ -1,0 +1,191 @@
+{
+    "ipc": true,
+    "tooltip": false,
+    "layer": "top",
+    "position": "top",
+    "height": 40,
+    "margin-top": 5,
+    "margin-left": 5,
+    "margin-right": 5,
+    "spacing": 4,
+    "exclusive": true,
+    "reload_style_on_change": true,
+    "modules-left": ["custom/launcher", "custom/sync", "custom/rtm", "custom/wallpaper", "custom/keybinds", "custom/gallery", "custom/budget"],
+    "modules-center": ["hyprland/submap", "clock", "hyprland/workspaces", "wlr/taskbar"],
+    "modules-right": ["custom/theme", "temperature", "battery", "network", "bluetooth", "custom/notification", "custom/power"],
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "window-rewrite": {
+            "class<falkon>": "",
+            "class<floorp>": "",
+            "class<kitty>": "",
+            "class<foot>": "",
+            "class<custom_rtm>": "",
+            "class<budget-buddy>": ""
+        },
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "4",
+            "5": "5",
+            "default": ""
+        },
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
+
+    "custom/theme": {
+        "format": "D/L",
+        "on-click": "~/.local/bin/toggle-theme",
+        "tooltip": false
+    },
+
+    "custom/launcher": {
+        "format": " <span color='#1e90ff'>󰣇 </span>",
+        "on-click": "rofi -show drun -theme-str 'window {location: northwest; anchor: northwest; x-offset: 10px; y-offset: 0px; width: 400px; height: 800px;}'",
+        "tooltip-format": " Applications Launcher"
+    },
+
+    "custom/gallery": {
+        "format": "Gallery",
+        "on-click": "swayimg --gallery ~/Pictures",
+        "tooltip": false
+    },
+
+    "custom/keybinds": {
+        "format": "Keybinds",
+        "on-click": "$HOME/.config/hypr/scripts/keybinds.sh",
+        "tooltip": false
+    },
+
+    "custom/wallpaper": {
+        "format": "Themes",
+        "on-click": "bash $HOME/.config/hypr/scripts/changewall.sh",
+        "tooltip": false
+    },
+
+    "custom/power": {
+        "format": " <span color='#EE4B2B'>⏻ </span>",
+        "on-click": "$HOME/.config/rofi/powermenu.sh",
+        "tooltip": false
+    },
+
+    "custom/sync": {
+        "format": "Sync",
+        "return-type": "json",
+        "exec": "$HOME/.local/bin/check-sync",
+        "interval": 30,
+        "on-click": "foot sh -c 'zsh -i -c dotsync; exec zsh'"
+    },
+
+    "custom/budget": {
+        "format": "Budget",
+        "on-click": "kitty --class budget-buddy -e python3 $HOME/custom-scripts/Budget-Buddy/budget-buddy.py"
+    },
+
+    "custom/rtm": {
+        "format": "Tasks {}",
+        "return-type": "json",
+        "exec": "$HOME/custom-scripts/RTM/rtm.py --waybar",
+        "on-click": "kitty --class custom-rtm -e python3 $HOME/custom-scripts/RTM/rtm.py",
+        "on-click-right": "$HOME/custom-scripts/RTM/rtm.py -n",
+        "interval": 10,
+        "tooltip": true
+    },
+
+    "hyprland/submap": {
+        "format": "✌️  {}",
+        "max-length": 8,
+        "tooltip": false
+    },
+
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 16,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close"
+    },
+
+    "custom/notification": {
+        "tooltip": false,
+        "format": " {icon} ",
+        "format-icons": {
+            "notification": "<span foreground='red'><sup></sup></span>",
+            "none": " ",
+            "dnd-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-none": " ",
+            "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "inhibited-none": " ",
+            "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-inhibited-none": " "
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+
+    "clock": {
+        "format": "{:%H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+
+    "temperature": {
+        "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+        "input-filename": "temp1_input",
+        "critical-threshold": 75,
+        "format-critical": "{temperatureC}°C  HOT",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+
+    "network": {
+        "format-wifi": " ",
+        "format-ethernet": "",
+        "format-disconnected": "睊",
+        "tooltip-format": "{essid} ({signalStrength}%)  \n{ifname} via {gwaddr}",
+        "format-icons": ["", "", "", "", ""],
+        "on-click": "nm-connection-editor"
+    },
+
+    "bluetooth": {
+        "format": " {status}",
+        "format-disabled": " Off",
+        "format-connected": " {num_connections}",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "sh -c 'bluetoothctl show | grep -q \"Powered: yes\" && bluetoothctl power off || (rfkill unblock bluetooth && bluetoothctl power on)'",
+        "on-click-right": "overskride"
+    }
+}

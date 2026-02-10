@@ -1,0 +1,292 @@
+########################################################################################
+# HYPRLAND DYNAMIC CONFIG (DWINDLE LAYOUT)
+########################################################################################
+
+# --- 1. SOURCES & ENV ---
+env = GDK_BACKEND,wayland
+env = QT_QPA_PLATFORM,wayland;xcb
+env = CLUTTER_BACKEND,wayland
+env = XDG_CURRENT_DESKTOP,Hyprland
+env = XDG_SESSION_TYPE,wayland
+env = XDG_SESSION_DESKTOP,Hyprland
+env = WLR_NO_HARDWARE_CURSORS,1
+env = WLR_RENDERER_ALLOW_SOFTWARE,1
+env = TERMINAL,kitty
+
+# --- 2. MONITOR & INPUT ---
+monitor=,preferred,auto,1.25
+
+input {
+    kb_layout = us
+    follow_mouse = 1
+    sensitivity = 0 
+    touchpad {
+        natural_scroll = no
+    }
+}
+
+misc {
+    vfr = true  # Enables Variable Frame Rate to save CPU cycles
+}
+
+# --- 3. VARIABLES ---
+$mainMod = SUPER
+$terminal = foot
+$backup_terminal = kitty
+$menu = rofi -show drun --term kitty -show-icons
+$filemanager = thunar
+
+# --- 4. AUTOSTART ---
+exec-once = swww-daemon && swww img $(cat ~/.cache/wal/wal)
+exec-once = wal -R 
+exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec-once = /usr/lib/polkit-kde-authentication-agent-1
+exec-once = waybar &
+exec-once = swaync
+exec-once = brightnessctl set $(cat ~/.cache/brightness_level)
+exec-once = pywalfox start
+exec-once = G_APPLICATION_ID=org.waybar.desktop waybar -c ~/.config/waybar/config-desktop -s ~/.config/waybar/style-desktop.css
+# Store text and images into cliphist
+exec-once = wl-paste --type text --watch cliphist store -max-items 200 
+exec-once = wl-paste --type image --watch cliphist store -max-items 200
+
+# Hyprland 0.53 Layer Rules (v2)
+#layerrule = bottom on, match:namespace desktop-widget
+#layerrule = passthrough on, match:namespace desktop-widget
+layerrule = no_anim on, match:namespace desktop-widget
+#layerrule = top on, match:namespace waybar
+layerrule = no_anim on,match:namespace  waybar
+#layerrule = noshadow on,match:namespace waybar
+layerrule = ignore_alpha a = 0.5,match:namespace waybar
+
+# --- 5. LOOK & FEEL ---
+general {
+    gaps_in = 5
+    gaps_out = 10
+    layout = dwindle  # Switched to dwindle
+    no_focus_fallback = true
+}
+
+decoration {
+    rounding = 0
+    active_opacity = 0.75
+    inactive_opacity = 0.65
+    
+    blur {
+        enabled = true
+        size = 4
+        passes = 3
+        new_optimizations = true
+        ignore_opacity = true
+        xray = true
+    }
+
+    shadow {
+        enabled = true
+        range = 15
+        render_power = 3
+        color = rgba(00faff22)
+    }
+}
+
+animations {
+    enabled = true
+    bezier = myBezier, 0.05, 0.9, 0.1, 1.05
+    animation = windows, 1, 3, myBezier
+    animation = workspaces, 1, 3, default
+}
+
+# --- 6. LAYOUT CONFIG ---
+dwindle {
+    pseudotile = true # master switch for pseudotiling
+    preserve_split = true # keeps split direction when moving/closing
+    force_split = 2 # split to the right/bottom
+}
+
+misc {
+    vfr = true
+    disable_hyprland_logo = true
+}
+
+# --- 7. WINDOW RULES 0.53 ---
+windowrule {
+    name = rofi
+    match:class = rofi
+    center = on
+    animation = slide
+}
+
+windowrule {
+    name = kew-widget
+    match:class = ^(musicbox)$
+    float = on
+    size = 300 350
+    pin = 100%-w-30 60
+    center = 0
+}
+
+windowrule {
+    name = btop-rule
+    match:class = ^(btop)$
+    float = on
+    size = 800 600
+    center = on
+}
+
+windowrule {
+    name = centered-kitty-rule
+    match:class = ^(kitty)$
+    float = on
+    size = 800 600
+    center = on
+}
+windowrule {
+    name = thunar
+    match:class = thunar
+    size = 950 500
+    float = on
+    center = on
+    animation = fade
+}
+windowrule {
+    name = centered-foot-rule
+    match:class = ^(foot)$
+    float = on
+    size = 800 600
+    center = on
+}
+windowrule {
+    name = dolphin
+    match:class = dolphin
+    float = on
+    size = 950 600
+    center = on
+    animation = fade
+}
+
+windowrule {
+    name = geany
+    match:class = geany
+    float = on
+    size = 950 600
+    center = on
+    animation = fade
+}
+
+windowrule {
+    name = qalculate-gtk
+    match:class = qalculate-gtk
+    float = on
+    center = on
+    animation = slide
+}
+windowrule = opacity 0.7 0.7, match:class qalculate-gtk
+
+# --- 8. NEW 0.53 LAYER RULES ---
+layerrule {
+    name = rofi_layer_rule
+    blur = true
+    animation = slide
+    match:namespace = ^(rofi|drun)$
+}
+layerrule = ignore_alpha a = 0.5,match:namespace ^(rofi)$
+
+layerrule {
+    name = thunar_layer_rule
+    blur = true
+    animation = fade
+    match:namespace = ^(thunar)$
+}
+
+layerrule {
+    name = geany_layer_rule
+    blur = true
+    animation = fade
+    match:namespace = ^(geany)$
+}
+
+layerrule {
+    name = dolphin_layer_rule
+    blur = true
+    animation = fade
+    match:namespace = ^(dolphin)$
+}
+# --- 9. MAIN KEYBINDINGS ---
+bindd = $mainMod, Return, Open Foot, exec, foot
+bindd = $mainMod SHIFT, Return, Opens Backup Terminal, exec, $backup_terminal
+bindd = $mainMod, Z, Closes Active Window, killactive
+bindd = $mainMod, Space, Toggle Floating Mode, togglefloating 
+bindd = $mainMod, F, Active Window Fullscreen, fullscreen, 1
+bindd = $mainMod SHIFT, Q, Logout, exit
+
+# App Launchers
+bindd = $mainMod, A, Rofi App Menu, exec, rofi -show drun
+#bindd = $mainMod, A, Rofi App Menu, exec, rofi -show drun -theme-str 'window {location: northwest; anchor: northwest; x-offset: 20px; y-offset: 0px; width: 400px;}'
+bindd = $mainMod, Y, Yazi in Foot, exec, foot --app-id=yazi_float yazi
+bindd = $mainMod, W, Wallpaper Changer, exec, ~/.config/hypr/scripts/changewall.sh
+bindd = $mainMod SHIFT, W, Waybar Themes, exec, $HOME/.config/hypr/scripts/changewaybar.sh
+bindd = $mainMod SHIFT, Y, Btop, exec, foot -a btop_float btop
+bindd = $mainMod, T, Thunar, exec,  thunar
+bindd = $mainMod, D, Dolphin , exec, dolphin
+bindd = $mainMod SHIFT, M, Music Player, exec, $HOME/custom-scripts/music.sh
+
+# Easy access to your history menu
+bindd = SUPER, V, Opens Rofi Clipboard, exec, cliphist list | rofi -dmenu -theme ~/.config/rofi/themes/rk1-dark.rasi | cliphist decode | wl-copy
+
+# --- Navigation (Dwindle Optimized) ---
+bindd = $mainMod, J, Focus Down, movefocus, d
+bindd = $mainMod, K, Focus Up, movefocus, u
+bindd = $mainMod, L, Focus Right, movefocus, r
+bindd = $mainMod, H, Focus Left, movefocus, l
+
+# Dwindle Specific Binds
+bindd = $mainMod, P, Toggle Pseudo, pseudo, # Toggle pseudotiling
+bindd = $mainMod, M, Toggle Split, togglesplit, # Change split direction (H/V)
+
+# Workspaces
+bindd = $mainMod, 1, Go to Workspace 1, workspace, 1
+bindd = $mainMod, 2, Go to Workspace 2, workspace, 2
+bindd = $mainMod, 3, Go to Workspace 3, workspace, 3
+bindd = $mainMod, 4, Go to Workspace 4, workspace, 4
+bindd = $mainMod SHIFT, 1, Move Window to Workspace 1, movetoworkspace, 1
+bindd = $mainMod SHIFT, 2, Move Window to Workspace 2, movetoworkspace, 2
+bindd = $mainMod SHIFT, 3, Move Window to Workspace 3, movetoworkspace, 3
+bindd = $mainMod SHIFT, 4, Move Window to Workspace 4, movetoworkspace, 4
+
+# Screenshot
+bindd = $mainMod, Print, Select Area Screenshot, exec, grim -g "$(slurp)" ~/Pictures/$(date +%Y%m%d_%H%M%S).png && notify-send
+bindd = , Print, Full Screen Screenshot, exec, grim ~/Pictures/$(date +%Y%m%d_%H%M%S).png
+
+# Hardware Keys
+bindel = , XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -h string:x-canonical-private-synchronous:vol -h "int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}')" "Volume: $(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}')%"
+bindel = , XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && notify-send -h string:x-canonical-private-synchronous:vol -h "int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}')" "Volume: $(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}')%"
+bindel = , XF86MonBrightnessUp, exec, brightnessctl set 5%+ && notify-send -h string:x-canonical-private-synchronous:bright -h "int:value:$(brightnessctl i | grep -oP '\(\K[^%]+')" "Brightness: $(brightnessctl i | grep -oP '\(\K[^%]+')%"
+bindel = , XF86MonBrightnessDown, exec, brightnessctl set 5%- && notify-send -h string:x-canonical-private-synchronous:bright -h "int:value:$(brightnessctl i | grep -oP '\(\K[^%]+')" "Brightness: $(brightnessctl i | grep -oP '\(\K[^%]+')%"
+
+# --- RESIZE MODE ---
+# Using R for "Resize"
+bindd = $mainMod, R, Enter Resize Mode, submap, resize 
+
+submap = resize
+
+# 'e' flag allows the command to repeat when the key is held
+bindde = , right, Resize Right, resizeactive, 10 0
+bindde = , left, Resize Left,resizeactive, -10 0
+bindde = , up, Resize Up, resizeactive, 0 -10
+bindde = , down, Resize Down, resizeactive, 0 10
+
+# Use 'Escape' or 'Enter' to go back to normal mode
+bindd = , escape, Exit Resize Mode, submap, reset 
+bindd = , return, Exit Resize Mode, submap, reset 
+
+submap = reset
+
+# Move windows with mainMod + LMB and dragging
+bindm = $mainMod, mouse:272, movewindow
+
+input {
+    touchpad {
+        tap-to-click = true
+    }
+}

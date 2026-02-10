@@ -1,0 +1,100 @@
+/**
+ * Rofi Theme: rk1-dark
+ * Colors: White borders/accents on 0.9 Black
+ */
+
+* {
+    /* Hardcoded White Palette */
+    ghost-white:       #f8f8ff ;
+    off-white:         #dddddd;
+    dim-white:         #aaaaaa;
+    pale-green:        #98fb98;
+    grey:              #808080;
+    
+    /* 0.9 Opacity Black (E6 hex) */
+    black-50:   rgba(0, 0, 0, 0.6); 
+
+    background-color:  transparent;
+    text-color:        @ghost-white;
+    font:              "JetBrainsMono Nerd Font 11";
+}
+
+window {
+    border:           2px;
+    /* Border is now White */
+    border-color:     @grey;
+    background-color: @black-50;
+    border-radius:    0px;
+}
+
+mainbox {
+    children:         [ inputbar, listview ];
+}
+
+inputbar {
+    children:         [ prompt, entry ];
+    padding:          12px;
+}
+
+prompt {
+    padding:          6px;
+    text-color:       @off-white;
+}
+
+entry {
+    placeholder:       "Search...";
+    placeholder-color: @dim-white;
+    padding:           6px;
+    text-color:        @ghost-white;
+}
+
+listview {
+    columns:          1;
+    lines:            8;
+    padding:          8px 16px;
+    fixed-height:     true;
+    dynamic:          true;
+    layout:           vertical;
+}
+
+element {
+    padding:          8px 12px;
+    spacing:          12px;
+    border-radius:    0px;
+    background-color: transparent;
+}
+
+/* THE SELECTOR: Left-side 'dash' indicator */
+element selected {
+    /* Selector Dash is White */
+    border:           0px 0px 0px 4px;
+    border-color:     @pale-green; 
+    
+    /* Subtle highlight */
+    background-color: rgba(255, 255, 255, 0.1);
+    text-color:       @pale-green;
+}
+
+element-icon {
+    size:             25px;
+}
+
+element-text {
+    vertical-align:   0.5;
+    text-color:       inherit;
+    highlight:        none;
+}
+mode-switcher {
+    spacing:          0;
+}
+
+button {
+    padding:          10px;
+    text-color:       @wal-grey;
+    vertical-align:   0.5; 
+    horizontal-align: 0.5;
+}
+
+button selected {
+    text-color:       @wal-accent;
+}
