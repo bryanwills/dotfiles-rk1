@@ -1,4 +1,4 @@
-@import url("file:///home/rk1/.cache/wal/colors-waybar.css");
+/* @import url("file:///home/rk1/.cache/wal/colors-waybar.css"); */
 
 /* =============================================================================
    1. GLOBAL SETTINGS
@@ -9,18 +9,22 @@
     border: none;
     border-radius: 0;
     min-height: 0; /* Helps prevent height glitches */
-    color: #ffffff;
+    color: #000000; /* Crucial: Dark text for white bar */
 }
 
 /* =============================================================================
    2. THE MAIN BAR
    ========================================================================== */
 window#waybar {
-    background-color: #000000;
-    opacity: 0.7;
+    background-color: transparent; /* Essential: Must be clear */
+}
+
+window#waybar > box {
+    background-color: #ffffff;
+    opacity: 0.8;
     border-radius: 15px;
-    /* If you want true "floating islands", set background-color to transparent here
-       and move the background color to .modules-left/center/right below. */
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 1);
+    margin: 0px 8px 8px 0px;
 }
 
 /* =============================================================================
@@ -56,19 +60,19 @@ window#waybar {
 
 #workspaces button {
     padding: 0 5px;
-    color: #ffffff;
+    color: @color0;
     background: transparent;
     font-size: 12px;
 }
 
 #workspaces button:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.6);
     border-radius: 5px;
 }
 
 #workspaces button.active {
-    color: #000000;
-    border-bottom: 2px solid #ffffff; /* FIXED: Added 'solid' */
+    color: @color1;
+    border-bottom: 2px solid #000000; /* FIXED: Added 'solid' */
     border-radius: 5px; /* Reset radius for the bottom border look */
 }
 
@@ -88,12 +92,12 @@ window#waybar {
 }
 
 #taskbar button:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.6);
 }
 
 #taskbar button.active {
     background: transparent;
-    border-bottom: 2px solid #ffffff;
+    border-bottom: 2px solid #000000;
     border-radius: 5px;
 }
 
@@ -105,7 +109,7 @@ window#waybar {
 #custom-sync, #custom-gallery, #custom-wallpaper, 
 #custom-keybinds, #custom-theme, #custom-budget, #submap {
     background: transparent;
-    color: #ffffff;
+    color: #000000;
     padding: 0 5px;
     margin: 0;
     font-size: 12px;
@@ -117,23 +121,25 @@ window#waybar {
 #custom-launcher {
     background: transparent;
     font-size: 12px; /* FIXED: Reduced from 18px to fit bar height */
-    color: #00bfff;
+    color: #0e08b1;
     padding: 0 10px;
-    margin-right: 5px;
+    margin-right: 1px;
 }
 
 /* Notifications */
 #custom-notification {
-    color: #00bfff;
-    padding: 0 5px;
+    color: #0e08b1;
+    padding: 0 1px;
+    margin-left: 5px;
     font-size: 14px; /* FIXED: Reduced from 16px */
 }
 
 /* Power Menu */
 #custom-power {
-    padding: 0 5px;
+    padding: 0 10px;
     font-size: 14px; /* FIXED: Reduced from 16px */
-    color: #ff0000;
+    color: #ff0000 ;
+    margin-right: 2px;
 }
 
 /* Sync */
@@ -144,7 +150,7 @@ window#waybar {
 /* RTM (Task Manager) */
 #custom-rtm {
     padding: 0 10px;
-    color: #ffffff;
+    color: #000000;
 }
 
 #custom-rtm.pending {
