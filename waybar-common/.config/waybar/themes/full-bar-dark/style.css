@@ -30,7 +30,7 @@ window#waybar > box {
     
     /* SHADOW: x-offset | y-offset | blur | spread | color */
     /* 5px 5px pushes it Right and Down */
-    box-shadow: 5px 5px 5px 0px rgba(255, 255, 255, 11);
+    box-shadow: 5px 5px 5px 0px rgba(255, 255, 255, 1);
 }
 
 /* =============================================================================

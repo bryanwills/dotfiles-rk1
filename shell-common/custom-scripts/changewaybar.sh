@@ -1,15 +1,12 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Define paths
 THEME_DIR="$HOME/.config/waybar/themes"
 CONFIG_DIR="$HOME/.config/waybar"
 
 # 1. Rofi Command with Custom Styling
-# - location: west (Locks it to the left edge, vertically centered)
-# - width/height: Fixed pixel size
-# - padding: Internal padding
-CHOICE=$(ls "$THEME_DIR" | rofi -dmenu -p "Theme" \
-    -theme-str 'window { location: northwest; anchor: west; width: 300px; height: 350px; padding: 2px; margin: 5px 8px; }' \
+CHOICE=$(ls "$THEME_DIR" | rofi -dmenu -p "Waybar" \
+    -theme-str 'window { location: northwest; anchor: west; width: 300px; height: 350px; padding: 2px; margin: 2px 2px; }' \
     -theme-str 'listview { lines: 6; }' \
     -theme-str 'entry { placeholder: "Search..."; }')
 
