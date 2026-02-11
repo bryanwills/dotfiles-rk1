@@ -8,13 +8,15 @@ SELECTED_WALL=$(find "$WALL_DIR" -type f \( -name "*.jpg" -o -name "*.png" -o -n
     # This format is vital: The path is the label, and icon is the metadata
     echo -en "$line\0icon\x1f$line\n"
 done | rofi -dmenu -i -p "Select Wallpaper" \
-    -theme-str 'window { location: 2; width: 800px; height: 150px; border: 0px; border-radius: 0px; }' \
-    -theme-str 'mainbox { children: [listview]; background-color: rgba(211, 211, 211, 0.8); }' \
-    -theme-str 'listview { columns: 6; lines: 1; spacing: 5px; scrollbar: false; background-color: transparent; }' \
-    -theme-str 'element { orientation: vertical; padding: 5px; background-color: transparent; border-radius: 0px; }' \
-    -theme-str 'element-icon { size: 120px; horizontal-align: 0.5; vertical-align: 0.5; }' \
+    -show-icons \
+    -theme-str 'window { location: 2; anchor: center; width: 800; height: 180px; background-color: #2f4f4f88; border: 0px; }' \
+    -theme-str 'mainbox { children: [ listview ]; spacing: 0px; margin: 0px; }' \
+    -theme-str 'listview { columns: 6; lines: 1; spacing: 10px; padding: 10px; }' \
+    -theme-str 'inputbar { enabled: false; }' \
+    -theme-str 'element { orientation: vertical; padding: 0px; }' \
+    -theme-str 'element-icon { size: 140px; }' \
     -theme-str 'element-text { enabled: false; }' \
-    -theme-str 'element selected.normal {border: 0px 0px 4px 0px; border-color: #800080; }')
+    -theme-str 'element selected { border: 0px 0px 2px 0px; border-color: #ffffff; }')
 
 # Exit if nothing was selected
 [ -z "$SELECTED_WALL" ] && exit 0

@@ -8,7 +8,8 @@ from datetime import datetime
 
 # --- Configuration ---
 VERSION = "1.8.0"
-BACKUP_DIR = os.path.expanduser("~/backup-configs")
+BACKUP_DIR = os.path.expanduser("~/dotfiles")
+PROJECT_DIR = os.path.expanduser("~/arch-projects/arch-update-check")
 TASKS_JSON = os.path.expanduser("~/.local/share/arch_task_manager/tasks.json")
 SYNC_CACHE = os.path.expanduser("~/.cache/last_synced")
 
@@ -63,89 +64,34 @@ def get_pending_tasks():
     except: return f"{RED}Error{RESET}"
 
 def get_git_status():
-    BACKUP_DIR = os.path.expanduser("~/backup-configs")
-    SYNC_CACHE = os.path.expanduser("~/.cache/last_synced")
-    
-    # Define the system-wide folders and files to monitor
-    watched = [
-        '~/.config/hypr', 
-        '~/.config/waybar', 
-        '~/.config/foot',
-        '~/.config/kitty', 
-        '~/custom-scripts',
-        '~/.config/wal',
-        '~/.config/rofi',
-        '~/.config/fastfetch',
-        '~/.config/nwg-look',
-        '~/.config/mako', 
-        '~/.zshrc',
-        '~/.p10k.zsh',
-        '~/Pictures/Wallpapers'
-    ]
-    
-    dirty_items = []
-
-    try:
-        # 1. Get the last sync time from the file itself
-        if not os.path.exists(SYNC_CACHE):
-            return f"{RED}Never Synced{RESET}"
+    def check_repo(path):
+        if not os.path.exists(path):
+            return f"{RED}Missing{RESET}"
         
-        # We use the modification time of the cache file as our reference
-        last_sync_time = os.path.getmtime(SYNC_CACHE)
-        
-        # 2. Scan LIVE system folders for changes since last_sync_time
-        for path in watched:
-            full_path = os.path.expanduser(path)
-            if not os.path.exists(full_path):
-                continue
-            
-            if os.path.isfile(full_path):
-                if os.path.getmtime(full_path) > last_sync_time:
-                    dirty_items.append(os.path.basename(path))
-            else:
-                # Deep scan directories
-                found_change = False
-                for root, _, files in os.walk(full_path):
-                    for f in files:
-                        if os.path.getmtime(os.path.join(root, f)) > last_sync_time:
-                            dirty_items.append(os.path.basename(path))
-                            found_change = True
-                            break
-                    if found_change:
-                        break
-
-        # 3. Check Git status for unpushed commits
-        ahead = 0
         try:
-            ahead = subprocess.check_output(
-                ["git", "-C", BACKUP_DIR, "rev-list", "@{u}..HEAD"], 
-                stderr=subprocess.DEVNULL
-            ).decode().count('\n')
+            is_dirty = subprocess.check_output(["git", "-C", path, "status", "--porcelain"], stderr=subprocess.DEVNULL).decode().strip()
+            ahead = subprocess.check_output(["git", "-C", path, "rev-list", "@{u}..HEAD"], stderr=subprocess.DEVNULL).decode().count('\n')
         except:
-            pass
+            return f"{RED}Error{RESET}"
+            
+        status = f"{RED}Dirty{RESET}" if is_dirty else f"{GREEN}Clean{RESET}"
+        if ahead > 0:
+            status += f" {YELLOW}↑ {ahead}{RESET}"
+        return status
 
-        # 4. Read the text date from the cache for display
+    # Get the human-readable sync date
+    try:
         with open(SYNC_CACHE, 'r') as f:
             sync_date = f.read().strip()
+    except:
+        sync_date = "Never"
 
-        # Formatting the output
-        if dirty_items:
-            # \033[1;31m is Bold Red. This overrides pywal's standard red.
-            # We show the first dirty item to keep the line from getting too long.
-            main_item = dirty_items[0].replace('.config/', '')
-            status_text = f"\033[1;31mDirty\033[0m ({main_item})"
-        else:
-            status_text = f"{GREEN}Clean{RESET}"
+    return {
+        "dots": check_repo(BACKUP_DIR),
+        "proj": check_repo(PROJECT_DIR),
+        "date": sync_date
+    }
         
-        # 2. Sync Logic
-        sync_color = YELLOW if ahead > 0 else GREEN
-        sync_text = f"↑ {ahead} Unpushed" if ahead > 0 else "Synced"
-        
-        return f"{status_text} | {sync_color}{sync_text}{RESET} ({sync_date})"
-
-    except Exception as e:
-        return f"{RED}Backup Error{RESET}"
-
 def get_budget_status():
     """Fetches a summary string from the Budget Buddy script."""
     try:
@@ -161,31 +107,36 @@ def get_budget_status():
         return f"{RED}Budget Data Unavailable{RESET}"
         
 def main():
-    # Final aligned layout
+    git_data = get_git_status()
+    
     print(f"\n{BOLD}{CYAN}󰣇 SYSTEM REPORT{RESET} | {datetime.now().strftime('%H:%M:%S')}")
     print(f"{CYAN}......................................................{RESET}")
     
-    col1_w = 38 # Adjusted for your terminal padding
-    
-    s_text = f" 💾 {BOLD}Storage:{RESET}  {shutil.disk_usage(os.path.expanduser('~')).free // (2**30)} GB Free"
-    u_text = f" 📦 {BOLD}Updates:{RESET}  {get_updates()}"
-    c_text = f" 󰒋  {BOLD}Cache:{RESET}    {get_cache_size()}"
-    
-    t_text = f" 📝 {BOLD}Tasks:{RESET}   {get_pending_tasks()}"
-    b_text = f" 🔄 {BOLD}Backup:{RESET}  {get_git_status()}"
+    # Define a helper to handle the padding correctly
+    def align(label, value, width=15):
+        # Subtracting 2 to account for the icon and space
+        return f"{BOLD}{label}{RESET}".ljust(width + 8) + f" {value}"
 
-    budget_text = get_budget_status()
+    # Row 1
+    s_text = f" 💾 {BOLD}Storage:{RESET}  {shutil.disk_usage(os.path.expanduser('~')).free // (2**30)} GB Free"
+    t_text = f" 📝 {BOLD}Tasks:{RESET}    {get_pending_tasks()}"
     
-    # Define the widths for both columns
-    col1_w = 40  
-    col2_w = 48
-    # Print each row with explicit padding for both sides
-    print(f"{s_text:<{col1_w}} {t_text}")
-    print(f"{u_text:49} {b_text}")
-    print(f"{c_text:<{col1_w}}")
-    print(f" 󱚝  {BOLD}Budget:{RESET}  {budget_text}")
+    # Row 2
+    u_text = f" 📦 {BOLD}Updates:{RESET}  {get_updates()}"
+    d_text = f" 󱓞  {BOLD}Dots:{RESET}     {git_data['dots']} ({git_data['date']})"
+    
+    # Row 3
+    c_text = f" 󰒋  {BOLD}Cache:{RESET}    {get_cache_size()}"
+    p_text = f" 󱚝  {BOLD}Proj:{RESET}     {git_data['proj']}"
+
+    # Print with manual spacing for total control
+    # Adjust the number 35 to move the right column left or right
+    print(f"{s_text:<40} {t_text}")
+    print(f"{u_text:<49} {d_text}")
+    print(f"{c_text:<50} {p_text}")
+    print(f" 󱚝  {BOLD}Budget:{RESET}   {get_budget_status()}")
     
     print(f"{CYAN}......................................................{RESET}\n")
-
+        
 if __name__ == "__main__":
     main()

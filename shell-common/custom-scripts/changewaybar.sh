@@ -28,8 +28,9 @@ if [[ -n "$CHOICE" ]]; then
 
         # Restart Waybar
         killall waybar
-        waybar &
-
+        waybar & disown
+        waybar -c ~/.config/waybar/config-pod -s ~/.config/waybar/style-pod.css & disown 
+        
         # Send a notification
         notify-send "Waybar" "Theme switched to $CHOICE"
     else

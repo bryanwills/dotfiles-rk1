@@ -153,18 +153,7 @@ alias vedit="$EDITOR ~/.local/share/cmd_vault.txt"
 
 # Cliphist (Rofi Clipboard)
 alias clip='cliphist list | rofi -dmenu -theme ~/.config/rofi/themes/rk1-dark.rasi | cliphist decode | wl-copy'
-# ----------------------------------------------------------
-# Automating the github backup
-alias dotsync='cp -r ~/.config/{hypr,waybar,sddm-backup,rofi,foot,kitty,nwg-look,fastfetch,btop,yazi,wal,swaync} ~/backup-configs/ &&\
-mkdir -p ~/backup-configs/scripts &&\
-cp -r ~/custom-scripts/* ~/backup-configs/scripts/ &&\
-cp -r ~/Pictures/Wallpapers/ ~/backup-configs/Wallpapers/ &&\
-cp ~/.zshrc ~/.p10k.zsh ~/.gtkrc-2.0 ~/backup-configs/ &&\
-pacman -Qqe > ~/backup-configs/pkglist.txt &&\
-cd ~/backup-configs && git add . &&\
-git commit -m "Update: $(date +%H:%M)" &&\
-git push && date +"%m/%d %H:%M" > ~/.cache/last_synced'
-# -----------------------------------------------------------
+
 # Dashoboard
 alias dashboard="python3 ~/custom-scripts/Dashboard/dashboard.py"
 
@@ -215,6 +204,34 @@ function y() {
 		builtin cd -- "$cwd"
 	fi
 	rm -f -- "$tmp"
+}
+
+dotsync() {
+    # 1. Update the package list in your dotfiles
+    pacman -Qqe > ~/dotfiles/pkglist.txt
+    
+    # 2. Jump to the dotfiles directory
+    cd ~/dotfiles || return
+    
+    # 3. Show a "short & sweet" status of what has changed
+    echo "󰚰  Changes detected in your dotfiles:"
+    git status -sb
+    echo ""
+    
+    # 4. Ask for permission to proceed
+    echo -n "󰏖  Commit and push these changes? [y/N]: "
+    read -q "REPLY"
+    echo "" # Just for a new line
+    
+    if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+        git add .
+        git commit -m "Sync: $(date +'%H:%M')" -m "$(git status --porcelain)"
+        git push
+        date +"%m/%d %H:%M" > ~/.cache/last_synced
+        echo "󰄬  Everything is safe on GitHub."
+    else
+        echo "󰅙  Sync aborted. No changes pushed."
+    fi
 }
 
 export GTK_MESSAGES_DEBUG=none
@@ -279,7 +296,6 @@ function xc() {
         fi
     fi
 }
-
 
 # Logic to load command into buffer for editing
 fzf-cmd-vault-widget() {

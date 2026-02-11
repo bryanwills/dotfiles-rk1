@@ -78,7 +78,7 @@
     "return-type": "json",
     "exec": "$HOME/.local/bin/check-sync",
     "interval": 30,
-    "on-click": "foot sh -c 'zsh -i -c dotsync; exec zsh'"
+    "on-click": "kitty sh -c 'zsh -i -c dotsync; exec zsh'"
     },
     
     "custom/rtm": {

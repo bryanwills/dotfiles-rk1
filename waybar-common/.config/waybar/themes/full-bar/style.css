@@ -16,11 +16,21 @@
    2. THE MAIN BAR
    ========================================================================== */
 window#waybar {
+    background-color: transparent; /* Essential: Must be clear */
+}
+
+window#waybar > box {
     background-color: #000000;
-    opacity: 0.7;
+    opacity: 0.8;
     border-radius: 15px;
-    /* If you want true "floating islands", set background-color to transparent here
-       and move the background color to .modules-left/center/right below. */
+
+    /* MARGINS: Use these to create room for the shadow */
+    /* top | right | bottom | left */
+    margin: 0px 8px 8px 0px; 
+    
+    /* SHADOW: x-offset | y-offset | blur | spread | color */
+    /* 5px 5px pushes it Right and Down */
+    box-shadow: 5px 5px 5px 0px rgba(255, 255, 255, 11);
 }
 
 /* =============================================================================
