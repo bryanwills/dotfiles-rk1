@@ -34,6 +34,7 @@ hyprland
 hyprpaper
 hyprpolkitagent
 hyprshot
+hyprsunset
 id3v2
 intel-gpu-tools
 intel-media-driver
