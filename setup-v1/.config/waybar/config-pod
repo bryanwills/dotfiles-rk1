@@ -1,0 +1,58 @@
+{
+    "layer": "bottom",
+    "position": "bottom",
+    "height": 30,
+    "margin": "5 5 0 5", // Adds space around the bar to look "floating"
+    "spacing": 15,
+
+    // Putting everything in one side makes it a "classic" single-line bar
+    "modules-left": [
+        "cpu", 
+        "memory",  
+        "tray"
+    ],
+    "modules-right": [
+    	"custom/vault"
+    ],
+    "modules-center": [
+    	"clock"
+    ],
+
+    "custom/vault": {
+        "format": "Help",
+        "tooltip": false,
+        "on-click": "~/custom-scripts/rofi-vault.sh"
+    },
+        
+    "cpu": {
+        "interval": 1,
+        "format": " {usage}% <span color='#777777'>|</span> {usage0}% {usage1}% {usage2}% {usage3}%", 
+        // Note: Add more {usageX} depending on your core count.
+        "tooltip": true
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": " {used:0.1f}G/{total:0.1f}G",
+        "tooltip": true
+    },
+
+    "clock": {
+        "format": " {:%H:%M   %d/%m}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    "tray": {
+        "spacing": 10
+    }
+}

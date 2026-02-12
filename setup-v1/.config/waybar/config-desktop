@@ -1,0 +1,79 @@
+{
+    "ipc": true,
+    "reload_style_on_change": true,
+    "name": "desktop-widget",
+    "layer": "bottom",
+    "exclusive": false,
+    "passthrough": true,
+    "position": "center",
+    "margin-top": 250,    // Adjusted to 0 so we can use "position": ">
+    "margin-left": 20,
+    "modules-left": [
+        "group/conky-style"
+    ],
+    "group/conky-style": {
+        "orientation": "vertical",
+        "modules": [
+            "clock#time",
+            "clock#date",
+            "cpu",
+            "memory",
+            "temperature",
+            "battery"
+        ]
+    },
+    "clock#time": {
+        "format": "{:%H:%M}",
+        "tooltip": false
+    },
+    "clock#date": {
+        "format": "{:%A, %B %d, %Y}",
+        "tooltip": false
+    },
+    // ... name, layer, position settings ...
+    "group/conky-style": {
+        "orientation": "vertical",
+        "modules": [
+            "clock#time",
+            "clock#date",
+            "cpu",
+            "temperature",
+            "memory",
+            "battery" // Added battery here
+        ]
+    },
+    "cpu": {
+        "format": "󰻠 cpu  ───── {usage0:2}%", 
+        "interval": 2, 
+        "align": 0.5, 
+        "min-length": 30 
+    },
+    "memory": {
+        "format": "󰍛 ram  ───── {percentage:2}%",
+        "interval": 2,
+        "align": 0.5,
+        "min-length": 30
+    },
+    "temperature": {
+        "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+        "input-filename": "temp1_input",
+        "format": "󰔄 tem  ───── {temperatureC}°",
+        "critical-threshold": 75, // Lowered because you have no f>
+        "format-critical": "  HOT  ───── {temperatureC}°",
+        "align": 0.5,
+        "min-length": 30,
+        "format-icons": ["", "", ""]
+    },
+    "battery": {
+        "format": " bat  ───── {capacity:2}%",
+        "align": 0.5,
+        "min-length": 30,
+        "states": {
+            "warning": 30,
+            "critical": 15
+    },  
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-icons": ["", "", "", "", ""]
+    }
+}

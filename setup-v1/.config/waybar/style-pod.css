@@ -1,0 +1,34 @@
+/* Import Pywal colors */
+@import "../../.cache/wal/colors-waybar.css";
+
+* {
+    font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background-color: rgba(0, 0, 0, 0.6); /* 0.6 Transparent Black */
+    border-radius: 5px;
+    color: @foreground; /* Text follows Pywal */
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+/* Individual Module Styling */
+#custom-vault, #cpu, #memory, #custom-gpu, #tray, #clock {
+    padding: 0 10px;
+    color: @foreground;
+}
+#custom-vault {
+	font-size: 12px;
+}
+/* Make the active core stats slightly dimmed if you prefer */
+#cpu {
+    color: @color2; /* Primary Pywal Accent */
+}
+
+#memory {
+    color: @color4; /* Secondary Pywal Accent */
+}
