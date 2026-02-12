@@ -1,6 +1,6 @@
 /**
  * Rofi Theme: rk1-dark
- * Colors: White borders/accents on 0.9 Black
+ * Colors: Black borders/accents on 0.9 White
  */
 
 * {
@@ -12,7 +12,7 @@
     grey:              #808080;
     
     /* 0.9 Opacity Black (E6 hex) */
-    black-50:   rgba(0, 0, 0, 0.6); 
+    white-80:   rgba(255, 255, 255, 0.8); 
 
     background-color:  transparent;
     text-color:        @ghost-white;
@@ -23,12 +23,13 @@ window {
     border:           2px;
     /* Border is now White */
     border-color:     @grey;
-    background-color: @black-50;
+    background-color: @white-80;
     border-radius:    0px;
 }
 
 mainbox {
     children:         [ inputbar, listview ];
+    background-color: inherit;
 }
 
 inputbar {
