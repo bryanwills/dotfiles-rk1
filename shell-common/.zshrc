@@ -190,6 +190,9 @@ alias s-re='stow -R -d ~/dotfiles -t ~'
 # Corrected alias with quotes
 alias s-check='find ~/.config -maxdepth 1 -type l -ls'
 
+alias v1='stow -d ~/dotfiles -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v1 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload'
+alias v2='stow -d ~/dotfiles -D setup-v1 -t ~; stow -d ~/dotfiles -S setup-v2 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload'
+
 # Now set the style AFTER sourcing
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=196,bold'
 
@@ -322,3 +325,6 @@ bindkey '^[x' prepend-xc  # Alt+x
 
 export EDITOR='micro'
 export VISUAL='micro'
+
+CURRENT_V=$( [ -f ~/.config/hypr/is_v1 ] && echo "V1-Dark" || echo "V2-Light" )
+echo "System Version: $CURRENT_V"

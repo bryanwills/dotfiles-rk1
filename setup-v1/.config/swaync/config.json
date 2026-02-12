@@ -76,21 +76,21 @@
           "buttons-per-row": 4,
           "actions": [
               {
-                  "label": "󰖩",
-                  "type": "toggle",
-                  "active": true,
-                  "command": "sh -c 'nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on'",
-                  "update-command": "sh -c 'nmcli radio wifi | grep -q enabled && echo true || echo false'",
-                  "interval": 1000
-               },
-               {
-              "label": "󰂯",
-              "type": "toggle",
-              "active": true,
-              "command": "sh -c '/usr/bin/overskride'",
-              "update-command": "sh -c 'bluetoothctl show | grep -q \"Powered: yes\" && echo true || echo false'",
-              "interval": 2000
-            },
+                "label": "󰖩",
+                "type": "toggle",
+                "active": true,
+                "command": "nmcli radio wifi off",
+                "update-command": "nmcli radio wifi | grep -q enabled && echo true || echo false",
+                "interval": 1
+              },
+              {
+                "label": "󰂯",
+                "type": "toggle",
+                "active": true,
+                "command": "overskride",
+                "update-command": "bluetoothctl show | grep -q Powered: yes && echo true || echo false",
+                "interval": 2
+              },
             {
               "label": "󰐥",
               "command": "wlogout"

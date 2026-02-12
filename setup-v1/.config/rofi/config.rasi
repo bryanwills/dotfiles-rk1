@@ -1,0 +1,27 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    display-drun: "APPS";
+    display-run: "RUN";
+    display-window: "WINDOW";
+    drun-display-format: "{icon} {name}";
+    font: "JetBrainsMono Nerd Font 11";
+    background: transparent;
+    window {
+    	anchor: northwest;
+    	location: center;
+    }
+}
+
+
+//@theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"
+
+//@theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"
+
+//@theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"
+
+//@theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
+
+//@theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"
+
+@theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
