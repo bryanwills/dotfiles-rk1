@@ -24,7 +24,7 @@ window#waybar {
         
     /* SHADOW: x-offset | y-offset | blur | spread | color */
     /* 5px 5px pushes it Right and Down */
-    box-shadow: 0px 5px 0px 0px rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 3px 0px 0px rgba(255, 255, 255, 0.8);
 }
 
 /* Internal spacing for center modules */
@@ -72,6 +72,7 @@ window#waybar {
 
 #workspaces button:hover {
     background: rgba(255, 255, 255, 0.1);
+    border: 0px;
 }
 
 /* 5. INDIVIDUAL MODULES (Cleanup) */
@@ -82,12 +83,30 @@ window#waybar {
     margin: 0;
 }
 
+#taskbar {
+    background: transparent;
+    padding: 0 10px;
+    margin: 0;
+}
+
+#taskbar button {
+    padding: 0 8px;
+    color: #ffffff;
+    background: transparent;
+    font-size: 12px;
+}
+
+
 #taskbar button.active {
     background-color: transparent;
     border-bottom: 2px solid #ffffff;
     border-radius: 5px;
 }
 
+#taskbar button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border: 0px;
+}
 #custom-launcher {
     background: transparent;
     font-size: 16px;
