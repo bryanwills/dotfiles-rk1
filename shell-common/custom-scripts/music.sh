@@ -12,6 +12,6 @@ ADDR=$(hyprctl clients -j | jq -r '.[] | select(.class=="musicbox") | .address')
 
 # 4. Apply the position rules manually
 hyprctl dispatch setfloating address:$ADDR
-hyprctl dispatch resizewindowpixel exact 300 450,address:$ADDR
+hyprctl dispatch resizewindowpixel exact 650 450,address:$ADDR
 # "1480" is roughly Top-Right on a 1080p screen (1920 - 400 - 40)
-hyprctl dispatch movewindowpixel exact 1230 50,address:$ADDR
+#hyprctl dispatch movewindowpixel exact 1230 50,address:$ADDR
