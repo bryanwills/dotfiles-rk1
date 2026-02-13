@@ -190,8 +190,8 @@ alias s-re='stow -R -d ~/dotfiles -t ~'
 # Corrected alias with quotes
 alias s-check='find ~/.config -maxdepth 1 -type l -ls'
 
-alias v1='stow -d ~/dotfiles -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v1 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload'
-alias v2='stow -d ~/dotfiles -D setup-v1 -t ~; stow -d ~/dotfiles -S setup-v2 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload'
+alias v1='stow -d ~/dotfiles -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v1 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
+alias v2='stow -d ~/dotfiles -D setup-v1 -t ~; stow -d ~/dotfiles -S setup-v2 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
 
 # Now set the style AFTER sourcing
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=196,bold'
