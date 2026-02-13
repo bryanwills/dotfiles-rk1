@@ -6,6 +6,8 @@ allowNotifications=1
 hideLogo=0
 hideHelp=0
 hideSideCover=0
+coverWidth=40
+coverHeight=40
 
 # Delay when drawing title in track view, set to 0 to have no delay.
 titleDelay=9
@@ -34,7 +36,7 @@ trackTitleAsWindowTitle=1
 
 # Theme's go in ~/.config/kew/themes (on Linux/FreeBSD/Android), 
 # and ~/Library/Preferences/kew/themes (on macOS), 
-theme=Tokyo-Night
+theme=
 
 # Color Mode is:
 # 0 = 16-bit color palette from default theme, 
@@ -67,7 +69,7 @@ visualizerHeight=15
 visualizerBrailleMode=0
 
 # How colors are laid out in the spectrum visualizer. 0=lighten, 1=brightness depending on bar height, 2=reversed, 3=reversed darken.
-visualizerColorType=3
+visualizerColorType=0
 
 # 0=Thin bars, 1=Bars twice the width, 2=Auto (depends on window size).
 visualizerBarWidth=0

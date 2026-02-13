@@ -8,17 +8,17 @@ author=Ravachol
 
 # Core colors
 accent=#7aa2f7
-text=#c0caf5
+text=#ff00ff 
 textDim=#9aa5ce
 textMuted=#565f89
 
 # General Colors
 logo=#565f89
-header=#565f89
-footer=#565f89
+header=#ff00ff 
+footer=#ff00ff 
 help=#7dcfff
 link=#9ece6a
-nowplaying=#ff9e64
+nowplaying=#ff00ff 
 
 # Playlist View
 playlist.rownum=#565f89
@@ -26,12 +26,12 @@ playlist.title=#c0caf5
 playlist.playing=#7aa2f7
 
 # Track View
-trackview.title=#c0caf5
-trackview.artist=#7aa2f7
-trackview.album=#bb9af7
+trackview.title=#ff00ff
+trackview.artist=#ff00ff
+trackview.album=#ff00ff
 trackview.year=#bb9af7
 trackview.time=#7dcfff
-trackview.visualizer=#7aa2f7
+trackview.visualizer=#ff00ff
 trackview.lyrics=#c0caf5
 
 # Library View
