@@ -31,7 +31,7 @@ repeatState=0
 shuffleEnabled=0
 
 # Set the window title to the title of the currently playing track
-trackTitleAsWindowTitle=1
+#trackTitleAsWindowTitle=1
 
 
 [colors]
@@ -46,7 +46,7 @@ theme=default
 # 2 = Colors derived from TrueColor theme, 
 
 # Color Mode:
-colorMode=0
+colorMode=1
 
 # Terminal color theme is default.theme in 
 ~/.config/kew/themes (on Linux/FreeBSD/Android), 
@@ -67,14 +67,14 @@ mouseEnabled=1
 [visualizer]
 
 visualizerEnabled=1
-visualizerHeight=10
-visualizerBrailleMode=0
+visualizerHeight=20
+visualizerBrailleMode=1
 
 # How colors are laid out in the spectrum visualizer. 0=lighten, 1=brightness depending on bar height, 2=reversed, 3=reversed darken.
 visualizerColorType=1
 
 # 0=Thin bars, 1=Bars twice the width, 2=Auto (depends on window size).
-visualizerBarWidth=0
+visualizerBarWidth=2
 
 
 [progress bar]
@@ -94,8 +94,8 @@ progressBarCurrentOddChar=ᗧ
 
 # To have a thick line: 
 
-#progressBarElapsedEvenChar=━
-#progressBarElapsedOddChar=━
+progressBarElapsedEvenChar=━
+progressBarElapsedOddChar=━
 #progressBarApproachingEvenChar=━
 #progressBarApproachingOddChar=━
 #progressBarCurrentEvenChar=━
