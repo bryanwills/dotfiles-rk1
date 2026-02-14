@@ -27,54 +27,54 @@ name=Default 16-color
 author=Ravachol
 
 # Core Colors
-accent=13       # Bright Magenta
-text=-1         # Default terminal foreground
+accent=4       # Bright Magenta
+text=4        # Default terminal foreground
 textDim=8       # Bright Black / Gray
 textMuted=7     # White (dim)
 
 # General Colors
-logo=6          # Cyan
-header=6        # Cyan
-footer=#787878  # The old school gray, this works on most terminals
-help=6          # Cyan
-link=14         # Bright Cyan
-nowplaying=-1   # Default foreground
+logo=4          # Cyan
+header=4        # Cyan
+footer=       # The old school gray, this works on most terminals
+help=1        # Cyan
+link=1         # Bright Cyan
+nowplaying=4    # Default foreground
 
 # Playlist View
-playlist.rownum=8   # Bright Black / Gray
-playlist.title=-1    # Default foreground
-playlist.playing=6  # Cyan
+playlist.rownum=4   # Bright Black / Gray
+playlist.title=4    # Default foreground
+playlist.playing=4  # Cyan
 
 # Track View
-trackview.title=-1      # Default foreground
-trackview.artist=-1     # Default foreground
-trackview.album=-1      # Default foreground
-trackview.year=-1       # Default foreground
-trackview.time=-1       # Default foreground
-trackview.visualizer=-1 # Default foreground
+trackview.title=9    # Default foreground
+trackview.artist=9     # Default foreground
+trackview.album=9    # Default foreground
+trackview.year=4       # Default foreground
+trackview.time=4       # Default foreground
+trackview.visualizer=4 # Default foreground
 trackview.lyrics=-1     # Default foreground
 
 # Library View
-library.artist=6    # Cyan
-library.album=6     # Cyan
-library.track=-1    # Default foreground
-library.enqueued=6  # Cyan
-library.playing=6   # Cyan
+library.artist=5    # Cyan
+library.album=4    # Cyan
+library.track=4  # Default foreground
+library.enqueued=4  # Cyan
+library.playing=4  # Cyan
 
 # Search
-search.label=6      # Cyan
-search.query=-1     # Default foreground
-search.result=-1    # Default foreground
-search.enqueued=14  # Bright Cyan
-search.playing=6    # Cyan
+search.label=4      # Cyan
+search.query=4     # Default foreground
+search.result=4   # Default foreground
+search.enqueued=4  # Bright Cyan
+search.playing=4    # Cyan
 
 # Progress
-progress.filled=8   # Bright Black / Gray
-progress.empty=0    # Black
-progress.elapsed=8  # Bright Black / Gray
+progress.filled=4  # Bright Black / Gray
+progress.empty=0  # Black
+progress.elapsed=4  # Bright Black / Gray
 
 # Status
-status.info=-1      # Default foreground
+status.info=11    # Default foreground
 status.warning=11   # Bright Yellow
 status.error=9      # Bright Red
 status.success=10   # Bright Green
