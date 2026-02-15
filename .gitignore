@@ -7,12 +7,14 @@ __pycache__
 Thumbs.db
 *.swp
 *~
+.zsh_sessions/
 
 # --- App Specific Junk ---
 **/*.tmp
 .cache/
 **/socket
 *.log
+**/micro/buffers/history
 
 # --- Sensitive Data (CRITICAL) ---
 **/.ssh/
@@ -21,6 +23,7 @@ Thumbs.db
 **/token.txt
 **/*.pem
 **/*.key
+.zshrc.local
 
 # --- Large Binary Files ---
 *.mp4
