@@ -193,6 +193,8 @@ alias s-check='find ~/.config -maxdepth 1 -type l -ls'
 alias v1='stow -d ~/dotfiles -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v1 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
 alias v2='stow -d ~/dotfiles -D setup-v1 -t ~; stow -d ~/dotfiles -S setup-v2 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
 
+alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
+
 # Now set the style AFTER sourcing
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=196,bold'
 
@@ -328,4 +330,4 @@ export VISUAL='micro'
 
 CURRENT_V=$( [ -f ~/.config/hypr/is_v1 ] && echo "V1-Dark" || echo "V2-Light" )
 echo "System Version: $CURRENT_V"
-export GEMINI_API_KEY="AIzaSyCCjEMiXORRjOqlxNrvMBF1gDcHcE3442c"
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
