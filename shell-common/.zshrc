@@ -328,3 +328,4 @@ export VISUAL='micro'
 
 CURRENT_V=$( [ -f ~/.config/hypr/is_v1 ] && echo "V1-Dark" || echo "V2-Light" )
 echo "System Version: $CURRENT_V"
+export GEMINI_API_KEY="AIzaSyCCjEMiXORRjOqlxNrvMBF1gDcHcE3442c"

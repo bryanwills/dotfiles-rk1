@@ -99,3 +99,22 @@ button {
 button selected {
     text-color:       @wal-accent;
 }
+mode-switcher {
+    spacing: 0;
+    margin: 10px 5px;
+}
+
+button {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3); /* Subtle black tint */
+    text-color: @foreground;
+    vertical-align: 0.5; 
+    horizontal-align: 0.5;
+}
+
+button selected {
+    background-color: @selected-active-background;
+    text-color: @background;
+    border: 0px 0px 3px 0px; /* Underline effect */
+    border-color: @selected-active-background;
+}

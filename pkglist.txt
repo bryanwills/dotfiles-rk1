@@ -19,7 +19,6 @@ fastfetch
 fd
 ffmpegthumbnailer
 file-roller
-floorp-bin
 foot
 fzf
 gcalcli
@@ -57,9 +56,12 @@ lsd
 man-db
 man-pages
 micro
+min
 nano
 network-manager-applet
 networkmanager
+nodejs
+npm
 nwg-look
 nwg-wrapper
 otf-font-awesome
