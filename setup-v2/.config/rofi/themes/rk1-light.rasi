@@ -71,7 +71,7 @@ element {
 /* THE SELECTOR: Left-side 'dash' indicator */
 
 element selected {
-    /* Selector Dash is now Blue */
+    /* Selector Dash is now Lime Green */
     border:       0px 0px 0px 4px;
     border-color:      @lime-green; 
     border-radius:     5px;
@@ -89,14 +89,21 @@ element-text {
     text-color:        @deep-black;
     highlight:         none;
 }
-
+mode-switcher {
+    spacing: 2;
+    margin: 5px 5px;
+}
 button {
-    padding:           10px;
-    text-color:        @dim-grey;
+    padding:           5px;
+    text-color:        @deep-black;
     vertical-align:    0.5; 
     horizontal-align:  0.5;
 }
 
 button selected {
-    text-color:        @accent-blue;
+    text-color:        @deep-black;
+    border: 0px 0px 4px 0px;
+    border-color: @lime-green;
+    border-radius: 5px;
+    background-color:  rgba(255, 255, 255, 0.9);
 }
