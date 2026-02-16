@@ -89,14 +89,23 @@ element-text {
     text-color:        @deep-black;
     highlight:         none;
 }
-
 button {
-    padding:           10px;
-    text-color:        @dim-grey;
-    vertical-align:    0.5; 
-    horizontal-align:  0.5;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding:          5px;
+    text-color:       @deep-black;
+    vertical-align:   0.5; 
+    horizontal-align: 0.5;
 }
 
 button selected {
-    text-color:        @accent-blue;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 0px 0px 3px 0px; 
+    border-color: @lime-green;
+    border-radius: 5px;
+}
+mode-switcher {
+    spacing: 5;
+    margin: 5px 5px;
+    background-color: rgba(255, 255, 255, 1); /* Subtle black tint */
+    text-color: @off-white;
 }

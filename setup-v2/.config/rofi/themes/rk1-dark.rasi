@@ -28,7 +28,7 @@ window {
 }
 
 mainbox {
-    children:         [ inputbar, listview ];
+    children:         [ inputbar, listview, mode-switcher ];
     background-color: inherit;
 }
 
@@ -86,16 +86,21 @@ element-text {
     highlight:        none;
 }
 mode-switcher {
-    spacing:          0;
+    spacing:          5px;
 }
 
 button {
-    padding:          5px;
-    text-color:       @wal-grey;
-    vertical-align:   0.5; 
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    text-color: @off-white;
+    vertical-align: 0.5; 
     horizontal-align: 0.5;
 }
 
 button selected {
-    text-color:       @wal-accent;
+    background-color: rgba(0, 0, 0, 0.1);
+    text-color: @pale-green;
+    border: 0px 0px 3px 0px; 
+    border-color: @pale-green;
+    border-radius: 5px;
 }

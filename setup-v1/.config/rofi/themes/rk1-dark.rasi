@@ -28,7 +28,7 @@ window {
 }
 
 mainbox {
-    children:         [ inputbar, listview ];
+    children:         [ inputbar, listview, mode-switcher ];
     background-color: inherit;
 }
 
@@ -85,36 +85,23 @@ element-text {
     text-color:       #ffffff;
     highlight:        none;
 }
-mode-switcher {
-    spacing:          0;
-}
-
 button {
+    background-color: rgba(255, 255, 255, 0.05);
     padding:          5px;
-    text-color:       @wal-grey;
+    text-color:       @off-white;
     vertical-align:   0.5; 
     horizontal-align: 0.5;
 }
 
 button selected {
-    text-color:       @wal-accent;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 0px 0px 3px 0px; 
+    border-color: @pale-green;
+    border-radius: 5px;
 }
 mode-switcher {
-    spacing: 0;
-    margin: 10px 5px;
-}
-
-button {
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.3); /* Subtle black tint */
-    text-color: @foreground;
-    vertical-align: 0.5; 
-    horizontal-align: 0.5;
-}
-
-button selected {
-    background-color: @selected-active-background;
-    text-color: @background;
-    border: 0px 0px 3px 0px; /* Underline effect */
-    border-color: @selected-active-background;
+    spacing: 5;
+    margin: 5px 5px;
+    background-color: rgba(0, 0, 0, 1); /* Subtle black tint */
+    text-color: @off-white;
 }
