@@ -192,8 +192,8 @@ alias s-check='find ~/.config -maxdepth 1 -type l -ls'
 
 alias v1='stow -d ~/dotfiles -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v1 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
 alias v2='stow -d ~/dotfiles -D setup-v1 -t ~; stow -d ~/dotfiles -S setup-v2 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
-
 alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
+alias genwall="./.venv/bin/python3 archwall.py"
 
 # Now set the style AFTER sourcing
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=196,bold'
@@ -210,6 +210,8 @@ function y() {
 	fi
 	rm -f -- "$tmp"
 }
+export EDITOR='micro'
+export VISUAL='geany'
 
 dotsync() {
     # 1. Update the package list in your dotfiles
@@ -324,9 +326,6 @@ zle -N fzf-cmd-vault-widget
 bindkey '^g' fzf-cmd-vault-widget
 zle -N prepend-xc
 bindkey '^[x' prepend-xc  # Alt+x
-
-export EDITOR='micro'
-export VISUAL='micro'
 
 CURRENT_V=$( [ -f ~/.config/hypr/is_v1 ] && echo "V1-Dark" || echo "V2-Light" )
 echo "System Version: $CURRENT_V"
