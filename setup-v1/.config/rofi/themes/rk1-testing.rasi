@@ -1,35 +1,45 @@
-/* 1. Import the Pywal colors FIRST */
-@import "~/.cache/wal/colors-rofi-dark.rasi"
-
-/* 2. Apply your layout using the variables from that import */
 window {
-    width:            500px;
+    width:            600px;
+    height:           600px;
+    location:         center;
+    anchor:           center;
     border:           2px;
-    border-radius:    0px;
-    border-color:     @selected-normal-background; /* Pywal's accent color */
-    background-color: @background;
-    /* This makes it 80% transparent */
-    opacity:          0.5; 
+    border-color:     @grey;
+    background-color: @black-80;
 }
 
 mainbox {
-    spacing:          0px;
-    children:         [inputbar, listview];
+    /* This creates the horizontal split: buttons on left, content on right */
+    orientation: horizontal;
+    children:    [ "mode-switcher", "box-content" ];
+}
+
+/* Container for the search and list */
+box-content {
+    orientation: vertical;
+    children:    [ "inputbar", "listview" ];
     background-color: transparent;
 }
 
-element {
-    padding:          8px;
-    background-color: transparent;
-    text-color:       @foreground;
+mode-switcher {
+    orientation: vertical;
+    width:       60px;
+    spacing:     10px;
+    padding:     10px 5px;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
-element selected.normal {
-    background-color: @selected-normal-background;
-    text-color:       @background;
+button {
+    padding:          10px;
+    background-color: transparent;
+    text-color:       @dim-white;
+    font:             "JetBrainsMono Nerd Font 18"; /* Larger icons */
+    horizontal-align: 0.5;
 }
 
-element-text {
-    text-color:       inherit;
-    background-color: transparent;
+button selected {
+    text-color:       @pale-green;
+    background-color: rgba(255, 255, 255, 0.1);
+    border:           0px 0px 0px 3px; /* Indicator on the left of the button */
+    border-color:     @pale-green;
 }

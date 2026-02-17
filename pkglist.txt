@@ -74,7 +74,6 @@ polkit-kde-agent
 pulseaudio-alsa
 python-pip
 python-pywal
-python-pywalfox
 python-rich
 qalculate-gtk
 qt5-wayland
