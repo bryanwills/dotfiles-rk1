@@ -1,10 +1,11 @@
 configuration {
-    modi: "drun,run,window,filebrowser";
+    modi: "drun,run,window,filebrowser,TOOLS:~/.local/bin/rofi-tools.sh";
     show-icons: true;
-    display-drun: "APPS";
-    display-run: "RUN";
-    display-window: "WINDOW";
-    display-filebrowser: "FILES";
+    display-drun: " ";
+    display-run: " ";
+    display-window: "󱂬 ";
+    display-filebrowser: " ";
+    display-TOOLS: " ";
     drun-display-format: "{icon} {name}";
     font: "JetBrainsMono Nerd Font 11";
     background: transparent;
@@ -13,22 +14,10 @@ configuration {
     	location: center;
     }
     filebrowser {
-            directories-first: true;
-            sorting-method: "name";
+          directories-first: true;
+          sorting-method:    "name";
     }
 }
 
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
 
 @theme "/home/rk1/.config/rofi/themes/rk1-light.rasi"

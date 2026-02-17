@@ -15,7 +15,7 @@
     lime-green:        #32cd32;
 
     /* 0.8 Opacity White (CC hex) */
-    white-back:        rgba(255, 255, 255, 0.6); 
+    white-back:        rgba(255, 255, 255, 0.7); 
     background-color:  transparent;
     text-color:        @deep-black;
     font:              "JetBrainsMono Nerd Font 11";
@@ -24,7 +24,7 @@
 window {
     border:            2px;
     border-color:      @dark-grey;
-    background-color:  rgba(255, 255, 255, 0.6);
+    background-color:  rgba(255, 255, 255, 0.7);
     border-radius:     0px;
 }
 
@@ -105,5 +105,5 @@ button selected {
     border: 0px 0px 4px 0px;
     border-color: @lime-green;
     border-radius: 5px;
-    background-color:  rgba(255, 255, 255, 0.9);
+    background-color:  rgba(0, 0, 0, 0.3);
 }
