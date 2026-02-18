@@ -1,24 +1,22 @@
 configuration {
     modi: "drun,run,window,filebrowser,TOOLS:~/.local/bin/rofi-tools.sh";
     show-icons: true;
-    display-drun: " ";
-    display-run: " ";
-    display-window: "󱂬 ";
-    display-filebrowser: " ";
-    display-TOOLS: " ";
+    display-drun: "";
+    display-run: "";
+    display-window: "󱂬";
+    display-filebrowser: "";
+    display-TOOLS: "";
     drun-display-format: "{icon} {name}";
     font: "JetBrainsMono Nerd Font 11";
     background: transparent;
     window {
-    	anchor: center;
-    	location: center;
+    	anchor: northwest;
+    	location: 1;
     }
     filebrowser {
           directories-first: true;
           sorting-method:    "name";
     }
 }
-
-
 
 @theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
