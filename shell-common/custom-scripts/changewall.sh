@@ -18,12 +18,12 @@ SELECTED_WALL=$(find "$WALL_DIR" -type f \( -name "*.jpg" -o -name "*.png" -o -n
     echo -en "$line\0icon\x1f$line\n"
 done | rofi -dmenu -i -p "Select Wallpaper" \
     -show-icons \
-    -theme-str 'window { location: north; anchor: 2; width: 1000; height: 255px; background-color: rgba(0, 0, 0, 0.2); border: 2px; }' \
+    -theme-str 'window { location: north; anchor: 2; width: 580; height: 300px; background-color: rgba(0, 0, 0, 0.2); border: 2px; }' \
     -theme-str 'mainbox { children: [ listview ]; spacing: 0px; margin: 0px; }' \
-    -theme-str 'listview { columns: 4; lines: 1; spacing: 5px; padding: 0px; }' \
+    -theme-str 'listview { columns: 4; lines: 2; spacing: 5px; padding: 0px; }' \
     -theme-str 'inputbar { enabled: false; }' \
     -theme-str 'element { orientation: horizontal; padding: 0px; margin: 0px; }' \
-    -theme-str 'element-icon { size: 240px; }' \
+    -theme-str 'element-icon { size: 140px; }' \
     -theme-str 'element-text { enabled: false; }' \
     -theme-str 'element selected { border: 0px 0px 2px 0px; border-color: #98fb98; margin: 0px; padding: 0px; }
    ')
