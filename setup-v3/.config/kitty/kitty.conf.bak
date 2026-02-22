@@ -27,7 +27,7 @@ listen_on unix:@mykitty
 
 
 # BEGIN_KITTY_THEME
-Base2Tone Field Dark
+Cyberpunk
 include current-theme.conf
 # END_KITTY_THEME
 
