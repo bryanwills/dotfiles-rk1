@@ -192,6 +192,8 @@ alias s-check='find ~/.config -maxdepth 1 -type l -ls'
 
 alias v1='stow -d ~/dotfiles -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v1 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
 alias v2='stow -d ~/dotfiles -D setup-v1 -t ~; stow -d ~/dotfiles -S setup-v2 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
+alias v3='stow -d ~/dotfiles -D setup-v1 -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v3 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
+
 alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
 
 # Timeshift aliases
@@ -330,6 +332,15 @@ bindkey '^g' fzf-cmd-vault-widget
 zle -N prepend-xc
 bindkey '^[x' prepend-xc  # Alt+x
 
-CURRENT_V=$( [ -f ~/.config/hypr/is_v1 ] && echo "V1-Dark" || echo "V2-Light" )
+if [ -f ~/.config/hypr/is_v1 ]; then
+    CURRENT_V="V1-Dark"
+elif [ -f ~/.config/hypr/is_v2 ]; then
+    CURRENT_V="V2-Light"
+elif [ -f ~/.config/hypr/is_v3 ]; then
+    CURRENT_V="V3-Red"
+else
+    CURRENT_V="Unknown"
+fi
+
 echo "System Version: $CURRENT_V"
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

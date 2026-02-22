@@ -1,0 +1,105 @@
+/**
+ * Rofi Theme: rk1-dark
+ * Colors: Black borders/accents on 0.9 White
+ */
+
+* {
+    /* Hardcoded White Palette */
+    ghost-white:       #f8f8ff;
+    red:               #ff0000;
+    dim-white:         #aaaaaa;
+    pale-green:        #98fb98;
+    grey:              #808080;
+    
+    /* 0.9 Opacity Black (E6 hex) */
+    black-60:   rgba(0,0,0, 0.3); 
+
+    background-color:  transparent;
+    text-color:        @red;
+    font:              "JetBrainsMono Nerd Font 11";
+}
+
+window {
+    border:           2px;
+    /* Border is now White */
+    border-color:     @red;
+    background-color: @black-60;
+    border-radius:    0px;
+}
+
+mainbox {
+    children:         [ inputbar, listview, mode-switcher ];
+    background-color: inherit;
+}
+
+inputbar {
+    children:         [ prompt, entry ];
+    padding:          12px;
+}
+
+prompt {
+    padding:          6px;
+    text-color:       @red;
+}
+
+entry {
+    placeholder:       "Search...";
+    placeholder-color: @red;
+    padding:           6px;
+    text-color:        @red;
+}
+
+listview {
+    columns:          1;
+    lines:            8;
+    padding:          5px 5px;
+    fixed-height:     false;
+    dynamic:          true;
+    layout:           vertical;
+}
+
+element {
+    padding:          2px 8px;
+    spacing:          0px;
+    border-radius:    5px;
+    background-color: transparent;
+}
+
+/* THE SELECTOR: Left-side 'dash' indicator */
+element selected {
+    /* Selector Dash is White */
+    border:           0px 0px 0px 4px;
+    border-color:     @red; 
+    text-color:       @pale-green;
+}
+
+element-icon {
+    size:             25px;
+}
+
+element-text {
+    vertical-align:   0.5;
+    text-color:       @red;
+    highlight:        none;
+}
+button {
+    background-color: rgba(255, 0, 0, 0.4);
+    padding:          5px;
+    text-color:       @red;
+    vertical-align:   0.5; 
+    horizontal-align: 0.5;
+    border-radius: 5px;
+}
+
+button selected {
+    background-color: rgba(255, 0, 0, 0.2);
+    border: 0px 0px 3px 0px; 
+    border-color: @red;
+    border-radius: 5px;
+}
+mode-switcher {
+    spacing: 5;
+    margin: 5px 5px;
+    background-color: transparent; /* Subtle black tint */
+    text-color: @red;
+}
