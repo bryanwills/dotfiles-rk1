@@ -27,8 +27,8 @@ listen_on unix:@mykitty
 
 
 # BEGIN_KITTY_THEME
-# Tango Light
-include current-theme.conf
+Pastel Cyberpunk.conf
+#include current-theme.conf
 # END_KITTY_THEME
 
 shell_integration no-cursor
