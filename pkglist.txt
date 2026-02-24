@@ -57,6 +57,7 @@ man-db
 man-pages
 micro
 min
+mpv
 nano
 network-manager-applet
 networkmanager
@@ -64,6 +65,7 @@ nodejs
 npm
 nwg-look
 nwg-wrapper
+obs-studio
 otf-font-awesome
 overskride-bin
 pacman-contrib

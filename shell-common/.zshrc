@@ -266,73 +266,9 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 
-# --- 2. THE SAVER (The new xc function) ---
-function xc() {
-    local vault_file="$HOME/.local/share/cmd_vault.txt"
-    if [[ ! -f "$vault_file" ]]; then
-        mkdir -p "$HOME/.local/share"
-        touch "$vault_file"
-    fi
-
-    local cmd_to_save=""
-    local exit_code=0
-
-    if [ $# -eq 0 ]; then
-        cmd_to_save=$history[$((HISTCMD-1))]
-        if [[ -z "$cmd_to_save" ]]; then
-            cmd_to_save=$(fc -ln -1 | sed 's/^[ \t]*//;s/[ \t]*$//')
-        fi
-        if [[ -z "$cmd_to_save" ]]; then
-            echo "⚠ Error: History is empty."
-            return 1
-        fi
-        echo -e "\033[0;33m--- Retroactive Save (Last: $cmd_to_save) ---\033[0m"
-    else
-        "$@"
-        exit_code=$?
-        cmd_to_save="$*"
-    fi
-
-    if [ $exit_code -eq 0 ]; then
-        echo -e "\033[0;32mConfirm template to save:\033[0m"
-        vared -p "> " cmd_to_save
-        echo -e "\033[0;32mDescription:\033[0m"
-        read -r comment
-        if [[ -n "$comment" && -n "$cmd_to_save" ]]; then
-            if grep -F -q "$cmd_to_save ###" "$vault_file"; then
-                echo "⚠ Template already exists in vault."
-            else
-                echo "$cmd_to_save ### [$comment]" >> "$vault_file"
-                echo "✔ Saved."
-            fi
-        else
-            echo "Skipped."
-        fi
-    fi
-}
-
-# Logic to load command into buffer for editing
-fzf-cmd-vault-widget() {
-  # 1. Read file
-  # 2. Use fzf to select. --delimiter separates cmd from comment for display
-  # 3. awk prints only the command part (before ###)
-  local selected=$(cat "$HOME/.local/share/cmd_vault.txt" | \
-      fzf --height 40% --layout=reverse --border --delimiter '###' --with-nth 1,2 \
-      --preview 'echo {2}' --preview-window=up:1:wrap | \
-      awk -F ' ### ' '{print $1}')
-
-  # Put result on the command line
-  if [ -n "$selected" ]; then
-    LBUFFER="$selected"
-  fi
-  zle reset-prompt
-}
-
-# Bind to Ctrl+G
-zle -N fzf-cmd-vault-widget
-bindkey '^g' fzf-cmd-vault-widget
-zle -N prepend-xc
-bindkey '^[x' prepend-xc  # Alt+x
+# --- THE COMMAND VAULT (XC) ---
+# Optimized XC-Manager Saver
+source ~/arch-projects/XC-Manager/xc-manager.sh
 
 if [ -f ~/.config/hypr/is_v1 ]; then
     CURRENT_V="V1-Dark"

@@ -6,11 +6,11 @@
 * {
     /* Hardcoded White Palette */
     ghost-white:       #f8f8ff;
-    red:               #ff0000;
+    neon:              #00ffff;
     dim-white:         #aaaaaa;
     pale-green:        #98fb98;
     grey:              #808080;
-    
+    neon-light:        #00ffff82;
     /* 0.9 Opacity Black (E6 hex) */
     black-60:   rgba(0,0,0, 0.3); 
 
@@ -22,9 +22,9 @@
 window {
     border:           2px;
     /* Border is now White */
-    border-color:     @red;
+    border-color:     @neon-light;
     background-color: @black-60;
-    border-radius:    0px;
+    border-radius:    5px;
 }
 
 mainbox {
@@ -39,14 +39,14 @@ inputbar {
 
 prompt {
     padding:          6px;
-    text-color:       @red;
+    text-color:       @neon;
 }
 
 entry {
     placeholder:       "Search...";
-    placeholder-color: @red;
+    placeholder-color: @neon-light;
     padding:           6px;
-    text-color:        @red;
+    text-color:        @neon-light;
 }
 
 listview {
@@ -69,7 +69,7 @@ element {
 element selected {
     /* Selector Dash is White */
     border:           0px 0px 0px 4px;
-    border-color:     @red; 
+    border-color:     @neon; 
     text-color:       @pale-green;
 }
 
@@ -79,27 +79,27 @@ element-icon {
 
 element-text {
     vertical-align:   0.5;
-    text-color:       @red;
+    text-color:       @neon;
     highlight:        none;
 }
 button {
-    background-color: rgba(255, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.4);
     padding:          5px;
-    text-color:       @red;
+    text-color:       @neon;
     vertical-align:   0.5; 
     horizontal-align: 0.5;
     border-radius: 5px;
 }
 
 button selected {
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.2);
     border: 0px 0px 3px 0px; 
-    border-color: @red;
+    border-color: @neon;
     border-radius: 5px;
 }
 mode-switcher {
     spacing: 5;
     margin: 5px 5px;
     background-color: transparent; /* Subtle black tint */
-    text-color: @red;
+    text-color: @neon;
 }
