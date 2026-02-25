@@ -1,5 +1,6 @@
 #!/bin/bash
 
+THEME_NAME=$(cat ~/.current_theme 2>/dev/null || echo "rk1-dark.rasi")
 # Function to get status
 get_status() {
     if rfkill list bluetooth | grep -q "Soft blocked: no"; then
@@ -21,7 +22,7 @@ while true; do
     # Launch Rofi with temporary theme overrides for size and position
     chosen=$(echo -e "$options" | rofi -dmenu \
         -p "Bluetooth ($status)" \
-        -theme ~/.config/rofi/themes/rk1-neon.rasi \
+        -theme ~/.config/rofi/themes/"$THEME_NAME" \
         -theme-str 'window { location: northeast; anchor: northeast; width: 300px; height: 250px; x-offset: -20px; y-offset: 2px; }' \
         -theme-str 'listview { lines: 5; }')
         

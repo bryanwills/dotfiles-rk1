@@ -182,16 +182,12 @@
 
 "bluetooth": {
     "format": " {status}",
-    "format-disabled": " Off", // Hides it when off, or use " Off" if you prefer
+    "format-on": " on",
+    "format-off": " off",
+    "format-disabled": " off", // Forces "disabled" to show as "off"
     "format-connected": " {num_connections}",
-    "tooltip-format": "{controller_alias}\t{controller_address}",
-    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    
-    // LEFT CLICK: Toggles Power On/Off
-    "on-click": "sh -c 'bluetoothctl show | grep -q \"Powered: yes\" && bluetoothctl power off || (rfkill unblock bluetooth && bluetoothctl power on)'",
-    
-    // RIGHT CLICK: Opens the Manager (just in case you need to pair)
-    "on-click-right": "overskride"
+    "tooltip-format": "{device_enumerate}",
+    "on-click": "~/custom-scripts/rofi-bluetooth.sh",
+    "interval": 2
 }
 }

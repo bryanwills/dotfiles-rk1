@@ -190,8 +190,8 @@ alias s-re='stow -R -d ~/dotfiles -t ~'
 # Corrected alias with quotes
 alias s-check='find ~/.config -maxdepth 1 -type l -ls'
 
-alias v1='stow -d ~/dotfiles -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v1 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
-alias v2='stow -d ~/dotfiles -D setup-v1 -t ~; stow -d ~/dotfiles -S setup-v2 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
+alias v1='stow -d ~/dotfiles -D setup-v2 -D setup-v3 -t ~; stow -d ~/dotfiles -S setup-v1 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
+alias v2='stow -d ~/dotfiles -D setup-v1 -D setup-v3 -t ~; stow -d ~/dotfiles -S setup-v2 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
 alias v3='stow -d ~/dotfiles -D setup-v1 -D setup-v2 -t ~; stow -d ~/dotfiles -S setup-v3 -t ~; swww img ~/.config/backgrounds/wall.png; hyprctl reload; kill -SIGUSR1 $(pgrep kitty)'
 # Function to clean all setups (Internal helper)
 alias v-clean='stow -d ~/dotfiles -D setup-v1 setup-v2 setup-v3 -t ~ 2>/dev/null'
