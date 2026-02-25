@@ -260,15 +260,22 @@ if [[ -o interactive && "$TERM" =~ "foot|xterm-kitty" ]]; then
     python3 "$HOME/custom-scripts/Dashboard/dashboard.py"
 fi
 
-# --- 1. HISTORY SETTINGS (Ensures 'xc' can see previous commands) ---
+# --- XC-Manager Settings ---
+# Load the script
+source ~/arch-projects/XC-Manager/xc-manager.sh
+
+# Custom UI (zstyle)
+# Change the separator to your favorite icon or symbol
+zstyle ':xc:*' separator "->" 
+# Set your FZF colors (Matches most dark/Arch themes)
+zstyle ':xc:*' fzf_colors "fg:7,hl:4,fg+:15,hl+:12,info:2,prompt:5,pointer:12"
+
+# --- History Settings (Required for 'xc' to work) ---
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
-
-# --- THE COMMAND VAULT (XC) ---
-# Optimized XC-Manager Saver
-source ~/arch-projects/XC-Manager/xc-manager.sh
+setopt sharehistory  # Highly recommended: shares history across all open terminals
 
 if [ -f ~/.config/hypr/is_v1 ]; then
     CURRENT_V="V1-Dark"
