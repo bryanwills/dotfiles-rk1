@@ -107,9 +107,15 @@ dotsync() {
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=196,bold'
 
 # --- XC-Manager Settings ---
-# Resolve the read-only conflict by unsetting if it exists, then sourcing
-unset XC_VERSION 2>/dev/null
-source ~/arch-projects/XC-Manager/xc-manager.sh
+# 1. Add the autoload folder to your function path
+fpath=(~/arch-projects/XC-Manager/autoload $fpath)
+# 2. Tell Zsh to "lazy-load" these functions (no code is run yet)
+autoload -Uz xc fzf-vault-widget
+# 3. Register the widget with Zsh's Line Editor (ZLE)
+zle -N fzf-vault-widget
+# 4. Bind the shortcut
+bindkey '^G' fzf-vault-widget
+# 5. UI Customization (These are read by the functions when called)
 zstyle ':xc:*' separator "->" 
 zstyle ':xc:*' fzf_colors "fg:7,hl:4,fg+:15,hl+:12,info:2,prompt:5,pointer:12"
 
