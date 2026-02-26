@@ -1,20 +1,7 @@
 #!/bin/zsh
 
-# If an argument is passed, use it as the wallpaper. 
-# Otherwise, do nothing (or run your old logic).
-if [ -n "$1" ]; then
-    WALL="$1"
-    # Put your existing wallpaper setting logic here (swww, nitrogen, etc.)
-    swww img "$WALL" --transition-type grow
-    notify-send "Wallpaper Changed" "$WALL"
-    exit 0
-fi
-# --- 1. Select the wallpaper ---
-# We ensure the path is absolute and Rofi is told to show icons
-WALL_DIR="$HOME/Pictures/Wallpapers"
-
-SELECTED_WALL=$(find "$WALL_DIR" -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" -o -name "*.webp" \) | while read -r line; do
-    # This format is vital: The path is the label, and icon is the metadata
+# --- 1. Select the wallpaper (Gallery Mode) ---
+SELECTED_WALL=$(find ~/Pictures/Wallpapers -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" -o -name "*.webp" \) | while read -r line; do
     echo -en "$line\0icon\x1f$line\n"
 done | rofi -dmenu -i -p "Select Wallpaper" \
     -show-icons \
@@ -28,18 +15,39 @@ done | rofi -dmenu -i -p "Select Wallpaper" \
     -theme-str 'element selected { border: 0px 0px 2px 0px; border-color: #98fb98; margin: 0px; padding: 0px; }
    ')
 
-# Exit if nothing was selected
 [ -z "$SELECTED_WALL" ] && exit 0
 
 # --- 2. Set the Wallpaper ---
 swww img "$SELECTED_WALL" --transition-type grow --transition-pos top-right
 
-# --- 3. Refresh Hyprland ---
-# This reloads your hard-coded borders, gaps, and rules from V1 or V2
-hyprctl reload
+# --- 3. Generate Colors (FIXED: Added Variable) ---
+# We use the selected wallpaper variable here. 
+# The -n flag guarantees Kitty is NOT touched.
+wal -n -s -t -e -q -i "$SELECTED_WALL" > /dev/null 2>&1
 
-# --- 4. Refresh SwayNC ---
-# This will pick up whatever style.css is currently linked in ~/.config/swaync
+# --- 4. Update Hyprland Borders ---
+source "$HOME/.cache/wal/hyprland.conf"
+hyprctl keyword general:col.active_border "0xEE${color1:1}"
+hyprctl keyword general:col.inactive_border "0xAA${color0:1}"
+
+# --- 5. Update Waybar (FIXED: Removed wal -R) ---
+wal -R
+
+pkill waybar
+# Signal Waybar to reload its style
+pkill -USR2 waybar
+while pgrep -u $USER -x waybar >/dev/null; do sleep 0.1; done
+
+# Assuming you want to launch your specific Waybar config:
+# (I kept your original double-launch logic if you use dual bars, 
+# but usually you only need one of these lines).
+waybar & disown
+waybar -c ~/.config/waybar/config-pod -s ~/.config/waybar/style-pod.css & disown 
+
+# --- 6. Swaync client restart
 swaync-client -rs
 
-notify-send "Wallpaper Changed" "System borders and SwayNC refreshed."
+# --- 7. Fastfetch Logo Processing ---
+BG_COLOR=$(jq -r '.special.background' ~/.cache/wal/colors.json)
+
+notify-send "Wallpaper Changed" "Colors synchronized (Kitty untouched)."

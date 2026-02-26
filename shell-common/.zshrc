@@ -60,6 +60,11 @@ alias s-down='stow -D -d ~/dotfiles -t ~'
 alias s-re='stow -R -d ~/dotfiles -t ~'
 alias s-check='find ~/.config -maxdepth 1 -type l -ls'
 
+# --- Version change ---
+alias go-dark="~/custom-scripts/set-rice.sh dark"
+alias go-neon="~/custom-scripts/set-rice.sh neon"
+alias go-light="~/custom-scripts/set-rice.sh light"
+ 
 # --- Functions ---
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
