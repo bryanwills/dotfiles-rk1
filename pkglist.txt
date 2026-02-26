@@ -14,12 +14,12 @@ dmidecode
 dosfstools
 dunst
 efibootmgr
+extraterm-bin
 falkon
 fastfetch
 fd
 ffmpegthumbnailer
 file-roller
-foot
 fzf
 gcalcli
 geany

@@ -29,7 +29,7 @@ listen_on unix:@mykitty
 
 
 # BEGIN_KITTY_THEME
-# Catppuccin-Macchiato
+# Tango Light
 include current-theme.conf
 # END_KITTY_THEME
 

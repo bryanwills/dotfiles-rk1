@@ -49,21 +49,28 @@ alias wall="~/.config/hypr/scripts/changewall.sh"
 alias keys="~/.config/hypr/scripts/keybinds.sh"
 alias dashboard="python3 ~/custom-scripts/Dashboard/dashboard.py"
 alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.conf ~/.config/hypr/configs/windowrules.conf'
+alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
+alias als="~/custom-scripts/Show-Aliases/show-aliases.sh"
+
+# Edit cmd_vault commands
+alias vedit="$EDITOR ~/.local/share/cmd_vault.txt"
+
+# Cliphist (Rofi Clipboard)
+alias clip='cliphist list | rofi -dmenu -theme ~/.config/rofi/themes/rk1-dark.rasi | cliphist decode | wl-copy'
 
 # --- YouTube Download Aliases ---
 alias song='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --embed-metadata -o "~/Music/%(title)s.%(ext)s"'
 alias album='yt-dlp -x --audio-format mp3 --audio-quality 0 --yes-playlist --embed-thumbnail --embed-metadata --parse-metadata "playlist_index:%(track_number)s" -o "~/Music/%(album,playlist_title)s/%(playlist_index)02d - %(title)s.%(ext)s"'
 
-# --- Stow Aliases ---
-alias s-up='stow -d ~/dotfiles -t ~'
-alias s-down='stow -D -d ~/dotfiles -t ~'
-alias s-re='stow -R -d ~/dotfiles -t ~'
-alias s-check='find ~/.config -maxdepth 1 -type l -ls'
+# Alias to run the AUR/GitHub release automator
+alias uprelease='~/arch-projects/arch-update-check/release.sh'
 
-# --- Version change ---
-alias go-dark="~/custom-scripts/set-rice.sh dark"
-alias go-neon="~/custom-scripts/set-rice.sh neon"
-alias go-light="~/custom-scripts/set-rice.sh light"
+# Arch Update Check before updating system
+alias upcheck="/usr/bin/arch-update-check"
+
+# Timeshift aliases
+alias restore-list='timeshift --list'
+alias restore-now='sudo timeshift --restore'
  
 # --- Functions ---
 function y() {
@@ -119,3 +126,5 @@ if [[ -o interactive && "$TERM" =~ "foot|xterm-kitty" ]]; then
     python3 "$HOME/custom-scripts/Dashboard/dashboard.py"
 fi
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+source ~/.local/share/extraterm/extraterm-commands-0.9.4/setup_extraterm_zsh.zsh
