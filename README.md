@@ -1,4 +1,4 @@
-**⚠️ NNotice to anyone cloning this repository:**
+**⚠️ Notice to anyone cloning this repository:**
 
 This is my personal, daily-driver Arch Linux setup. 
 
