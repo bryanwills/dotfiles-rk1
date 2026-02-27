@@ -51,6 +51,7 @@ libva-intel-driver
 libva-utils
 linux
 linux-firmware
+linux-headers
 lolcat
 lsd
 man-db
@@ -98,6 +99,7 @@ thunar-volman
 timeshift
 ttf-jetbrains-mono-nerd
 tumbler
+tuxedo-drivers-dkms
 ufw
 unzip
 uwsm
