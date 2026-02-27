@@ -1,5 +1,4 @@
-@import url("file:///home/rk1/.cache/wal/colors-waybar.css");
-
+@import "../../.cache/wal/colors-waybar.css";
 * {
     font-family: "JetBrainsMono Nerd Font";
     font-size: 12px;
@@ -10,154 +9,93 @@
 /* 1. THE MAIN BAR - Transparent so islands 'float' */
 window#waybar {
     background-color: transparent;
-    margin: 2px 5px 0 2px;
+    margin: 2px 0px 0 0px;
 }
 
-/* 2. THE ISLAND CONTAINERS - Parallel Slants using Gradients */
-.modules-left,
-.modules-center,
-.modules-right {
-    background-color: transparent;
-    margin: 0px 2px;
+.modules-center {
+    background-color: @color2; /* The classic dark transparent */
+    border-radius: 0px 0px 25px 25px; /* The rounded 'pill' look */
     padding: 1px 1px;
+    /* top | right | bottom | left */
 }
 
 /* Internal spacing for center modules */
 .modules-center widget {
-    margin: 0 10px; 
+    margin: 0px 10px; 
 }
 
 .modules-center label {
     padding: 0 2px;
-    font-size: 12px;
+    font-size: 11px;
     background-color: transparent;
-    border-radius: 5px;
-}
-
-.modules-right label {
-    padding: 0 2px;
-    font-size: 12px;
-    background-color: transparent;
-    border-radius: 5px;
-}
-
-.modules-left label {
-    padding: 0 2px;
-    font-size: 12px;
-    background-color: transparent;
-    border-radius: 5px;
 }
 
 /* 3. WORKSPACES ISLAND */
 #workspaces {
     background: transparent;
-    padding: 0;
+    padding: 0 10px;
     margin: 0;
-    padding: 0px 10px;
 }
 
 #workspaces button {
-    min-width: 25px; 
-    min-height: 20px;
-    padding: 0;
-    color: @color7;
-    background: rgba(58, 58, 58, 0.8);
+    padding: 0 8px;
+    color: @color0;
+    background: transparent;
     font-size: 12px;
-    border-radius: 5px;
-    border-bottom: 1px solid @color1;
-    border-right: 3px solid @color1;
-    margin: 0 2px;
-}
-
-#workspaces button label {
-    /* Reset text spacing */
-    padding: 0 10px;
-    margin: 0;
-    margin-right: 3px; 
 }
 
 #workspaces button.active {
-    color: #00a550;
-    border-radius: 5px;
-    border-bottom: 1px solid #00a550;
-    border-right: 3px solid #00a550;
+    color: #ffffff;
+    border-right: 2px solid #000000;
+    border-radius: 10px;
 }
 
 #workspaces button:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
 }
 
 /* 5. INDIVIDUAL MODULES (Cleanup) */
-#network, #bluetooth, #battery, #temperature, #tray, #custom-music, #clock, #custom-sync, #custom-gallery, #custom-wallpaper, #custom-notification, #custom-keybinds, #custom-vault, #custom-power, #custom-rtm, #custom-theme, #custom-budget, #submap {
-    background: rgba(58, 58, 58, 0.8);
-    color: @color16;
-    padding: 0px 5px;
+#tray, #submap {
+    background: transparent;
+    color: @color0;
+    padding: 5px 8px;
     margin: 0;
-    font-size: 12px;
-    border-bottom: 1px solid @color1;
-    border-right: 3px solid @color1;
 }
 
-/* CUSTOM WIDGETS SETTINGS */
-#custom-launcher {
-    background: rgba(58, 58, 58, 0.9);
-    font-size: 18px;
-    color: #1e90ff;
-    border-bottom: 1px solid #1e90ff;
-    border-right: 3px solid #1e90ff;
+#taskbar {
+    background: transparent;
     padding: 0 10px;
+    margin: 0;
 }
 
-#custom-power {
-	border-bottom: 1px solid #ff0000;
-	border-right: 3px solid #ff0000;
-    font-size: 16px;
-	padding: 0 10px;
+#taskbar button {
+    padding: 0 8px;
+    color: #ffffff;
+    background: transparent;
+    font-size: 12px;
+}
+
+
+#taskbar button.active {
+    background-color: transparent;
+    border-left: 2px solid #000000;
+    border-radius: 10px;
+}
+
+#taskbar button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
 }
 
 #taskbar {
 	background-color: transparent;
 }
 
-#taskbar button {
-    background: transparent;
-    border-bottom: 1px solid @color1;
-    border-right: 3px solid @color1;
-    border-radius: 5px;
-    margin-left: 5px;
-    padding-right: 8px;
-    padding-left: 10px;
-}
-
-#taskbar button:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-#taskbar button.active {
-    background: transparent;
-    border-bottom: 1px solid #00a550;
-    border-right: 3px solid #00a550;
-}
-
 #custom-notification {
-	font-size: 16px;
-	color: #89b4fa;
-	padding: 0 10px;
-	border-bottom: 1px solid #1e90ff;
-	border-right: 3px solid #1e90ff;
-}
-
-#custom-rtm {
-    padding: 0 10px;
-}
-
-#custom-rtm.pending {
-    border-bottom: 3px solid #fab387;
-}
-
-#custom-rtm.empty {
-    color: #a6adc8;
-    border-bottom: 3px solid #a6e3a1;
+	font-size: 14px;
+	color: @color8;
+	padding: 0 10px
 }
 
 #battery.critical:not(.charging) {
@@ -167,6 +105,14 @@ window#waybar {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+}
+
+#bluetooth.connected {
+    color: #89b4fa; /* Blue Accent */
+}
+
+#bluetooth.off, #bluetooth.disabled {
+    color: #ff0000;
 }
 
 @keyframes blink {

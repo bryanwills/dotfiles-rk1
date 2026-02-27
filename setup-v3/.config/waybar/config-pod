@@ -9,21 +9,94 @@
     "modules-left": [
         "cpu", 
         "memory",  
-        "tray"
+        "tray",
+        "battery",
+        "temperature"
     ],
     "modules-right": [
-    	"custom/vault"
+    	"custom/notification",
+    	"network",
+    	"bluetooth"
     ],
     "modules-center": [
     	"clock"
     ],
-
-    "custom/vault": {
-        "format": "Help",
-        "tooltip": false,
-        "on-click": "~/custom-scripts/rofi-vault.sh"
-    },
+    "network": {
+        /* Only show the icon on the bar */
+        "format-wifi": " ",
+        "format-ethernet": "",
+        "format-disconnected": "睊",
         
+        /* Detailed Tooltip when you hover */
+        "tooltip-format": "{essid} ({signalStrength}%)  \n{ifname} via {gwaddr}",
+        
+        /* Define which icons to use for signal strength */
+        "format-icons": ["", "", "", "", ""], /* You can swap these for bars like ▂▄▆█ if you prefer */
+        
+        "on-click": "nm-connection-editor" /* Optional: Opens network manager on click */
+    },
+    
+    "bluetooth": {
+        "format": " {status}",
+        "format-disabled": " Off", // Hides it when off, or use " Off" if you prefer
+        "format-connected": " {num_connections}",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        
+        // LEFT CLICK: Toggles Power On/Off
+        "on-click": "sh -c 'bluetoothctl show | grep -q \"Powered: yes\" && bluetoothctl power off || (rfkill unblock bluetooth && bluetoothctl power on)'",
+        
+        // RIGHT CLICK: Opens the Manager (just in case you need to pair)
+        "on-click-right": "overskride"
+    },
+    
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-alt": "{time} {icon}",
+        
+        /* The icons for the battery levels (Empty -> Full) */
+        "format-icons": ["", "", "", "", ""]
+        },
+        
+        "temperature": {
+        "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+        "input-filename": "temp1_input",
+        "critical-threshold": 75, // Lowered because you have no fans to save you
+        "format-critical": "{temperatureC}°C  HOT",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+        },
+    
+
+    "custom/notification": {
+                    "tooltip": false,
+                    "format": " {icon} ",
+                    "format-icons": {
+                        "notification": "󱅫 <span foreground='red'><sup></sup></span>",
+                        "none": "󰂚 ",
+                        "dnd-notification": " <span foreground='red'><sup></sup></span>",
+                        "dnd-none": " ",
+                        "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+                        "inhibited-none": " ",
+                        "dnd-inhibited-notification": " <span foreground='red'><sup></sup></span>",
+                        "dnd-inhibited-none": " "
+                        },
+                    "return-type": "json",
+                    "exec-if": "which swaync-client",
+                    "exec": "swaync-client -swb",
+                    "on-click": "swaync-client -t -sw",
+                    "on-click-right": "swaync-client -d -sw",
+                    "escape": true
+                },
+            
     "cpu": {
         "interval": 1,
         "format": " {usage}% <span color='#777777'>|</span> {usage0}% {usage1}% {usage2}% {usage3}%", 

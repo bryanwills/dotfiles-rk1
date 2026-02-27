@@ -1,107 +1,40 @@
 {
     "ipc": true,
     "tooltip": false,
-    "layer": "top",
+    "layer": "bottom",
     "position": "top",
     "height": 26, 
-    "margin-top": 5,
+    "margin-top": -1,
     "margin-left": 5,
     "margin-right": 5,
     "spacing": 4,
     "exclusive": true,
     "reload_style_on_change": true,
-    "modules-left": ["custom/launcher", "custom/sync", "custom/rtm", "custom/wallpaper", "custom/keybinds", "custom/gallery", "custom/budget"],
-        "modules-center": ["hyprland/submap", "clock", "hyprland/workspaces", "wlr/taskbar"],
-        "modules-right": ["custom/theme", "custom/vault", "temperature", "battery", "network", "bluetooth", "custom/notification", "custom/power"],
+    "modules-center": ["hyprland/submap", "hyprland/workspaces", "wlr/taskbar"],
 
     "hyprland/workspaces": {
     "format": "{icon}",
     "on-click": "activate",
     "window-rewrite": {
-        "class<falkon>": "",       // Icon for Falkon
-        "class<floorp>": "",       // Icon for Floorp
-        "class<kitty>": "",        // Icon for Kitty
-        "class<foot>": "",         // Icon for Foot
+        "class<falkon>": " ",       // Icon for Falkon
+        "class<floorp>": " ",       // Icon for Min
+        "class<kitty>": " ",        // Icon for Kitty
+        "class<extraterm>": " ",        // Icon for Extraterm
         "class<custom_rtm>": "",   // Icon for RTM
         "class<custom_budget>": "" // Icon for Budget Buddy
    },     
     "format-icons": {
-        "1": "", 
-        "2": "",
-        "3": "",
-        "4": "4",
-        "5": "5",
-        "default": ""
+        "1": "󰖟 ", 
+        "2": " ",
+        "3": " ",
+        "4": "4 ",
+        "5": "5 ",
+        "default": " "
     },
     "persistent-workspaces": {
         "*": 5 // This forces workspaces 1-5 to be visible on all monitors
     }
 },
-
-    "custom/theme": {
-    "format": "D/L",
-    "on-click": "~/.local/bin/toggle-theme",
-    "tooltip": false
-},
-    
-    "custom/launcher": {
-    "format": " <span color='#1e90ff'>󰣇 </span>",
-    "on-click": "rofi -show drun -theme-str 'window {location: northwest; anchor: northwest; x-offset: 10px; y-offset: 0px; width: 400px; height: 800px;}'",
-    "tooltip-format": " Applications Launcher"
-},
-
-    "custom/gallery": {
-    "format": "Gallery" ,
-    "on-click": "swayimg --gallery ~/Pictures",
-    "tooltip": false
-},
-    
-    "custom/keybinds": {
-    "format": "Keybinds",
-    "on-click": "$HOME/.config/hypr/scripts/keybinds.sh",
-    "tooltip": false
-    },
-    
-    "custom/wallpaper": {
-    "format": "Themes",
-    "on-click": "bash $HOME/.config/hypr/scripts/changewall.sh",
-    "tooltip": false
-    },
-
-    "custom/power": {
-        "format": " <span color='#EE4B2B'>⏻ </span>",
-        "on-click": "$HOME/.config/rofi/powermenu.sh",
-        "tooltip": false
-    },    
-    
-    "custom/sync": {
-    "format": "Sync",
-    "return-type": "json",
-    "exec": "$HOME/.local/bin/check-sync",
-    "interval": 30,
-    "on-click": "foot sh -c 'zsh -i -c dotsync; exec zsh'"
-    },
-
-    "custom/budget": {
-    	"format": "Budget",
-    	"on-click": "kitty --class budget-buddy -e python3 $HOME/custom-scripts/Budget-Buddy/budget-buddy.py"
-    },
-    
-    "custom/rtm": {
-        "format": "Tasks {}",  // Icon + Number
-        "return-type": "json",
-        "exec": "$HOME/custom-scripts/RTM/rtm.py --waybar",
-        "on-click": "kitty --class custom-rtm -e python3 $HOME/custom-scripts/RTM/rtm.py", // Opens the TUI when clicked
-        "on-click-right": "$HOME/custom-scripts/RTM/rtm.py -n", // Right click to force notify check
-        "interval": 10, // Update every 10 seconds
-        "tooltip": true
-    },
-    
-    "custom/vault": {
-    "format": "Help",
-    "tooltip": false,
-    "on-click": "~/custom-scripts/rofi-vault.sh"
-    },
     
     "hyprland/submap": {
         "format": "✌️  {}",
@@ -116,94 +49,4 @@
         "on-click": "activate",
         "on-click-middle": "close"
     },
-
-    "custom/notification": {
-            "tooltip": false,
-            "format": " {icon} ",
-            "format-icons": {
-                "notification": "<span foreground='red'><sup></sup></span>",
-                "none": " ",
-                "dnd-notification": "<span foreground='red'><sup></sup></span>",
-                "dnd-none": " ",
-                "inhibited-notification": "<span foreground='red'><sup></sup></span>",
-                "inhibited-none": " ",
-                "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-                "dnd-inhibited-none": " "
-                },
-            "return-type": "json",
-            "exec-if": "which swaync-client",
-            "exec": "swaync-client -swb",
-            "on-click": "swaync-client -t -sw",
-            "on-click-right": "swaync-client -d -sw",
-            "escape": true
-        },
-        
-    "clock": {
-        "format": "{:%H:%M}",
-        "tooltip-format": "<tt>{calendar}</tt>",
-        "calendar": {
-            "mode": "year",
-            "mode-mon-col": 3,
-            "on-scroll": 1,
-            "format": {
-                "months": "<span color='#ffead3'><b>{}</b></span>",
-                "days": "<span color='#ecc6d9'><b>{}</b></span>",
-                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
-            }
-        }
-    },
-    
-    "battery": {
-    "states": {
-        "good": 95,
-        "warning": 30,
-        "critical": 15
-    },
-    "format": "{icon}  {capacity}%",
-    "format-charging": "  {capacity}%",
-    "format-plugged": "  {capacity}%",
-    "format-alt": "{time} {icon}",
-    
-    /* The icons for the battery levels (Empty -> Full) */
-    "format-icons": ["", "", "", "", ""]
-    },
-    
-    "temperature": {
-    "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
-    "input-filename": "temp1_input",
-    "critical-threshold": 75, // Lowered because you have no fans to save you
-    "format-critical": "{temperatureC}°C  HOT",
-    "format": "{temperatureC}°C {icon}",
-    "format-icons": ["", "", ""]
-    },
-
-    "network": {
-    /* Only show the icon on the bar */
-    "format-wifi": " ",
-    "format-ethernet": "",
-    "format-disconnected": "睊",
-    
-    /* Detailed Tooltip when you hover */
-    "tooltip-format": "{essid} ({signalStrength}%)  \n{ifname} via {gwaddr}",
-    
-    /* Define which icons to use for signal strength */
-    "format-icons": ["", "", "", "", ""], /* You can swap these for bars like ▂▄▆█ if you prefer */
-    
-    "on-click": "nm-connection-editor" /* Optional: Opens network manager on click */
-},
-
-"bluetooth": {
-    "format": " {status}",
-    "format-disabled": " Off", // Hides it when off, or use " Off" if you prefer
-    "format-connected": " {num_connections}",
-    "tooltip-format": "{controller_alias}\t{controller_address}",
-    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    
-    // LEFT CLICK: Toggles Power On/Off
-    "on-click": "sh -c 'bluetoothctl show | grep -q \"Powered: yes\" && bluetoothctl power off || (rfkill unblock bluetooth && bluetoothctl power on)'",
-    
-    // RIGHT CLICK: Opens the Manager (just in case you need to pair)
-    "on-click-right": "overskride"
-}
 }

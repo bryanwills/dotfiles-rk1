@@ -14,21 +14,53 @@ window#waybar {
     color: @foreground; /* Text follows Pywal */
     transition-property: background-color;
     transition-duration: .5s;
+    padding: 0 5px;
+    margin: 10px 10px;
 }
 
 /* Individual Module Styling */
-#custom-vault, #cpu, #memory, #custom-gpu, #tray, #clock {
-    padding: 0 10px;
-    color: @foreground;
+#cpu, #memory, #tray, #clock, #temperature {
+    padding: 0 5px;
+    color: #ffffff;
 }
-#custom-vault {
-	font-size: 12px;
+#custom-notification {
+	color: #ffffff;
+	padding: 5px 5px;
 }
 /* Make the active core stats slightly dimmed if you prefer */
 #cpu {
-    color: @color2; /* Primary Pywal Accent */
+    color: #ffffff; /* Primary Pywal Accent */
 }
 
 #memory {
-    color: @color4; /* Secondary Pywal Accent */
+    color: #ffffff; /* Secondary Pywal Accent */
 }
+#network {
+	color: #ffffff;
+	padding: 5px 5px;
+}
+#battery.critical:not(.charging) {
+    color: #f38ba8; /* Red alert color */
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+#bluetooth {
+	padding: 0 10px;
+}
+#bluetooth.connected {
+    color: #89b4fa; /* Blue Accent */
+}
+
+#bluetooth.off, #bluetooth.disabled {
+    color: #ff0000;
+}
+
+@keyframes blink {
+    to {
+        color: #000000;
+    }
+}
+
