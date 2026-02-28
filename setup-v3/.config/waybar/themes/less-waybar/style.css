@@ -9,13 +9,52 @@
 /* 1. THE MAIN BAR - Transparent so islands 'float' */
 window#waybar {
     background-color: transparent;
-    margin: 2px 0px 0 0px;
+    margin: 0px 0px 0px 0px;
 }
 
+.modules-right {
+	background-color: @color2; /* The classic dark transparent */
+	border-radius: 25px 0px 25px 0px; /* The rounded 'pill' look */
+	padding: 1px 10px;
+	margin: 0px 0px 0px 0px;
+	border: 2px;
+	border-right: 2px solid @color0;
+	border-left: 2px solid @color0;
+	/* top | right | bottom | left */
+}
+.modules-right widget {
+	margin: 0px 10px;
+}
+.modules-right label {
+    padding: 0 2px;
+    font-size: 11px;
+    background-color: transparent;
+}
+.modules-left {
+    background-color: @color2; /* The classic dark transparent */
+    border-radius: 0px 25px 0px 25px; /* The rounded 'pill' look */
+    padding: 1px 10px;
+    margin: 0px 1px 0px 0px;
+    border: 2px;
+    border-right: 2px solid @color0;
+    border-left: 2px solid @color0;
+    /* top | right | bottom | left */	
+}
+.modules-left widget {
+	margin: 0px 10px;
+}
+.modules-left label {
+    padding: 0 2px;
+    font-size: 11px;
+    background-color: transparent;
+}
 .modules-center {
     background-color: @color2; /* The classic dark transparent */
     border-radius: 0px 0px 25px 25px; /* The rounded 'pill' look */
     padding: 1px 10px;
+    border: 2px;
+    border-right: 2px solid @color0;
+    border-left: 2px solid @color0;
     /* top | right | bottom | left */
 }
 
@@ -56,10 +95,42 @@ window#waybar {
 }
 
 /* 5. INDIVIDUAL MODULES (Cleanup) */
-#tray, #submap {
+#tray, #submap, #clock {
     background: transparent;
     color: @color0;
     padding: 5px 8px;
+    margin: 0;
+}
+/* top | right | bottom | left */
+#cpu {
+    background: transparent;
+    color: @color0;
+    padding: 5px 8px;
+    margin: 0;
+    border: 2px;
+    border-right: 2px solid #000000;
+    border-radius: 0 0px 25px 25px;
+}
+#memory {
+    background: transparent;
+    color: @color0;
+    padding: 5px 8px;
+    margin: 0;
+    border-right: 2px solid #000000;
+    border-radius: 0 0px 25px 25px;
+}
+#battery {
+    background: transparent;
+    color: @color0;
+    padding: 5px 8px;
+    margin: 0;
+    border-right: 2px solid #000000;
+    border-radius: 0 0px 25px 25px;
+}
+#temperature {
+    background: transparent;
+    color: @color0;
+    padding: 0px 8px;
     margin: 0;
 }
 
