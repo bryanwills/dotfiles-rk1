@@ -27,4 +27,6 @@ configuration {
 
 //@theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
 
-@theme "/home/rk1/.config/rofi/themes/rk1-neon.rasi"
+//@theme "/home/rk1/.config/rofi/themes/rk1-neon.rasi"
+
+@theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
