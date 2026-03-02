@@ -2,13 +2,14 @@
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
 
   "logo": {
-    "type": "file",
-    "source": "/home/rk1/Pictures/Fastfetch/ascii-logo-custom.txt",
-    "width": 40,
-    "height": 20,
+    "type": "auto",
+    "source": "ArchStrike",
+    "width": 20,
+    "height": 15,
     "padding": {
+      "top": 2,
       "left": 2,
-      "bottom": 5
+      "bottom": 1
     }
   },
   

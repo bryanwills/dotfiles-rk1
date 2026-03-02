@@ -10,7 +10,7 @@
     "spacing": 4,
     "exclusive": true,
     "reload_style_on_change": true,
-    "modules-left": ["clock"],
+    "modules-left": ["clock", "custom/tt"],
     "modules-right": ["cpu", "memory", "tray", "battery", "temperature"],
     "modules-center": ["hyprland/submap", "hyprland/workspaces", "wlr/taskbar"],
 
@@ -37,6 +37,16 @@
         "*": 5 // This forces workspaces 1-5 to be visible on all monitors
     }
 },
+    "custom/tt": {
+            "exec": "$HOME/.local/bin/tt status",
+            "return-type": "json",
+            "interval": 1,
+            "format": "⏱ {}",
+            "tooltip": false,
+            "on-click": "$HOME/.local/bin/tt stop",
+            "on-click-right": "notify-send 'Project Totals' \"$($HOME/.local/bin/tt log)\"",
+            "signal": 1
+    },
     "cpu": {
         "interval": 1,
         "format": "  {usage}%", 

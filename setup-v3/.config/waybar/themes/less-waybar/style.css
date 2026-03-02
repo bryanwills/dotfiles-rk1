@@ -102,6 +102,15 @@ window#waybar {
     margin: 0;
 }
 /* top | right | bottom | left */
+#clock {
+	background: transparent;
+	color: @color0;
+	padding: 5px 8px;
+	margin: 0;
+    border: 2px;
+	border-right: 2px solid #000000;
+	border-radius: 25px 25px 0px 0px;
+}
 #cpu {
     background: transparent;
     color: @color0;
@@ -133,7 +142,22 @@ window#waybar {
     padding: 0px 8px;
     margin: 0;
 }
+#custom-tt {
+    padding: 5px 8px;
+    margin: 0px;
+    color: @color0;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+#custom-tt.running {
+    color: #00ff00; /* A nice bright green to show it is active */
+    font-weight: bold;
+}
 
+#custom-tt.stopped {
+    color: @color0; 
+    opacity: 0.5; /* Dims the text when idle so it doesn't distract you */
+}
 #taskbar {
     background: transparent;
     padding: 0 10px;

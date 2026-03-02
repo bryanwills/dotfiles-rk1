@@ -43,10 +43,10 @@ alias mc="micro"
 alias update="sudo pacman -Syu"
 alias install="sudo pacman -S"
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq); sudo paccache -rk2'
-alias rice="nano ~/.config/hypr/hyprland.conf ~/.config/waybar/config ~/.config/waybar/style.css ~/.config/rofi/style.css"
+alias rice="micro ~/.config/hypr/hyprland.conf ~/.config/waybar/config ~/.config/waybar/style.css ~/.config/rofi/style.css"
 alias reload="hyprctl reload && killall waybar && waybar &"
-alias wall="~/.config/hypr/scripts/changewall.sh"
-alias keys="~/.config/hypr/scripts/keybinds.sh"
+alias wall="~/custom-scripts/changewall.sh"
+alias keys="~/custom-scripts/keybinds.sh"
 alias dashboard="python3 ~/custom-scripts/Dashboard/dashboard.py"
 alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.conf ~/.config/hypr/configs/windowrules.conf'
 alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
@@ -71,6 +71,10 @@ alias upcheck="/usr/bin/arch-update-check"
 # Timeshift aliases
 alias restore-list='timeshift --list'
 alias restore-now='sudo timeshift --restore'
+
+# Project Time Tracker
+alias t='tt tui'
+alias ts='tt stop'
  
 # --- Functions ---
 function y() {
@@ -127,10 +131,11 @@ setopt appendhistory
 setopt sharehistory
 
 # --- Startup ---
-echo "󱓞 System Version: Main (Neon-Master)"
+echo "󱓞 System Version: Main"
 if [[ -o interactive && "$TERM" =~ "foot|xterm-kitty" ]]; then
     python3 "$HOME/custom-scripts/Dashboard/dashboard.py"
 fi
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 source ~/.local/share/extraterm/extraterm-commands-0.9.4/setup_extraterm_zsh.zsh
+export PATH="$HOME/.local/bin:$PATH"

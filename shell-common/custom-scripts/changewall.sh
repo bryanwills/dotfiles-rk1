@@ -50,4 +50,4 @@ swaync-client -rs
 # --- 7. Fastfetch Logo Processing ---
 BG_COLOR=$(jq -r '.special.background' ~/.cache/wal/colors.json)
 
-notify-send "Wallpaper Changed" "Colors synchronized (Kitty untouched)."
+notify-send "Wallpaper Changed" "Colors synchronized!"
