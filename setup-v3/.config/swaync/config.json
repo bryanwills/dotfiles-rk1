@@ -1,14 +1,14 @@
 {
   "$schema": "/etc/xdg/swaync/configSchema.json",
-  "ignore-gtk-theme": false,
+  "ignore-gtk-theme": true,
   "positionX": "right",
-  "positionY": "bottom",
+  "positionY": "top",
   "layer": "overlay",
   "control-center-layer": "top",
   "layer-shell": true,
   "cssPriority": "user",
   "control-center-width": 300,
-  "control-center-height": 600,
+  "control-center-height": 500,
   "notification-window-width": 400,
   "transition-time": 200,
   "hide-on-action": true,
@@ -26,6 +26,7 @@
   "widget-config": {
     "title": {
       "text": "Notifications",
+      "size": 24,
       "clear-all-button": true,
       "button-text": "Clear All"
       },

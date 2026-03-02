@@ -1,26 +1,26 @@
 @import url("../../.cache/wal/colors-waybar.css");
 :root {
-  --cc-bg: rgba(46, 46, 46, 0.7);
-  --noti-border-color: @color13;
-  --noti-bg: rgba(54,69,79);
-  --noti-bg-alpha: 0.8;
-  --noti-bg-darker: @color0;
+  --cc-bg: rgba(54,69,79, 0.4);
+  --noti-border-color: @color2;
+  --noti-bg: transparent;
+  --noti-bg-alpha: 0.2;
+  --noti-bg-darker: @color4;
   --noti-bg-hover: rgb(56, 56, 56);
-  --noti-bg-focus: rgba(68, 68, 68, 0.6);
+  --noti-bg-focus: transparent;
   --noti-close-bg: rgb(78, 78, 78);
   --noti-close-bg-hover: rgb(94, 94, 94);
   --text-color: @foreground;
   --text-color-disabled: rgb(150, 150, 150);
   --bg-selected: rgb(0, 128, 255);
-  --notification-icon-size: 64px;
+  --notification-icon-size: 18px;
   --notification-app-icon-size: calc(var(--notification-icon-size) / 3);
-  --notification-group-icon-size: 32px;
+  --notification-group-icon-size: 18px;
   --border: 2px solid var(--noti-border-color);
-  --border-radius: 12px;
-  --notification-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3),
+  --border-radius: 10px;
+  --notification-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2),
     0 1px 3px 1px rgba(0, 0, 0, 0.7), 0 2px 6px 2px rgba(0, 0, 0, 0.3);
-  --font-size-body: 15px;
-  --font-size-summary: 16px;
+  --font-size-body: 12px;
+  --font-size-summary: 15px;
   /* Deprecated variables (because of their typos). Keeeping them around for backwards compatibility. */
   --hover-tranistion: background 0.15s ease-in-out;
   --group-collapse-tranistion: opacity 400ms ease-in-out;
@@ -108,7 +108,7 @@ notificationwindow, blankwindow {
   padding: 4px;
   margin: 0;
   box-shadow: none;
-  background: @color0;
+  background: rgba(0, 0, 0, 0.4);
   border: none;
   color: var(--text-color);
   transition: var(--hover-tranistion);
@@ -286,6 +286,9 @@ notificationwindow, blankwindow {
 
 .notification-group .notification-group-headers .notification-group-header {
   color: var(--text-color);
+  font-size: 16px;         /* Changes the text size */
+  min-width: 200px;        /* Forces the box to be wider so text won't cut off */
+  margin-right: 15px;      /* Pushes the collapse arrows further to the right */
 }
 
 .notification-group .notification-group-buttons {
@@ -507,18 +510,18 @@ notificationwindow, blankwindow {
 
 /* Base style for every button */
 .widget-buttons-grid flowboxchild > button {
-  background: @color1;
+  background: @color2;
   box-shadow: none;
   margin: 0px;
   border-radius: 12px;
   border: 2px;
-  border-bottom: 2px solid @color0;
-  border-right: 4px solid @color0;
+  border-bottom: 3px solid @color0;
+  border-right: 5px solid @color0;
 }
 
 /* Hover state */
 .widget-buttons-grid flowboxchild > button:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(54,69,79, 0.4);
 }
 
 /* The Active/Checked state - Uses your Blue highlight variable */
@@ -621,7 +624,7 @@ trough {
 }
 
 highlight {
-    background-color: @color14; /* Uses your Pywal accent! */
+    background-color: @color2; /* Uses your Pywal accent! */
     border-radius: 4px;
 }
 
