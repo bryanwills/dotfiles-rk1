@@ -9,10 +9,11 @@ bluez-obex
 bluez-utils
 brightnessctl
 btop
+claude-desktop-bin
 cliphist
+dart-sass
 dmidecode
 dosfstools
-dunst
 efibootmgr
 extraterm-bin
 falkon
@@ -20,6 +21,7 @@ fastfetch
 fd
 ffmpegthumbnailer
 file-roller
+firefox
 fzf
 gcalcli
 geany
@@ -38,6 +40,7 @@ id3v2
 intel-gpu-tools
 intel-media-driver
 intel-ucode
+iotop
 iwd
 jp2a
 jq
@@ -81,6 +84,7 @@ python-rich
 qalculate-gtk
 qt5-wayland
 qt6-wayland
+quickshell
 resvg
 rofi
 sddm
@@ -133,7 +137,9 @@ zoxide
 zram-generator
 zsh
 zsh-autocomplete
+zsh-autosuggestions
 zsh-completions
 zsh-doc
 zsh-history-substring-search
 zsh-lovers
+zsh-syntax-highlighting

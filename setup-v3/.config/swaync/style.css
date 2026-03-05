@@ -1,6 +1,6 @@
 @import url("../../.cache/wal/colors-waybar.css");
 :root {
-  --cc-bg: rgba(54,69,79, 0.4);
+  --cc-bg: rgba(54,69,79, 0.6);
   --noti-border-color: @color2;
   --noti-bg: transparent;
   --noti-bg-alpha: 0.2;
@@ -72,6 +72,9 @@ notificationwindow, blankwindow {
 .notification-row {
   border-radius: 12px;
   outline: none;
+  min-width: 250px;
+  max-width: 250px;
+  max-height: 150px;
 }
 
 .notification-row:focus {
@@ -129,7 +132,7 @@ notificationwindow, blankwindow {
 .notification-row .notification-background .notification .notification-default-action .notification-content {
   background: transparent;
   border-radius: var(--border-radius);
-  padding: 0;
+  padding: 10px;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .image {
@@ -161,6 +164,8 @@ notificationwindow, blankwindow {
   background: transparent;
   color: var(--text-color);
   text-shadow: none;
+  min-width: 250px;
+  max-width: 250px;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
@@ -654,3 +659,4 @@ highlight {
     color: white;
     padding: 4px 12px;
 }
+

@@ -1,0 +1,37 @@
+* {
+    background-color: rgba(0, 0, 0, 0.5);
+    text-color: #ffffff;
+    border-color: #808080;
+    font: "JetBrainsMono Nerd Font 11";
+}
+
+window {
+    width: 300px;
+    height: 350px;
+    border: 2px solid;
+    border-radius: 0px;
+    padding: 10px;
+    location: northeast;
+    margin: 5px 10px;
+}
+
+listview {
+    lines: 4;
+    spacing: 5px;
+}
+
+element {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+element selected {
+    background-color: transparent;
+    border: 0px 0px 0px 4px;
+    border-color: #62ffa8; 
+    text-color: #62ffa8;
+}
+
+entry {
+    enabled: false; /* Hides the search bar to make it look like a pure menu */
+}
