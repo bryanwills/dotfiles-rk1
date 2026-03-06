@@ -57,6 +57,7 @@ linux-firmware
 linux-headers
 lolcat
 lsd
+mako
 man-db
 man-pages
 micro
