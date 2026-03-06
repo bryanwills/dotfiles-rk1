@@ -87,11 +87,25 @@ function y() {
 }
 
 dotsync() {
+    # Update your package list (Original Step)
     pacman -Qqe > ~/dotfiles/pkglist.txt
+
+    # Only include the apps I want to track (the "curtain" folders).
+    echo "󰒲 Copying live config to GitHub folder..."
+    rsync -a --delete ~/.config/hypr ~/dotfiles/setup-v3/.config/
+    rsync -a --delete ~/.config/waybar ~/dotfiles/setup-v3/.config/
+    rsync -a --delete ~/.config/kitty ~/dotfiles/setup-v3/.config/
+    rsync -a --delete ~/.config/swaync ~/dotfiles/setup-v3/.config/
+    rsync -a --delete ~/.config/rofi ~/dotfiles/setup-v3/.config/
+    rsync -a --delete ~/.config/nwg-look ~/dotfiles/setup-v3/.config/
+    rsync -a --delete ~/.config/wal ~/dotfiles/setup-v3/.config/
+    rsync -a --delete ~/custom-scripts ~/dotfiles/shell-common
+    rsync -a --delete ~/.zshrc ~/dotfiles/shell-common
+    # GitHub Upload (Original Code starts here)
     cd ~/dotfiles || return
-    echo "󰚰  Changes detected in your dotfiles:"
+    echo "󰚰 Changes detected in your dotfiles:"
     git status -sb
-    echo -n "󰏖  Commit and push these changes? [y/N]: "
+    echo -n "󰏖 Commit and push these changes? [y/N]: "
     read -q "REPLY"
     echo ""
     if [[ "$REPLY" =~ ^[Yy]$ ]]; then
@@ -99,9 +113,9 @@ dotsync() {
         git commit -m "Sync: $(date +'%H:%M')" -m "$(git status --porcelain)"
         git push
         date +"%m/%d %H:%M" > ~/.cache/last_synced
-        echo "󰄬  Everything is safe on GitHub."
+        echo "󰄬 Everything is safe on GitHub."
     else
-        echo "󰅙  Sync aborted."
+        echo "󰅙 Sync aborted."
     fi
 }
 
