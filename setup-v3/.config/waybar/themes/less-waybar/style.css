@@ -13,7 +13,7 @@ window#waybar {
 }
 
 .modules-right {
-	background-color: @color2; /* The classic dark transparent */
+	background-color: alpha(@color2, 0.6);
 	border-radius: 25px 0px 25px 0px; /* The rounded 'pill' look */
 	padding: 1px 10px;
 	margin: 0px 0px 0px 0px;
@@ -31,7 +31,7 @@ window#waybar {
     background-color: transparent;
 }
 .modules-left {
-    background-color: @color2; /* The classic dark transparent */
+    background-color: alpha(@color2, 0.6);
     border-radius: 0px 25px 0px 25px; /* The rounded 'pill' look */
     padding: 1px 10px;
     margin: 0px 1px 0px 0px;
@@ -49,7 +49,7 @@ window#waybar {
     background-color: transparent;
 }
 .modules-center {
-    background-color: @color2; /* The classic dark transparent */
+    background-color: alpha(@color2, 0.6);
     border-radius: 0px 0px 25px 25px; /* The rounded 'pill' look */
     padding: 1px 10px;
     border: 2px;

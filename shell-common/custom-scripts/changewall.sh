@@ -5,14 +5,15 @@ SELECTED_WALL=$(find ~/Pictures/Wallpapers -type f \( -name "*.jpg" -o -name "*.
     echo -en "$line\0icon\x1f$line\n"
 done | rofi -dmenu -i -p "Select Wallpaper" \
     -show-icons \
-    -theme-str 'window { location: north; anchor: 2; width: 580; height: 300px; background-color: rgba(0, 0, 0, 0.2); border: 2px; }' \
+    -name "wallpaper-switcher"\
+    -theme-str 'window { location: south; anchor: south; width: 580; height: 300px; background-color: rgba(0, 0, 0, 0.5); border: 2px; }' \
     -theme-str 'mainbox { children: [ listview ]; spacing: 0px; margin: 0px; }' \
     -theme-str 'listview { columns: 4; lines: 2; spacing: 5px; padding: 0px; }' \
     -theme-str 'inputbar { enabled: false; }' \
     -theme-str 'element { orientation: horizontal; padding: 0px; margin: 0px; }' \
     -theme-str 'element-icon { size: 140px; }' \
     -theme-str 'element-text { enabled: false; }' \
-    -theme-str 'element selected { border: 0px 0px 2px 0px; border-color: #98fb98; margin: 0px; padding: 0px; }
+    -theme-str 'element selected { border: 2px; border-color: #98fb98; margin: 0px; padding: 0px; background-color: rgba(0, 0, 0, 0.5); }
    ')
 
 [ -z "$SELECTED_WALL" ] && exit 0
@@ -44,10 +45,10 @@ while pgrep -u $USER -x waybar >/dev/null; do sleep 0.1; done
 waybar & disown
 waybar -c ~/.config/waybar/config-pod -s ~/.config/waybar/style-pod.css & disown 
 
-# --- 6. Swaync client restart
-swaync-client -rs
+# --- 6. Mako
+#swaync-client -rs
+notify-send -a "Wallpaper" "Wallpaper Changed/Colors Synced" -i "$WALLPAPER_PATH"
 
 # --- 7. Fastfetch Logo Processing ---
 BG_COLOR=$(jq -r '.special.background' ~/.cache/wal/colors.json)
 
-notify-send "Wallpaper Changed" "Colors synchronized!"

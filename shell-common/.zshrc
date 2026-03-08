@@ -95,7 +95,6 @@ dotsync() {
     rsync -a --delete ~/.config/hypr ~/dotfiles/setup-v3/.config/
     rsync -a --delete ~/.config/waybar ~/dotfiles/setup-v3/.config/
     rsync -a --delete ~/.config/kitty ~/dotfiles/setup-v3/.config/
-    rsync -a --delete ~/.config/swaync ~/dotfiles/setup-v3/.config/
     rsync -a --delete ~/.config/rofi ~/dotfiles/setup-v3/.config/
     rsync -a --delete ~/.config/nwg-look ~/dotfiles/setup-v3/.config/
     rsync -a --delete ~/.config/wal ~/dotfiles/setup-v3/.config/

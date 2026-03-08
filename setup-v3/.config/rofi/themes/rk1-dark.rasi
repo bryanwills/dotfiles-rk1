@@ -12,7 +12,7 @@
     grey:              #808080;
     
     /* 0.9 Opacity Black (E6 hex) */
-    black-80:   rgba(0, 0, 0, 0.5); 
+    black-50:   rgba(0, 0, 0, 0.5); 
 
     background-color:  transparent;
     text-color:        @ghost-white;
@@ -24,7 +24,7 @@ window {
     /* Border is now White */
     border-color:     @grey;
     background-color: @black-80;
-    border-radius:    0px;
+    border-radius:    15px;
 }
 
 mainbox {
@@ -52,7 +52,7 @@ entry {
 listview {
     columns:          1;
     lines:            8;
-    padding:          5px 5px;
+    padding:          2px 2px;
     fixed-height:     false;
     dynamic:          true;
     layout:           vertical;
@@ -61,14 +61,14 @@ listview {
 element {
     padding:          2px 8px;
     spacing:          0px;
-    border-radius:    5px;
+    border-radius:    10px;
     background-color: transparent;
 }
 
 /* THE SELECTOR: Left-side 'dash' indicator */
 element selected {
     /* Selector Dash is White */
-    border:           0px 0px 0px 4px;
+    border:           2px;
     border-color:     @pale-green; 
     text-color:       @pale-green;
 }

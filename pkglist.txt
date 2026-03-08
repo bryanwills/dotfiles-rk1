@@ -14,6 +14,7 @@ cliphist
 dart-sass
 dmidecode
 dosfstools
+dunst
 efibootmgr
 extraterm-bin
 falkon
@@ -57,7 +58,6 @@ linux-firmware
 linux-headers
 lolcat
 lsd
-mako
 man-db
 man-pages
 micro
@@ -78,6 +78,7 @@ pavucontrol
 pipewire-alsa
 pipewire-pulse
 polkit-kde-agent
+powertop
 pulseaudio-alsa
 python-pip
 python-pywal
@@ -96,7 +97,6 @@ smartmontools
 socat
 stow
 swayimg
-swaync
 swww
 thunar
 thunar-archive-plugin

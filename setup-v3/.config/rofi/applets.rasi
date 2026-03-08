@@ -1,0 +1,98 @@
+/**
+ * Rofi Theme: Optimized Control Center Strip
+ * Based on Adi1090x style, cleaned for rk1-dark colors
+ */
+
+configuration {
+    show-icons: false;
+}
+
+@import "~/.config/rofi/colors-black.rasi"
+
+window {
+    transparency:     "real";
+    location:         northeast;
+    anchor:           northeast;
+    width:            450px;
+    x-offset:         -1px;
+    y-offset:         1px;
+    border:           2px;
+    border-radius:    12px;
+    border-color:     @border-col;
+    background-color: @background;
+}
+
+mainbox {
+    padding:          10px;
+    background-color: transparent;
+    children:         [ "inputbar", "message", "listview" ];
+}
+
+/* Header Row (Icon + Title) */
+inputbar {
+    margin:           0px 0px 10px 0px;
+    spacing:          10px;
+    background-color: transparent;
+    children:         [ "textbox-prompt-colon", "prompt" ];
+}
+
+textbox-prompt-colon {
+    expand:           false;
+    str:              "   ";
+    padding:          8px 12px;
+    border-radius:    8px;
+    background-color: @background-alt;
+    text-color:       @foreground;
+    font:             "JetBrainsMono Nerd Font 14";
+}
+
+prompt {
+    padding:          8px 15px;
+    border-radius:    8px;
+    background-color: @background-alt;
+    text-color:       @foreground-alt;
+}
+
+/* Info Text (The "Battery: 0%, Full" part) */
+message {
+    margin:           0px 0px 10px 0px;
+    padding:          12px;
+    border-radius:    8px;
+    background-color: @background-alt;
+}
+
+textbox {
+    text-color:       @foreground-alt;
+    background-color: @background;
+    horizontal-align: 0.5;
+}
+
+/* The Horizontal Action Row (Battery Icon, Settings, etc) */
+listview {
+    columns:          2; /* Adjust based on how many options you have */
+    lines:            1;
+    layout:           vertical;
+    spacing:          10px;
+    background-color: transparent;
+}
+
+element {
+    padding:          10px;
+    border-radius:    8px;
+    background-color: @background-alt;
+    text-color:       @foreground;
+}
+
+element selected {
+    background-color: @background-alt;
+    text-color:       @accent;
+    border:           2px;
+    border-color:     @accent;
+}
+
+element-text {
+    font:             "JetBrainsMono Nerd Font 11";
+    background-color: transparent;
+    text-color:       inherit;
+    horizontal-align: 0.5;
+}

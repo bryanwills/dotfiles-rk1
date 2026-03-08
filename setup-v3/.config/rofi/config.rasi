@@ -10,8 +10,8 @@ configuration {
     font: "JetBrainsMono Nerd Font 11";
     background: transparent;
     window {
-    	anchor: northwest;
-    	location: 1;
+    	anchor: center;
+    	location: northwest;
     }
     filebrowser {
           directories-first: true;
@@ -19,14 +19,5 @@ configuration {
     }
 }
 
-//@theme "/home/rk1/.config/rofi/themes/rk1-red.rasi"
 
-//@theme "/home/rk1/.config/rofi/themes/rk1-neon.rasi"
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-neon.rasi"
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
-
-//@theme "/home/rk1/.config/rofi/themes/rk1-neon.rasi"
-
-@theme "/home/rk1/.config/rofi/themes/rk1-dark.rasi"
+@theme "/home/rk1/.config/rofi/themes/rk1-grid.rasi"
