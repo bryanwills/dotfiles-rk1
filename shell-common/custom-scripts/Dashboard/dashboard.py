@@ -7,11 +7,20 @@ import sys
 from datetime import datetime
 
 # --- Configuration ---
-VERSION = "1.8.0"
+VERSION = "1.8.5"
 BACKUP_DIR = os.path.expanduser("~/dotfiles")
-PROJECT_DIR = os.path.expanduser("~/arch-projects/arch-update-check")
+PROJECT_DIR = os.path.expanduser("~/arch-projects/XC-Manager")
 TASKS_JSON = os.path.expanduser("~/.local/share/arch_task_manager/tasks.json")
 SYNC_CACHE = os.path.expanduser("~/.cache/last_synced")
+
+# Live folders to watch for changes
+LIVE_CONFIGS = [
+    os.path.expanduser("~/.config/hypr"),
+    os.path.expanduser("~/.config/rofi"),
+    os.path.expanduser("~/.config/waybar"),
+    os.path.expanduser("~/.config/kitty"),
+    os.path.expanduser("~/.config/fastfetch")
+]
 
 # Colors
 CYAN = '\033[96m'
@@ -26,24 +35,20 @@ def get_updates():
         official = subprocess.check_output(["checkupdates"], stderr=subprocess.DEVNULL).decode().count('\n')
     except:
         official = 0
-
     try:
         aur = subprocess.check_output(["yay", "-Qua"], stderr=subprocess.DEVNULL).decode().count('\n')
     except:
         aur = 0
-
     total = official + aur
-
     if total == 0:
         return f"{GREEN}Up-to-date{RESET}"
     else:
         color = YELLOW if total < 15 else RED
-        # Change the string here to be more descriptive and avoid double-counting
         if aur > 0:
             return f"{color}{total} Total ({aur} AUR){RESET}"
         else:
             return f"{color}{total} Pending{RESET}"
-                    
+
 def get_cache_size():
     cache_path = "/var/cache/pacman/pkg/"
     if not os.path.exists(cache_path): return "N/A"
@@ -63,23 +68,38 @@ def get_pending_tasks():
             return f"{YELLOW}{pending} Pending{RESET}"
     except: return f"{RED}Error{RESET}"
 
+def check_live_changes():
+    """Checks if live config files are newer than the last dotsync."""
+    if not os.path.exists(SYNC_CACHE):
+        return True
+    
+    last_sync_time = os.path.getmtime(SYNC_CACHE)
+    for path in LIVE_CONFIGS:
+        if os.path.exists(path):
+            for root, _, files in os.walk(path):
+                for f in files:
+                    try:
+                        if os.path.getmtime(os.path.join(root, f)) > last_sync_time:
+                            return True
+                    except OSError:
+                        continue
+    return False
+
 def get_git_status():
     def check_repo(path):
         if not os.path.exists(path):
             return f"{RED}Missing{RESET}"
-        
         try:
             is_dirty = subprocess.check_output(["git", "-C", path, "status", "--porcelain"], stderr=subprocess.DEVNULL).decode().strip()
             ahead = subprocess.check_output(["git", "-C", path, "rev-list", "@{u}..HEAD"], stderr=subprocess.DEVNULL).decode().count('\n')
         except:
             return f"{RED}Error{RESET}"
-            
+        
         status = f"{RED}Dirty{RESET}" if is_dirty else f"{GREEN}Clean{RESET}"
         if ahead > 0:
             status += f" {YELLOW}↑ {ahead}{RESET}"
         return status
 
-    # Get the human-readable sync date
     try:
         with open(SYNC_CACHE, 'r') as f:
             sync_date = f.read().strip()
@@ -91,31 +111,26 @@ def get_git_status():
         "proj": check_repo(PROJECT_DIR),
         "date": sync_date
     }
-        
+
 def get_budget_status():
-    """Fetches a summary string from the Budget Buddy script."""
     try:
-        # Path to your budget script
         path = os.path.expanduser("~/custom-scripts/Budget-Buddy/budget-buddy.py")
-        # Runs the script with the --stats flag and captures the text output
-        result = subprocess.check_output(
-            ["python", path, "--stats"], 
-            stderr=subprocess.DEVNULL
-        ).decode().strip()
+        result = subprocess.check_output(["python", path, "--stats"], stderr=subprocess.DEVNULL).decode().strip()
         return result
-    except Exception:
+    except:
         return f"{RED}Budget Data Unavailable{RESET}"
-        
+
 def main():
     git_data = get_git_status()
+    needs_sync = check_live_changes()
     
     print(f"\n{BOLD}{CYAN}󰣇 SYSTEM REPORT{RESET} | {datetime.now().strftime('%H:%M:%S')}")
     print(f"{CYAN}......................................................{RESET}")
     
-    # Define a helper to handle the padding correctly
-    def align(label, value, width=15):
-        # Subtracting 2 to account for the icon and space
-        return f"{BOLD}{label}{RESET}".ljust(width + 8) + f" {value}"
+    # Handle the Dots status with a live sync reminder
+    dot_status = git_data['dots']
+    if needs_sync:
+        dot_status = f"{RED}Sync Required{RESET}"
 
     # Row 1
     s_text = f" 💾 {BOLD}Storage:{RESET}  {shutil.disk_usage(os.path.expanduser('~')).free // (2**30)} GB Free"
@@ -123,20 +138,18 @@ def main():
     
     # Row 2
     u_text = f" 📦 {BOLD}Updates:{RESET}  {get_updates()}"
-    d_text = f" 󱓞  {BOLD}Dots:{RESET}     {git_data['dots']} ({git_data['date']})"
+    d_text = f" 󱓞  {BOLD}Dots:{RESET}      {dot_status} ({git_data['date']})"
     
     # Row 3
     c_text = f" 󰒋  {BOLD}Cache:{RESET}    {get_cache_size()}"
-    p_text = f" 󱚝  {BOLD}Proj:{RESET}     {git_data['proj']}"
+    p_text = f" 󱚝  {BOLD}Proj:{RESET}      {git_data['proj']}"
 
-    # Print with manual spacing for total control
-    # Adjust the number 35 to move the right column left or right
     print(f"{s_text:<40} {t_text}")
     print(f"{u_text:<49} {d_text}")
     print(f"{c_text:<50} {p_text}")
     print(f" 󱚝  {BOLD}Budget:{RESET}   {get_budget_status()}")
     
     print(f"{CYAN}......................................................{RESET}\n")
-        
+
 if __name__ == "__main__":
     main()
