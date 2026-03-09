@@ -1,8 +1,8 @@
 #!/bin/zsh
 
-# 1. We use a more precise regex to extract the alias name and the content
-# 2. We use 'sed' to remove ONLY the leading ' and trailing ' of the command
-alias_list=$(grep "^alias " ~/.zshrc | sed -E "s/^alias ([^=]+)=['\"](.*)['\"]$/\1 ➜ \2/")
+# 1. We search both .zshrc and the new .zsh_aliases file
+# -h ensures grep doesn't print the filename, keeping your list clean
+alias_list=$(grep -h "^alias " ~/.zshrc ~/.zsh_aliases 2>/dev/null | sed -E "s/^alias ([^=]+)=['\"](.*)['\"]$/\1 ➜ \2/")
 
 # 3. Interactive fzf
 selected=$(echo "$alias_list" | column -t -s '➜' | fzf --ansi \
