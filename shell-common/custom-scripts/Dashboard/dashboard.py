@@ -19,7 +19,8 @@ LIVE_CONFIGS = [
     os.path.expanduser("~/.config/rofi"),
     os.path.expanduser("~/.config/waybar"),
     os.path.expanduser("~/.config/kitty"),
-    os.path.expanduser("~/.config/fastfetch")
+    os.path.expanduser("~/.config/fastfetch"),
+    os.path.expanduser("~/custom-scripts")
 ]
 
 # Colors
