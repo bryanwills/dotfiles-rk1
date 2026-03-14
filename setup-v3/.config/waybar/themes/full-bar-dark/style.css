@@ -111,7 +111,7 @@ window#waybar > box {
    6. INDIVIDUAL MODULES
    ========================================================================== */
 /* Group common settings for standard text modules */
-#network, #bluetooth, #battery, #temperature, #tray, 
+#network, #bluetooth, #battery, #cpu, #memory, #temperature, #tray, 
 #custom-sync, #custom-gallery, #custom-wallpaper, 
 #custom-keybinds, #custom-theme, #custom-budget, #submap {
     background: transparent;
@@ -170,7 +170,22 @@ window#waybar > box {
 #tray {
     padding-left: 10px;
 }
+tooltip {
+    background: #1a1a1a;       /* Your Solid 90% Black */
+    border: 2px solid #808080; /* Grey Border */
+    border-radius: 10px;       /* Match Rofi corner_radius */
+}
 
+tooltip label {
+    font-family: "JetBrains Mono";
+    color: #f8f8ff;            /* ghost-white */
+    padding: 10px;
+}
+
+/* Optional: Make the header (bold text) Pale Green */
+tooltip b {
+    color: #98fb98;            /* pale-green accent */
+}
 /* =============================================================================
    7. BATTERY ANIMATIONS
    ========================================================================== */

@@ -157,4 +157,4 @@ source ~/.local/share/extraterm/extraterm-commands-0.9.4/setup_extraterm_zsh.zsh
 export PATH="$HOME/.local/bin:$PATH"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 # --- RTFM plugin ---
-source ~/arch-projects/RTFM/rtfm.plugin.zsh
+source ~/arch-projects/rtfm/rtfm.plugin.zsh

@@ -1,6 +1,6 @@
 {
     "ipc": true,
-        "tooltip": false,
+        "tooltip": true,
         "layer": "top",
         "position": "top",
         "height": 34, 
@@ -10,9 +10,9 @@
         "spacing": 4,
         "exclusive": true,
         "reload_style_on_change": true,
-    "modules-left": ["custom/launcher", "custom/sync", "custom/rtm", "custom/budget", "custom/wallpaper", "custom/keybinds", "custom/gallery"],
+    "modules-left": ["custom/launcher", "custom/sync", "custom/budget", "custom/wallpaper", "custom/keybinds", "custom/gallery"],
             "modules-center": ["hyprland/submap", "hyprland/workspaces", "wlr/taskbar"],
-            "modules-right": ["temperature", "battery", "network", "bluetooth", "custom/notification", "custom/power"],
+            "modules-right": ["cpu", "temperature", "battery", "memory", "network", "bluetooth", "custom/notification", "custom/power"],
     
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -104,41 +104,21 @@
         "on-click": "activate",
         "on-click-middle": "close"
     },
-    
-    "custom/notification": {
-        "tooltip": false,
-        "format": " ",
-        "format-icons": {
-            "notification": " <span foreground='red'><sup></sup></span>",
-            "none": "",
-            "dnd-notification": " <span foreground='red'><sup></sup></span>",
-            "dnd-none": "",
-            "inhibited-notification": " <span foreground='red'><sup></sup></span>",
-            "inhibited-none": "",
-            "dnd-inhibited-notification": " <span foreground='red'><sup></sup></span>",
-            "dnd-inhibited-none": " "
-            },
-        "return-type": "json",
-        "exec-if": "which swaync-client",
-        "exec": "swaync-client -swb",
-        "on-click": "swaync-client -t -sw",
-        "on-click-right": "swaync-client -d -sw",
-        "escape": true
+    "cpu": {
+        "interval": 1,
+        "format": " {usage}%",
+        "tooltip": true
     },
-    
+    "memory": {
+        "interval": 5,
+        "format": " {percentage}%",
+        "tooltip": true
+    },
     "battery": {
-    "states": {
-        "good": 95,
-        "warning": 30,
-        "critical": 15
-    },
-    "format": "{icon}  {capacity}%",
-    "format-charging": "  {capacity}%",
-    "format-plugged": "  {capacity}%",
-    "format-alt": "{time} {icon}",
-    
-    /* The icons for the battery levels (Empty -> Full) */
-    "format-icons": ["", "", "", "", ""]
+        "states": { "critical": 15 },
+        "format": "{icon} {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "<span font='JetBrains Mono 14'><b>Power State</b>\n────────────────\nHealth: {capacity}%</span>"
     },
     
     "temperature": {
@@ -157,7 +137,7 @@
     "format-disconnected": "睊",
     
     /* Detailed Tooltip when you hover */
-    "tooltip-format": "{essid} ({signalStrength}%)  \n{ifname} via {gwaddr}",
+    "tooltip-format": "Network Info\n───────────────\n{essid} ({signalStrength}%)  \n{ifname} via {gwaddr}",
     
     /* Define which icons to use for signal strength */
     "format-icons": ["", "", "", "", ""], /* You can swap these for bars like ▂▄▆█ if you prefer */

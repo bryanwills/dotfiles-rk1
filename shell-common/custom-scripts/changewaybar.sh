@@ -6,8 +6,8 @@ CONFIG_DIR="$HOME/.config/waybar"
 
 # 1. Rofi Command with Custom Styling
 CHOICE=$(ls "$THEME_DIR" | rofi -dmenu -p "Waybar" \
-    -theme-str 'window { location: northwest; anchor: west; width: 300px; height: 350px; padding: 2px; margin: 2px 2px; }' \
-    -theme-str 'listview { lines: 6; }' \
+    -theme-str 'window { location: south; anchor: south; width: 400px; height: 600px; padding: 2px; margin: 2px 2px; }' \
+    -theme-str 'listview { columns: 2; lines: 8; }' \
     -theme-str 'entry { placeholder: "Search..."; }')
 
 # 2. If the user selected something (didn't press Esc)
@@ -26,7 +26,6 @@ if [[ -n "$CHOICE" ]]; then
         # Restart Waybar
         killall waybar
         waybar & disown
-        waybar -c ~/.config/waybar/config-pod -s ~/.config/waybar/style-pod.css & disown 
         
         # Send a notification
         notify-send "Waybar" "Theme switched to $CHOICE"
