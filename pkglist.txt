@@ -121,6 +121,7 @@ wireplumber
 wl-clipboard
 wlogout
 woff2-font-awesome
+wtype
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xdg-utils

@@ -15,15 +15,6 @@ plugins=(
     zsh-syntax-highlighting
 )
 
-# Completion Caching (The Speed Fix)
-autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.m-1) ]]; then
-  compinit -C
-else
-  compinit
-fi
-zstyle ':omz:plugins:fortunes' skip-compinit yes
-
 source $ZSH/oh-my-zsh.sh
 
 # --- User Configuration ---
@@ -157,4 +148,4 @@ source ~/.local/share/extraterm/extraterm-commands-0.9.4/setup_extraterm_zsh.zsh
 export PATH="$HOME/.local/bin:$PATH"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 # --- RTFM plugin ---
-source ~/arch-projects/rtfm/rtfm.plugin.zsh
+source ~/arch-projects/mend/mend.plugin.zsh
