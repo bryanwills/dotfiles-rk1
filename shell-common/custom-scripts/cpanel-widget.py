@@ -28,15 +28,16 @@ BG  = C[0];  BG2 = C[1];  ACC = C[2]
 FG  = C[7];  FG2 = C[15] if len(C) > 15 else "#ffffff"
 HIGH= C[4]
 
-ICON_SIZE      = 32    # font size for nerd font icons
-BTN_PAD        = 12    # padding inside each button
-MARGIN_TOP     = 285   # px from top — increase to make panel shorter
-MARGIN_BOTTOM  = 285   # px from bottom — increase to make panel shorter
+ICON_SIZE      = 18    # font size for nerd font icons
+BTN_PAD        = 8    # padding inside each button
+MARGIN_TOP     = 310   # px from top — increase to make panel shorter
+MARGIN_BOTTOM  = 310   # px from bottom — increase to make panel shorter
 MARGIN_RIGHT   = 8    # px from right edge
 
 CSS = f"""
 window {{
     background-color: transparent;
+    background: rgba(0, 0, 0, 0.8);
 }}
 .frame {{
     background-color: alpha({BG}, 0.5);
@@ -45,8 +46,8 @@ window {{
     border-right: 2px solid {ACC};
     border-top: 5px solid {ACC};
     border-bottom: 5px solid {ACC};
-    margin: 6px;
-    padding: 6px;
+    margin: 1px;
+    padding: 1px;
 }}
 .section-title {{
     color: {FG2};

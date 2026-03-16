@@ -13,9 +13,9 @@ from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell
 import os, subprocess, glob, threading
 
 WALLPAPER_DIR = os.path.expanduser("~/Pictures/Wallpapers")
-THUMB_SIZE    = 240
-WIDGET_HEIGHT  = 320
-WIDGET_MARGIN  = 57   # px from each side — increase to make narrower
+THUMB_SIZE    = 160
+WIDGET_HEIGHT  = 220
+WIDGET_MARGIN  = 335   # px from each side — increase to make narrower
 
 # ── Pywal colors ──────────────────────────────────────────────────────────────
 def get_wal_colors():
@@ -42,6 +42,8 @@ def hex_to_rgba(h, a=0.92):
 CSS = f"""
 window {{
     background-color: transparent;
+    border: 2px solid {ACC};
+    border-radius: 12px;
 }}
 .frame {{
     background-color: alpha({BG}, 0.5);
@@ -60,15 +62,15 @@ window {{
     font-weight: bold;
 }}
 .hint {{
-    color: {FG2};
+    color: {FG};
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 12px;
-    opacity: 0.9;
+    font-size: 10px;
+    opacity: 0.5;
 }}
 .applying {{
     color: {ACC};
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 12px;
+    font-size: 10px;
 }}
 .gallery {{
     background-color: transparent;
@@ -92,15 +94,15 @@ window {{
     padding: 4px;
 }}
 .thumb-name {{
-    color: {FG2};
+    color: {FG};
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 11px;
-    opacity: 0.9;
+    font-size: 9px;
+    opacity: 0.7;
 }}
 .thumb-name-active {{
     color: {FG2};
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 11px;
+    font-size: 9px;
     font-weight: bold;
 }}
 """
@@ -161,26 +163,24 @@ def apply_wallpaper(path, status_cb, done_cb):
     subprocess.run(['hyprctl','keyword','general:col.inactive_border',f'0xAA{c0}'], capture_output=True)
 
     subprocess.run(['wal','-R'], capture_output=True)
-    subprocess.run(['bash', os.path.expanduser('~/custom-scripts/update-dunst-colors.sh')], capture_output=True)
     subprocess.run(['pkill','waybar'], capture_output=True)
+
     import time; time.sleep(0.4)
     subprocess.Popen(['waybar'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     subprocess.Popen(['waybar','-c',os.path.expanduser('~/.config/waybar/config-pod'),
                       '-s',os.path.expanduser('~/.config/waybar/style-pod.css')],
                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    # notify-send first, then restart dunst with new colors
-    subprocess.run(['notify-send','-a','Wallpaper','Wallpaper Changed/Colors Synced','-i',path])
-    time.sleep(0.3)
-    subprocess.run(['pkill', 'dunst'], capture_output=True)
-    subprocess.Popen(['dunst'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    subprocess.Popen(['notify-send','-a','Wallpaper','Wallpaper Changed/Colors Synced','-i',path])
     GLib.idle_add(status_cb, f"✓  {name}")
     GLib.idle_add(done_cb)
 
 # ── Widget ────────────────────────────────────────────────────────────────────
 class WallWidget(Gtk.Window):
-    def __init__(self):
+    def __init__(self, preloaded=None):
         super().__init__(type=Gtk.WindowType.TOPLEVEL)
         self.set_title("changewall-widget")
+        self._preloaded = preloaded or []
 
         # ── GTK Layer Shell setup ─────────────────────────────────────────────
         GtkLayerShell.init_for_window(self)
@@ -255,6 +255,11 @@ class WallWidget(Gtk.Window):
         self._load_thumbnails()
 
     def _load_thumbnails(self):
+        if self._preloaded:
+            # Already loaded — add instantly, no flash
+            for path, pb in self._preloaded:
+                self._add_thumb(path, pb)
+            return
         walls = find_wallpapers()
         if not walls:
             lbl = Gtk.Label(label=f"No wallpapers found in {WALLPAPER_DIR}")
@@ -360,6 +365,23 @@ class WallWidget(Gtk.Window):
             adj.set_value(adj.get_value() - THUMB_SIZE - 20)
 
 if __name__ == "__main__":
-    win = WallWidget()
+    # Pre-load wal colors and find wallpapers before GTK init
+    # so window appears fully populated on first frame
+    import threading
+    _preloaded = []
+    _preload_done = threading.Event()
+
+    def _preload():
+        walls = find_wallpapers()
+        for path in walls:
+            pb = load_thumbnail(path)
+            _preloaded.append((path, pb))
+        _preload_done.set()
+
+    t = threading.Thread(target=_preload, daemon=True)
+    t.start()
+    _preload_done.wait(timeout=2.0)  # wait max 3s for thumbs
+
+    win = WallWidget(_preloaded)
     win.show_all()
     Gtk.main()
