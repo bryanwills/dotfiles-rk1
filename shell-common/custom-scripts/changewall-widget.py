@@ -141,40 +141,37 @@ def load_thumbnail(path, size=THUMB_SIZE):
 def apply_wallpaper(path, status_cb, done_cb):
     name = os.path.basename(path)
     GLib.idle_add(status_cb, f"󰐍  Applying {name}...")
-    subprocess.run(['swww','img', path,
-                    '--transition-type','grow',
-                    '--transition-pos','top-right'], capture_output=True)
+    
+    # 1. Update Wallpaper via swww
+    subprocess.run(['swww', 'img', path, 
+                    '--transition-type', 'grow', 
+                    '--transition-pos', 'top-right'], capture_output=True)
+    
+    # 2. Generate new color scheme
     GLib.idle_add(status_cb, "󰸉  Generating colors...")
-    subprocess.run(['wal','-n','-s','-t','-e','-q','-i', path], capture_output=True)
-    GLib.idle_add(status_cb, "󰑓  Reloading theme...")
+    subprocess.run(['wal', '-n', '-s', '-t', '-e', '-q', '-i', path], capture_output=True)
+    
+    # 3. Reload pywal colors into the environment
+    subprocess.run(['wal', '-R'], capture_output=True)
 
-    # Hyprland borders
-    colors = {}
-    try:
-        with open(os.path.expanduser("~/.cache/wal/hyprland.conf")) as f:
-            for line in f:
-                if '=' in line:
-                    k,v = line.strip().split('=',1)
-                    colors[k.strip()] = v.strip().strip("'\"")
-    except: pass
-    c1 = colors.get('color1','#ffffff').lstrip('#')
-    c0 = colors.get('color0','#000000').lstrip('#')
-    subprocess.run(['hyprctl','keyword','general:col.active_border',  f'0xEE{c1}'], capture_output=True)
-    subprocess.run(['hyprctl','keyword','general:col.inactive_border',f'0xAA{c0}'], capture_output=True)
-
-    subprocess.run(['wal','-R'], capture_output=True)
-    subprocess.run(['pkill','waybar'], capture_output=True)
-
-    import time; time.sleep(0.4)
+    # 4. Clean Waybar Restart
+    # Using killall -9 to ensure no ghost processes remain during the reload
+    GLib.idle_add(status_cb, "󰑓  Reloading Waybar...")
+    subprocess.run(['killall', '-9', 'waybar'], capture_output=True)
+    
+    # Critical "settle" time: allows filesystem I/O to finish and 
+    # portals to stabilize before Waybar requests a surface.
+    import time
+    time.sleep(0.4) 
+    
+    # Launch standard Waybar instance
     subprocess.Popen(['waybar'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    subprocess.Popen(['waybar','-c',os.path.expanduser('~/.config/waybar/config-pod'),
-                      '-s',os.path.expanduser('~/.config/waybar/style-pod.css')],
-                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    subprocess.Popen(['notify-send','-a','Wallpaper','Wallpaper Changed/Colors Synced','-i',path])
+    # 5. Notify and Finalize
+    subprocess.Popen(['notify-send', '-a', 'Wallpaper', 'Theme Synced Successfully', '-i', path])
     GLib.idle_add(status_cb, f"✓  {name}")
     GLib.idle_add(done_cb)
-
+    
 # ── Widget ────────────────────────────────────────────────────────────────────
 class WallWidget(Gtk.Window):
     def __init__(self, preloaded=None):
