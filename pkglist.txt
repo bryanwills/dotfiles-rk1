@@ -115,6 +115,7 @@ vulkan-nouveau
 vulkan-radeon
 waybar
 wev
+wf-recorder
 wireless_tools
 wireplumber
 wl-clipboard
