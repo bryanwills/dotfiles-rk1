@@ -2,6 +2,7 @@
 alsa-utils
 arch-install-scripts
 arch-update-check
+awww
 base
 base-devel
 bluez
@@ -97,7 +98,6 @@ smartmontools
 socat
 stow
 swayimg
-swww
 thunar
 thunar-archive-plugin
 thunar-volman

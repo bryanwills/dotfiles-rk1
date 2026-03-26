@@ -10,13 +10,13 @@ from datetime import datetime
 VERSION = "1.8.5"
 BACKUP_DIR = os.path.expanduser("~/dotfiles")
 PROJECT_DIR = os.path.expanduser("~/arch-projects/XC-Manager")
+PROJECT_DIR = os.path.expanduser("~/arch-projects/mend")
 TASKS_JSON = os.path.expanduser("~/.local/share/arch_task_manager/tasks.json")
 SYNC_CACHE = os.path.expanduser("~/.cache/last_synced")
 
 # Live folders to watch for changes
 LIVE_CONFIGS = [
     os.path.expanduser("~/.config/hypr"),
-    os.path.expanduser("~/.config/rofi"),
     os.path.expanduser("~/.config/waybar"),
     os.path.expanduser("~/.config/kitty"),
     os.path.expanduser("~/.config/fastfetch"),

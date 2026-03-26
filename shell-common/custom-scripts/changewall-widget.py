@@ -143,16 +143,16 @@ def apply_wallpaper(path, status_cb, done_cb):
     GLib.idle_add(status_cb, f"󰐍  Applying {name}...")
     
     # 1. Update Wallpaper via swww
-    subprocess.run(['swww', 'img', path, 
+    subprocess.run(['awww', 'img', path, 
                     '--transition-type', 'grow', 
-                    '--transition-pos', 'top-right'], capture_output=True)
+                    '--transition-pos', 'center'], capture_output=True)
     
     # 2. Generate new color scheme
     GLib.idle_add(status_cb, "󰸉  Generating colors...")
-    subprocess.run(['wal', '-n', '-s', '-t', '-e', '-q', '-i', path], capture_output=True)
+    subprocess.run(['wal', '-n', '-s', '-t', '-e', '-q', '-i', path, '--vte'], capture_output=True)
     
     # 3. Reload pywal colors into the environment
-    subprocess.run(['wal', '-R'], capture_output=True)
+    subprocess.run(['wal', '-R', '--vte'], capture_output=True)
 
     # 4. Clean Waybar Restart
     # Using killall -9 to ensure no ghost processes remain during the reload
