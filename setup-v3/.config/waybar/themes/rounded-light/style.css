@@ -1,3 +1,4 @@
+@import "../../.cache/wal/colors-waybar.css";
 * {
     font-family: "JetBrainsMono Nerd Font";
     font-size: 12px;
@@ -14,17 +15,14 @@ window#waybar {
 .modules-left,
 .modules-center,
 .modules-right {
-    background-color: #ffffff; /* The classic dark transparent */
-    border: 0px solid #000000; /* Your Pywal accent border */
-    border-radius: 15px; /* The rounded 'pill' look */
-    padding: 1px 1px;
-    /* MARGINS: Use these to create room for the shadow */
+    background-color: rgba(255, 255, 255, 0.5);
+    border-left: 4px solid @color2;
+    border-right: 4px solid @color2;
+    border-bottom: 1px solid @color2;
+    border-radius: 0px 0px 25px 25px; /* The rounded 'pill' look */
+    padding: 1px 15px;
     /* top | right | bottom | left */
-    margin: 0px 6px 6px 0px; 
-        
-    /* SHADOW: x-offset | y-offset | blur | spread | color */
-    /* 5px 5px pushes it Right and Down */
-    box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.7);
+    margin: 0px -3px 5px -3px; 
 }
 
 /* Internal spacing for center modules */
@@ -33,21 +31,30 @@ window#waybar {
 }
 
 .modules-center label {
-    padding: 0 2px;
+    padding: 0 0 0 5px;
     font-size: 11px;
+    color: #000000;
     background-color: transparent;
 }
 
 .modules-right label {
-    padding: 0 2px;
+    padding: 0 8px;
     font-size: 11px;
+    color: #000000;
     background-color: transparent;
+    border-right: 0px solid @color14;
+    border-left: 2px solid @color14;
+    border-radius: 0px 0px 0px 25px;
 }
 
 .modules-left label {
-    padding: 0 2px;
+    padding: 0 4px;
     font-size: 11px;
+    color: #000000;
     background-color: transparent;
+    border-left: 0px solid @color14;
+    border-right: 2px solid @color14;
+    border-radius: 0px 25px 0px 0px;
 }
 
 /* 3. WORKSPACES ISLAND */
@@ -58,89 +65,61 @@ window#waybar {
 }
 
 #workspaces button {
-    padding: 0 8px;
-    color: #000000;
+    padding: 0 6px;
+    margin: 0 1px;
+    color: #ffffff;
     background: transparent;
     font-size: 12px;
 }
 
 #workspaces button.active {
-    color: #00a550;
-    border-bottom: 2px solid #000000;
-    border-radius: 10px;
+    color: @color2;
+    border-bottom: 2px solid @color2;
+    border-radius: 15px;
 }
 
 #workspaces button:hover {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    border: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 0px;
+    border-radius: 15px;
 }
 
 /* 5. INDIVIDUAL MODULES (Cleanup) */
-#network, #bluetooth, #battery, #temperature, #tray, #custom-music, #clock, #custom-sync, #custom-gallery, #custom-wallpaper, #custom-notification, #custom-keybinds, #custom-power, #custom-rtm, #custom-budget, #submap {
+#battery, #temperature, #tray, #clock, #submap {
     background: transparent;
     color: #000000;
     padding: 5px 8px;
     margin: 0;
 }
 
-#taskbar button {
-	padding: 0 8px;
-	margin-right: 5px;
-	color: #000000;
-	background: transparent;
-	font-size: 12px;
-}
-
-#taskbar button.active {
-    background-color: transparent;
-    border-bottom: 2px solid #000000;
-    border-radius: 10px;
-}
-
-#taskbar button:hover {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    border: 1px;
-}
-
-#custom-launcher {
+#taskbar {
     background: transparent;
-    font-size: 16px;
-    color: #1e90ff;
     padding: 0 10px;
     margin: 0;
 }
 
-#custom-rtm {
-    padding: 0 10px;
-    color: #000000;
+#taskbar button {
+    padding: 0 8px;
+    color: #ffffff;
+    background: transparent;
+    font-size: 12px;
+    border-radius: 15px;
 }
 
-#custom-rtm.pending {
-    border-bottom: 2px solid #fab387;
+
+#taskbar button.active {
+    background-color: transparent;
+    border-bottom: 2px solid @color2;
+    border-radius: 15px;
 }
 
-#custom-rtm.empty {
-    color: #a6adc8;
-    border-right: 1px solid #a6e3a1;
+#taskbar button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border: 0px;
 }
-
-#custom-power {
-    font-size: 14px;
-	padding: 0 10px;
-}
-
 #taskbar {
 	background-color: transparent;
 }
-
-#custom-notification {
-	font-size: 14px;
-	color: #89b4fa;
-	padding: 0 10px
-}
-
 #battery.critical:not(.charging) {
     color: #f38ba8; /* Red alert color */
     animation-name: blink;
@@ -149,15 +128,6 @@ window#waybar {
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
-
-#bluetooth.connected {
-    color: #89b4fa; /* Blue Accent */
-}
-
-#bluetooth.off, #bluetooth.disabled {
-    color: #ff0000;
-}
-
 @keyframes blink {
     to {
         color: #000000;

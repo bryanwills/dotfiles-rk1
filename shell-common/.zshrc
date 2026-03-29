@@ -1,24 +1,38 @@
-# Enable Powerlevel10k instant prompt
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# --- Colours ---
+export LS_COLORS='di=1;34:ln=1;36:so=1;35:pi=33:ex=1;32:bd=1;33:cd=1;33:su=1;31:sg=1;31:tw=1;34:ow=1;34:'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+export LESS_TERMCAP_mb=$'\e[1;31m'
+export LESS_TERMCAP_md=$'\e[1;34m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[1;33m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[4;36m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export MANPAGER='less -R'
+
+# --- Completion ---
+autoload -Uz compinit && compinit
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu select
+
+# --- Prompt (replaces p10k) ---
+autoload -Uz vcs_info
+precmd() { vcs_info }
+local _git_icon=$'\ue0a0'
+zstyle ':vcs_info:git:*' formats " %F{141}${_git_icon} %b%f"
+zstyle ':vcs_info:git:*' actionformats " %F{141}${_git_icon} %b%f %F{red}(%a)%f"
+zstyle ':vcs_info:*' enable git
+setopt PROMPT_SUBST
+
+PROMPT='%F{33}%~%f${vcs_info_msg_0_}
+%(?.%F{141}❯%f.%F{196}❯%f) '
+RPROMPT='%F{240}%D{%H:%M}%f %(?.%F{green}✓.%F{196}✗ %?)%f'
 
 fastfetch
 
-# --- Oh My Zsh Setup ---
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-plugins=(
-    git
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
-
-source $ZSH/oh-my-zsh.sh
-
 # --- User Configuration ---
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export LANG=en_GB.UTF-8
 export LC_ALL=en_GB.UTF-8
 export EDITOR='micro'
@@ -110,10 +124,8 @@ dotsync() {
     fi
 }
 
-# --- Plugin & Theme Settings ---
-[[ -f ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
-    source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=196,bold'
+# --- zsh-autosuggestions (sourced directly, no plugin manager) ---
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # --- XC-Manager Settings ---
 # 1. Add the autoload folder to your function path
@@ -134,6 +146,7 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 setopt sharehistory
+setopt autocd
 
 # --- Startup ---
 echo "󱓞 System Version: Main"
@@ -147,3 +160,4 @@ export PATH="$HOME/.local/bin:$PATH"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 # --- RTFM plugin ---
 source ~/arch-projects/mend/mend.plugin.zsh
+# Created by newuser for 5.9

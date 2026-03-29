@@ -21,16 +21,16 @@ window#waybar {
 
 window#waybar > box {
     background-color: #000000;
-    opacity: 0.8;
+    opacity: 0.6;
     border-radius: 15px;
 
     /* MARGINS: Use these to create room for the shadow */
     /* top | right | bottom | left */
-    margin: 0px 8px 8px 0px; 
+    margin: 5px 20px 9px 20px; 
     
     /* SHADOW: x-offset | y-offset | blur | spread | color */
     /* 5px 5px pushes it Right and Down */
-    box-shadow: 5px 5px 5px 0px rgba(255, 255, 255, 1);
+    box-shadow: 10px 2px 10px 0px #ffffff;
 }
 
 /* =============================================================================
@@ -52,7 +52,8 @@ window#waybar > box {
 .modules-left label,
 .modules-center label,
 .modules-right label {
-    padding: 0 2px;
+    padding: 0 5px;
+    margin: 2px 3px;
     font-size: 12px;
 }
 
@@ -77,9 +78,10 @@ window#waybar > box {
 }
 
 #workspaces button.active {
-    color: #000000;
+    background: transparent;
+    color: #ffffff;
     border-bottom: 2px solid #ffffff; /* FIXED: Added 'solid' */
-    border-radius: 5px; /* Reset radius for the bottom border look */
+    border-radius: 20px; /* Reset radius for the bottom border look */
 }
 
 /* =============================================================================
@@ -104,7 +106,7 @@ window#waybar > box {
 #taskbar button.active {
     background: transparent;
     border-bottom: 2px solid #ffffff;
-    border-radius: 5px;
+    border-radius: 20px;
 }
 
 /* =============================================================================
@@ -119,51 +121,6 @@ window#waybar > box {
     padding: 0 5px;
     margin: 0;
     font-size: 12px;
-}
-
-/* --- Special Module Styling --- */
-
-/* Arch Launcher */
-#custom-launcher {
-    background: transparent;
-    font-size: 12px; /* FIXED: Reduced from 18px to fit bar height */
-    color: #00bfff;
-    padding: 0 10px;
-    margin-right: 5px;
-}
-
-/* Notifications */
-#custom-notification {
-    color: #00bfff;
-    padding: 0 5px;
-    font-size: 14px; /* FIXED: Reduced from 16px */
-}
-
-/* Power Menu */
-#custom-power {
-    padding: 0 5px;
-    font-size: 14px; /* FIXED: Reduced from 16px */
-    color: #ff0000;
-}
-
-/* Sync */
-#custom-sync {
-    padding: 0 10px;
-}
-
-/* RTM (Task Manager) */
-#custom-rtm {
-    padding: 0 10px;
-    color: #ffffff;
-}
-
-#custom-rtm.pending {
-    border-bottom: 2px solid #fab387;
-}
-
-#custom-rtm.empty {
-    color: #a6adc8;
-    border-bottom: 2px solid #a6e3a1;
 }
 
 /* Tray */

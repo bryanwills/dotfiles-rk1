@@ -1,15 +1,15 @@
-/* @import url("file:///home/rk1/.cache/wal/colors-waybar.css"); */
+@import url("file:///home/rk1/.cache/wal/colors-waybar.css");
 
 /* =============================================================================
    1. GLOBAL SETTINGS
    ========================================================================== */
 * {
     font-family: "JetBrainsMono Nerd Font";
-    font-size: 12px;
+    font-size: 14px;
     border: none;
     border-radius: 0;
     min-height: 0; /* Helps prevent height glitches */
-    color: #000000; /* Crucial: Dark text for white bar */
+    color: #000000;
 }
 
 /* =============================================================================
@@ -21,10 +21,13 @@ window#waybar {
 
 window#waybar > box {
     background-color: #ffffff;
-    opacity: 0.8;
+    opacity: 0.6;
     border-radius: 15px;
-    box-shadow: 0px 6px 0px 0px rgba(0, 0, 0, 1);
-    margin: 0px 0px 8px 0px;
+
+    /* MARGINS: Use these to create room for the shadow */
+    /* top | right | bottom | left */
+    margin: 10px 20px 9px 20px; 
+    
 }
 
 /* =============================================================================
@@ -46,7 +49,9 @@ window#waybar > box {
 .modules-left label,
 .modules-center label,
 .modules-right label {
-    padding: 0 2px;
+    color: #000000;
+    padding: 0 5px;
+    margin: 2px 3px;
     font-size: 12px;
 }
 
@@ -60,20 +65,21 @@ window#waybar > box {
 
 #workspaces button {
     padding: 0 5px;
-    color: @color0;
+    color: #ffffff;
     background: transparent;
     font-size: 12px;
 }
 
 #workspaces button:hover {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
 }
 
 #workspaces button.active {
-    color: @color1;
+    background: transparent;
+    color: #ffffff;
     border-bottom: 2px solid #000000; /* FIXED: Added 'solid' */
-    border-radius: 5px; /* Reset radius for the bottom border look */
+    border-radius: 15px; /* Reset radius for the bottom border look */
 }
 
 /* =============================================================================
@@ -92,22 +98,20 @@ window#waybar > box {
 }
 
 #taskbar button:hover {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 #taskbar button.active {
     background: transparent;
     border-bottom: 2px solid #000000;
-    border-radius: 5px;
+    border-radius: 15px;
 }
 
 /* =============================================================================
    6. INDIVIDUAL MODULES
    ========================================================================== */
 /* Group common settings for standard text modules */
-#network, #bluetooth, #battery, #temperature, #tray, 
-#custom-sync, #custom-gallery, #custom-wallpaper, 
-#custom-keybinds, #custom-theme, #custom-budget, #submap {
+#network, #battery, #cpu, #memory, #temperature, #tray, #submap {
     background: transparent;
     color: #000000;
     padding: 0 5px;
@@ -115,58 +119,26 @@ window#waybar > box {
     font-size: 12px;
 }
 
-/* --- Special Module Styling --- */
-
-/* Arch Launcher */
-#custom-launcher {
-    background: transparent;
-    font-size: 12px; /* FIXED: Reduced from 18px to fit bar height */
-    color: #0e08b1;
-    padding: 0 10px;
-    margin-right: 1px;
-}
-
-/* Notifications */
-#custom-notification {
-    color: #0e08b1;
-    padding: 0 1px;
-    margin-left: 5px;
-    font-size: 14px; /* FIXED: Reduced from 16px */
-}
-
-/* Power Menu */
-#custom-power {
-    padding: 0 10px;
-    font-size: 14px; /* FIXED: Reduced from 16px */
-    color: #ff0000 ;
-    margin-right: 2px;
-}
-
-/* Sync */
-#custom-sync {
-    padding: 0 10px;
-}
-
-/* RTM (Task Manager) */
-#custom-rtm {
-    padding: 0 10px;
-    color: #000000;
-}
-
-#custom-rtm.pending {
-    border-bottom: 2px solid #fab387;
-}
-
-#custom-rtm.empty {
-    color: #a6adc8;
-    border-bottom: 2px solid #a6e3a1;
-}
-
 /* Tray */
 #tray {
     padding-left: 10px;
 }
+tooltip {
+    background: #1a1a1a;       /* Your Solid 90% Black */
+    border: 2px solid #808080; /* Grey Border */
+    border-radius: 10px;       /* Match Rofi corner_radius */
+}
 
+tooltip label {
+    font-family: "JetBrains Mono";
+    color: #f8f8ff;            /* ghost-white */
+    padding: 10px;
+}
+
+/* Optional: Make the header (bold text) Pale Green */
+tooltip b {
+    color: #98fb98;            /* pale-green accent */
+}
 /* =============================================================================
    7. BATTERY ANIMATIONS
    ========================================================================== */
