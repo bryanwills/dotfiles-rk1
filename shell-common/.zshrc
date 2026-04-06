@@ -19,11 +19,33 @@ zstyle ':completion:*' menu select
 
 # --- Prompt (replaces p10k) ---
 autoload -Uz vcs_info
-precmd() { vcs_info }
-local _git_icon=$'\ue0a0'
-zstyle ':vcs_info:git:*' formats " %F{141}${_git_icon} %b%f"
-zstyle ':vcs_info:git:*' actionformats " %F{141}${_git_icon} %b%f %F{red}(%a)%f"
+precmd() {
+    vcs_info
+}
+local _git_icon=$'\uf418'
 zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' check-for-changes yes
+zstyle ':vcs_info:git:*' check-for-staged-changes yes
+zstyle ':vcs_info:git:*' formats " %F{141}${_git_icon} %b%f%c%u"
+zstyle ':vcs_info:git:*' actionformats " %F{141}${_git_icon} %b%f %F{red}(%a)%f%c%u"
+zstyle ':vcs_info:git:*' stagedstr " %F{green}+%i%f"
+zstyle ':vcs_info:git:*' unstagedstr " %F{red}!%u%f"
+
+autoload -Uz vcs_info +X add-zsh-hook
+
+# Hook to inject file counts into %i and %u
++vi-git-counts() {
+    local staged unstaged untracked
+    staged=$(git diff --cached --numstat 2>/dev/null | wc -l | tr -d ' ')
+    unstaged=$(git diff --numstat 2>/dev/null | wc -l | tr -d ' ')
+    untracked=$(git ls-files --others --exclude-standard 2>/dev/null | wc -l | tr -d ' ')
+    hook_com[staged]=''
+    hook_com[unstaged]=''
+    [[ $staged -gt 0 ]] && hook_com[staged]=" %F{green}+${staged}%f"
+    [[ $unstaged -gt 0 ]] && hook_com[unstaged]+=" %F{red}!${unstaged}%f"
+    [[ $untracked -gt 0 ]] && hook_com[unstaged]+=" %F{yellow}?${untracked}%f"
+}
+zstyle ':vcs_info:git+set-message:*' hooks git-counts
 setopt PROMPT_SUBST
 
 PROMPT='%F{33}%~%f${vcs_info_msg_0_}
@@ -43,6 +65,9 @@ export PATH="$HOME/custom-scripts:$PATH"
 alias la="lsd -a"
 alias nal="nano -l"
 alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 alias rtm="$HOME/custom-scripts/RTM/rtm.py"
 alias mc="micro"
 alias update="sudo pacman -Syu"
@@ -59,9 +84,6 @@ alias als="~/custom-scripts/Show-Aliases/show-aliases.sh"
 
 # Edit cmd_vault commands
 alias vedit="$EDITOR ~/.local/share/cmd_vault.txt"
-
-# Cliphist (Rofi Clipboard)
-alias clip='cliphist list | rofi -dmenu -theme ~/.config/rofi/themes/rk1-dark.rasi | cliphist decode | wl-copy'
 
 # --- YouTube Download Aliases ---
 alias song='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --embed-metadata -o "~/Music/%(title)s.%(ext)s"'
@@ -128,15 +150,15 @@ dotsync() {
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # --- XC-Manager Settings ---
-# 1. Add the autoload folder to your function path
+# Source the AUR-installed plugin (handles fpath, autoload, and bindkey automatically)
+source ~/arch-projects/XC-Manager/xc.plugin.zsh
+# Test local dev version instead
 fpath=(~/arch-projects/XC-Manager/autoload $fpath)
-# 2. Tell Zsh to "lazy-load" these functions (no code is run yet)
-autoload -Uz xc fzf-vault-widget
-# 3. Register the widget with Zsh's Line Editor (ZLE)
+autoload -Uz fzf-vault-widget
 zle -N fzf-vault-widget
-# 4. Bind the shortcut
 bindkey '^G' fzf-vault-widget
-# 5. UI Customization (These are read by the functions when called)
+
+# UI Customization (These are read by the functions when called)
 zstyle ':xc:*' separator "->" 
 zstyle ':xc:*' fzf_colors "fg:7,hl:4,fg+:15,hl+:12,info:2,prompt:5,pointer:12"
 
@@ -160,4 +182,20 @@ export PATH="$HOME/.local/bin:$PATH"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 # --- RTFM plugin ---
 source ~/arch-projects/mend/mend.plugin.zsh
-# Created by newuser for 5.9
+
+# --- 1. Settings (Ensure these are in your .zshrc) ---
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
+setopt PUSHD_SILENT
+
+# --- 2. The Function ---
+unalias d 2>/dev/null
+d() {
+  # List stack, skip current dir, and fuzzy search unique paths
+  local dir=$(dirs -p -v | tail -n +2 | fzf --height 40% --reverse --header="Jump to Previous Directory" | awk '{print $2}')
+  
+  # Jump if a selection was made
+  if [[ -n "$dir" ]]; then
+    cd "${dir/#\~/$HOME}"
+  fi
+}

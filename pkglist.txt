@@ -13,6 +13,7 @@ btop
 claude-desktop-bin
 cliphist
 dart-sass
+distrobox
 dmidecode
 dosfstools
 dunst
@@ -64,6 +65,7 @@ man-pages
 micro
 min
 mpv
+namcap
 nano
 network-manager-applet
 networkmanager
@@ -78,6 +80,7 @@ pacman-contrib
 pavucontrol
 pipewire-alsa
 pipewire-pulse
+podman
 polkit-kde-agent
 powertop
 pulseaudio-alsa
@@ -88,6 +91,7 @@ qalculate-gtk
 qt5-wayland
 qt6-wayland
 quickshell
+reflector
 resvg
 rofi
 sddm
