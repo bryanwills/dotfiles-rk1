@@ -29,3 +29,7 @@ Thumbs.db
 *.mp4
 *.zip
 *.tar.gz
+
+# --- Custom-Scripts ---
+~/dotfiles/shell-common/custom-scripts/RTM
+~/dotfiles/shell-common/custom-scripts/Budget-Buddy

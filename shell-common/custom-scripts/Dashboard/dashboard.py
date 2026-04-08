@@ -11,6 +11,8 @@ VERSION = "1.8.5"
 BACKUP_DIR = os.path.expanduser("~/dotfiles")
 PROJECT_DIR = os.path.expanduser("~/arch-projects/XC-Manager")
 PROJECT_DIR = os.path.expanduser("~/arch-projects/mend")
+PROJECT_DIR = os.path.expanduser("~/arch-projects/RTM")
+PROJECT_DIR = os.path.expanduser("~/arch-projects/Budget-Buddy")
 TASKS_JSON = os.path.expanduser("~/.local/share/arch_task_manager/tasks.json")
 SYNC_CACHE = os.path.expanduser("~/.cache/last_synced")
 
@@ -115,7 +117,7 @@ def get_git_status():
 
 def get_budget_status():
     try:
-        path = os.path.expanduser("~/custom-scripts/Budget-Buddy/budget-buddy.py")
+        path = os.path.expanduser("~/arch-projects/Budget-Buddy/budget-buddy.py")
         result = subprocess.check_output(["python", path, "--stats"], stderr=subprocess.DEVNULL).decode().strip()
         return result
     except:
