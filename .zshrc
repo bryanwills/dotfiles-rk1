@@ -81,6 +81,7 @@ alias dashboard="python3 ~/custom-scripts/Dashboard/dashboard.py"
 alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.conf ~/.config/hypr/configs/windowrules.conf'
 alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
 alias als="~/custom-scripts/Show-Aliases/show-aliases.sh"
+alias lg='lazygit'
 
 # Edit cmd_vault commands
 alias vedit="$EDITOR ~/.local/share/cmd_vault.txt"
@@ -178,9 +179,16 @@ zstyle ':xc:*' fzf_colors "fg:7,hl:4,fg+:15,hl+:12,info:2,prompt:5,pointer:12"
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-setopt appendhistory
+
+# Deduplication is key to stopping the growth
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_IGNORE_SPACE
+setopt HIST_EXPIRE_DUPS_FIRST
+
 setopt sharehistory
 setopt autocd
+setopt EXTENDED_HISTORY
 
 # --- Startup ---
 echo "󱓞 System Version: Main"
@@ -192,13 +200,8 @@ fi
 source ~/.local/share/extraterm/extraterm-commands-0.9.4/setup_extraterm_zsh.zsh
 export PATH="$HOME/.local/bin:$PATH"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
-# --- RTFM plugin ---
+# --- Mend plugin ---
 source ~/arch-projects/mend/mend.plugin.zsh
-
-# --- 1. Settings (Ensure these are in your .zshrc) ---
-setopt AUTO_PUSHD
-setopt PUSHD_IGNORE_DUPS
-setopt PUSHD_SILENT
 
 # --- 2. The Function ---
 unalias d 2>/dev/null

@@ -9,12 +9,15 @@ from datetime import datetime
 # --- Configuration ---
 VERSION = "1.8.5"
 BACKUP_DIR = os.path.expanduser("~/dotfiles")
-PROJECT_DIR = os.path.expanduser("~/arch-projects/XC-Manager")
-PROJECT_DIR = os.path.expanduser("~/arch-projects/mend")
-PROJECT_DIR = os.path.expanduser("~/arch-projects/RTM")
-PROJECT_DIR = os.path.expanduser("~/arch-projects/Budget-Buddy")
 TASKS_JSON = os.path.expanduser("~/.local/share/arch_task_manager/tasks.json")
 SYNC_CACHE = os.path.expanduser("~/.cache/last_synced")
+# List all projects here
+PROJECTS = [
+    os.path.expanduser("~/arch-projects/XC-Manager"),
+    os.path.expanduser("~/arch-projects/mend"),
+    os.path.expanduser("~/arch-projects/RTM"),
+    os.path.expanduser("~/arch-projects/Budget-Buddy")
+]
 
 # Live folders to watch for changes
 LIVE_CONFIGS = [
@@ -91,17 +94,41 @@ def check_live_changes():
 def get_git_status():
     def check_repo(path):
         if not os.path.exists(path):
-            return f"{RED}Missing{RESET}"
+            return "missing"
         try:
             is_dirty = subprocess.check_output(["git", "-C", path, "status", "--porcelain"], stderr=subprocess.DEVNULL).decode().strip()
             ahead = subprocess.check_output(["git", "-C", path, "rev-list", "@{u}..HEAD"], stderr=subprocess.DEVNULL).decode().count('\n')
+            if is_dirty: return "dirty"
+            if ahead > 0: return f"ahead:{ahead}"
+            return "clean"
         except:
-            return f"{RED}Error{RESET}"
+            return "error"
+
+    dirty_projects = []
+    ahead_projects = []
+
+    for path in PROJECTS:
+        name = os.path.basename(path)
+        status = check_repo(path)
         
-        status = f"{RED}Dirty{RESET}" if is_dirty else f"{GREEN}Clean{RESET}"
-        if ahead > 0:
-            status += f" {YELLOW}↑ {ahead}{RESET}"
-        return status
+        if status == "dirty":
+            dirty_projects.append(name)
+        elif "ahead" in status:
+            ahead_projects.append(name)
+
+    # Construct the display string
+    if dirty_projects:
+        proj_display = f"{RED}Dirty{RESET} ({', '.join(dirty_projects)})"
+    elif ahead_projects:
+        proj_display = f"{GREEN}Clean{RESET} {YELLOW}↑ ({', '.join(ahead_projects)}){RESET}"
+    else:
+        proj_display = f"{GREEN}Clean{RESET}"
+
+    # Check dots status separately
+    dot_raw = check_repo(BACKUP_DIR)
+    dot_status = f"{RED}Dirty{RESET}" if dot_raw == "dirty" else f"{GREEN}Clean{RESET}"
+    if "ahead" in dot_raw:
+        dot_status = f"{GREEN}Clean{RESET} {YELLOW}↑{RESET}"
 
     try:
         with open(SYNC_CACHE, 'r') as f:
@@ -110,8 +137,8 @@ def get_git_status():
         sync_date = "Never"
 
     return {
-        "dots": check_repo(BACKUP_DIR),
-        "proj": check_repo(PROJECT_DIR),
+        "dots": dot_status,
+        "proj": proj_display,
         "date": sync_date
     }
 
@@ -137,15 +164,15 @@ def main():
 
     # Row 1
     s_text = f" 💾 {BOLD}Storage:{RESET}  {shutil.disk_usage(os.path.expanduser('~')).free // (2**30)} GB Free"
-    t_text = f" 📝 {BOLD}Tasks:{RESET}    {get_pending_tasks()}"
+    t_text = f" 📝 {BOLD}Tasks:{RESET}  {get_pending_tasks()}"
     
     # Row 2
     u_text = f" 📦 {BOLD}Updates:{RESET}  {get_updates()}"
-    d_text = f" 󱓞  {BOLD}Dots:{RESET}      {dot_status} ({git_data['date']})"
+    d_text = f" 󱓞  {BOLD}Dots:{RESET}   {dot_status} ({git_data['date']})"
     
     # Row 3
     c_text = f" 󰒋  {BOLD}Cache:{RESET}    {get_cache_size()}"
-    p_text = f" 󱚝  {BOLD}Proj:{RESET}      {git_data['proj']}"
+    p_text = f" 󱚝  {BOLD}Proj:{RESET}   {git_data['proj']}"
 
     print(f"{s_text:<40} {t_text}")
     print(f"{u_text:<49} {d_text}")

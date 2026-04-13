@@ -50,6 +50,7 @@ jq
 kew
 kitty
 krita
+lazygit
 libgepub
 libqalculate
 libreoffice-fresh
@@ -96,7 +97,7 @@ resvg
 rofi
 sddm
 sddm-sugar-candy-git
-shellcheck
+shellcheck-bin
 slurp
 smartmontools
 socat
