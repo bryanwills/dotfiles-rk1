@@ -82,6 +82,7 @@ alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.conf ~/.
 alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
 alias als="~/custom-scripts/Show-Aliases/show-aliases.sh"
 alias lg='lazygit'
+alias bt="~/custom-scripts/bluetooth/bt"
 
 # Edit cmd_vault commands
 alias vedit="$EDITOR ~/.local/share/cmd_vault.txt"
@@ -161,6 +162,9 @@ dotsync() {
 
 # --- zsh-autosuggestions (sourced directly, no plugin manager) ---
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# --- Oversight ---
+source ~/arch-projects/oversight/oversight.zsh
 
 # --- XC-Manager Settings ---
 # Source the AUR-installed plugin (handles fpath, autoload, and bindkey automatically)

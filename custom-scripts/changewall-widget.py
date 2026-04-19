@@ -11,6 +11,7 @@ gi.require_version('GtkLayerShell', '0.1')
 gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell
 import os, subprocess, glob, threading
+from concurrent.futures import ThreadPoolExecutor
 
 WALLPAPER_DIR = os.path.expanduser("~/Pictures/Wallpapers")
 THUMB_SIZE    = 160
@@ -142,7 +143,7 @@ def apply_wallpaper(path, status_cb, done_cb):
     name = os.path.basename(path)
     GLib.idle_add(status_cb, f"󰐍  Applying {name}...")
     
-    # 1. Update Wallpaper via swww
+    # 1. Update Wallpaper via awww
     subprocess.run(['awww', 'img', path, 
                     '--transition-type', 'grow', 
                     '--transition-pos', 'center'], capture_output=True)
@@ -161,8 +162,8 @@ def apply_wallpaper(path, status_cb, done_cb):
     
     # Critical "settle" time: allows filesystem I/O to finish and 
     # portals to stabilize before Waybar requests a surface.
-    import time
-    time.sleep(0.4) 
+    # import time
+    # time.sleep(0.4) 
     
     # Launch standard Waybar instance
     subprocess.Popen(['waybar'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -361,23 +362,26 @@ class WallWidget(Gtk.Window):
         elif event.keyval == Gdk.KEY_Left:
             adj.set_value(adj.get_value() - THUMB_SIZE - 20)
 
+def _preload():
+    walls = find_wallpapers()
+    # Use all CPU cores to scale 10 images at once
+    with ThreadPoolExecutor() as executor:
+        # map handles the loading in parallel
+        results = list(executor.map(lambda p: (p, load_thumbnail(p)), walls))
+        for path, pb in results:
+            _preloaded.append((path, pb))
+    _preload_done.set()
+
 if __name__ == "__main__":
-    # Pre-load wal colors and find wallpapers before GTK init
-    # so window appears fully populated on first frame
-    import threading
     _preloaded = []
     _preload_done = threading.Event()
 
-    def _preload():
-        walls = find_wallpapers()
-        for path in walls:
-            pb = load_thumbnail(path)
-            _preloaded.append((path, pb))
-        _preload_done.set()
-
     t = threading.Thread(target=_preload, daemon=True)
     t.start()
-    _preload_done.wait(timeout=2.0)  # wait max 3s for thumbs
+    
+    # With parallel loading, 10 thumbs take < 0.1s. 
+    # This wait ensures they are in memory before the window maps.
+    _preload_done.wait(timeout=1.0)
 
     win = WallWidget(_preloaded)
     win.show_all()

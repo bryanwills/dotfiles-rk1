@@ -95,6 +95,7 @@ quickshell
 reflector
 resvg
 rofi
+rust
 sddm
 sddm-sugar-candy-git
 shellcheck-bin
