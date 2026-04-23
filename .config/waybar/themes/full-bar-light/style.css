@@ -45,7 +45,7 @@ window#waybar > box {
     margin: 0 5px; 
 }
 
-/* Standardize labels inside modules */
+/* Standardise labels inside modules */
 .modules-left label,
 .modules-center label,
 .modules-right label {
@@ -149,6 +149,10 @@ tooltip b {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+}
+#custom-recorder {
+    color: #ff5555; /* Red when active */
+    margin: 0 5px;
 }
 
 @keyframes blink {

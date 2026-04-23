@@ -10,7 +10,7 @@
     "spacing": 4,
     "exclusive": true,
     "reload_style_on_change": true,
-    "modules-left": ["clock", "custom/tt"],
+    "modules-left": ["clock", "custom/tt", "custom/recorder"],
     "modules-right": ["cpu", "memory", "tray", "battery", "temperature"],
     "modules-center": ["hyprland/submap", "hyprland/workspaces", "wlr/taskbar"],
 
@@ -37,6 +37,17 @@
         "*": 5 // This forces workspaces 1-5 to be visible on all monitors
     }
 },
+
+    "custom/recorder": {
+        "format": "{}",
+        "interval": 1,
+        "return-type": "json",
+        "exec": "if pgrep -x wf-recorder > /dev/null; then echo '{\"text\": \"  REC\", \"class\": \"recording\"}'; else echo '{\"text\": \"  IDLE\", \"class\": \"idle\"}'; fi",
+        "on-click": "kitty -T 'Mirec' bash -c '/home/rk1/arch-projects/MIREC/mirec'",
+        "on-click-right": "pkill -SIGINT wf-recorder && rm -f /tmp/mirec.pid",
+        "tooltip": false
+    },
+
     "custom/tt": {
             "exec": "$HOME/.local/bin/tt status",
             "return-type": "json",

@@ -10,7 +10,7 @@
     "spacing": 4,
     "exclusive": true,
     "reload_style_on_change": true,
-    "modules-left": ["clock", "custom/tt"],
+    "modules-left": ["clock", "custom/tt", "custom/recorder"],
     "modules-right": ["cpu", "memory", "tray", "battery", "temperature"],
     "modules-center": ["hyprland/submap", "hyprland/workspaces", "wlr/taskbar"],
 
@@ -37,6 +37,13 @@
         "*": 5 // This forces workspaces 1-5 to be visible on all monitors
     }
 },
+    "custom/recorder": {
+        "format": "{}",
+        "interval": 1,
+        "exec": "if [ -f /tmp/recording_pid ]; then echo '󰑋 REC'; else echo '󰑊 IDLE'; fi",
+        "on-click": "~/path/to/your/script.sh",
+        "tooltip": false
+    },
     "custom/tt": {
             "exec": "$HOME/.local/bin/tt status",
             "return-type": "json",

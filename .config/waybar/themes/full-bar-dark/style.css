@@ -123,6 +123,18 @@ window#waybar > box {
     font-size: 12px;
 }
 
+#custom-recorder {
+    color: #ff5555; /* Red when waiting */
+}
+
+#custom-recorder.recording {
+    color: #50fa7b; /* Green when active */
+}
+
+#custom-recorder {
+    margin: 0 5px;
+}
+
 /* Tray */
 #tray {
     padding-left: 10px;

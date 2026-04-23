@@ -76,7 +76,6 @@ nwg-look
 nwg-wrapper
 obs-studio
 otf-font-awesome
-overskride-bin
 pacman-contrib
 pavucontrol
 pipewire-alsa
@@ -99,6 +98,7 @@ rust
 sddm
 sddm-sugar-candy-git
 shellcheck-bin
+slop
 slurp
 smartmontools
 socat
