@@ -163,9 +163,6 @@ dotsync() {
 # --- zsh-autosuggestions (sourced directly, no plugin manager) ---
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# --- Oversight ---
-source ~/arch-projects/oversight/oversight.zsh
-
 # --- XC-Manager Settings ---
 # Source the AUR-installed plugin (handles fpath, autoload, and bindkey automatically)
 source ~/arch-projects/XC-Manager/xc.plugin.zsh
@@ -218,3 +215,7 @@ d() {
     cd "${dir/#\~/$HOME}"
   fi
 }
+
+# --- Oversight Security Tool ---
+source /home/rk1/.local/share/oversight/oversight.zsh
+add-zsh-hook preexec _oversight_preexec

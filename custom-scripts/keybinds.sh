@@ -23,4 +23,4 @@ grep -E '^bind[a-z]*' "$CONFIG" | \
             printf "%-10s | %-10s | ➜  %s\n", mod, key, desc
     }' | \
     column -t -s '|' | \
-    rofi -dmenu -i -p "󰌌 Keybinds"
+    fzf --header "󰌌 Keybinds" --reverse
