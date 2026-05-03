@@ -68,14 +68,11 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
-alias rtm="$HOME/custom-scripts/RTM/rtm.py"
 alias mc="micro"
 alias update="sudo pacman -Syu"
 alias install="sudo pacman -S"
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq); sudo paccache -rk2'
-alias rice="micro ~/.config/hypr/hyprland.conf ~/.config/waybar/config ~/.config/waybar/style.css ~/.config/rofi/style.css"
 alias reload="hyprctl reload && killall waybar && waybar &"
-alias wall="~/custom-scripts/changewall.sh"
 alias keys="~/custom-scripts/keybinds.sh"
 alias dashboard="python3 ~/custom-scripts/Dashboard/dashboard.py"
 alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.conf ~/.config/hypr/configs/windowrules.conf'
@@ -83,9 +80,6 @@ alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
 alias als="~/custom-scripts/Show-Aliases/show-aliases.sh"
 alias lg='lazygit'
 alias bt="~/custom-scripts/bluetooth/bt"
-
-# Edit cmd_vault commands
-alias vedit="$EDITOR ~/.local/share/cmd_vault.txt"
 
 # --- YouTube Download Aliases ---
 alias song='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --embed-metadata -o "~/Music/%(title)s.%(ext)s"'

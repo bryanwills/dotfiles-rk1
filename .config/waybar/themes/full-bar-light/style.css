@@ -21,7 +21,7 @@ window#waybar {
 
 window#waybar > box {
     background-color: #ffffff;
-    opacity: 0.6;
+    opacity: 0.9;
     border-radius: 15px;
 
     /* MARGINS: Use these to create room for the shadow */
@@ -79,7 +79,7 @@ window#waybar > box {
     background: transparent;
     color: #ffffff;
     border-bottom: 2px solid #000000; /* FIXED: Added 'solid' */
-    border-radius: 15px; /* Reset radius for the bottom border look */
+    border-radius: 5px; /* Reset radius for the bottom border look */
 }
 
 /* =============================================================================
@@ -104,7 +104,7 @@ window#waybar > box {
 #taskbar button.active {
     background: transparent;
     border-bottom: 2px solid #000000;
-    border-radius: 15px;
+    border-radius: 5px;
 }
 
 /* =============================================================================

@@ -16,7 +16,9 @@ PROJECTS = [
     os.path.expanduser("~/arch-projects/XC-Manager"),
     os.path.expanduser("~/arch-projects/mend"),
     os.path.expanduser("~/arch-projects/RTM"),
-    os.path.expanduser("~/arch-projects/Budget-Buddy")
+    os.path.expanduser("~/arch-projects/Budget-Buddy"),
+    os.path.expanduser("~/arch-projects/oversight"),
+    os.path.expanduser("~/arch-projects/MIREC")
 ]
 
 # Live folders to watch for changes

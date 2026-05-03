@@ -91,6 +91,6 @@ cursor_beam_thickness 1.5
 
 
 # BEGIN_KITTY_THEME
-# Gruvbox Dark Hard
+# Gruvbox Light
 include current-theme.conf
 # END_KITTY_THEME

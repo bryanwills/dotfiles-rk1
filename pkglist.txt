@@ -23,12 +23,12 @@ falkon
 fastfetch
 fd
 ffmpegthumbnailer
+figlet
 file-roller
 firefox
 fzf
 gcalcli
 geany
-gimp
 git
 grim
 gsimplecal
@@ -49,7 +49,7 @@ jp2a
 jq
 kew
 kitty
-krita
+kolourpaint
 lazygit
 libgepub
 libqalculate
@@ -84,6 +84,8 @@ polkit-kde-agent
 powertop
 pulseaudio-alsa
 python-pip
+python-psutil
+python-pyqt6
 python-pywal
 python-rich
 qalculate-gtk

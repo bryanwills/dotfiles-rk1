@@ -21,7 +21,7 @@ window#waybar {
 
 window#waybar > box {
     background-color: #000000;
-    opacity: 0.6;
+    opacity: 0.9;
     border-radius: 15px;
 
     /* MARGINS: Use these to create room for the shadow */
@@ -113,9 +113,8 @@ window#waybar > box {
    6. INDIVIDUAL MODULES
    ========================================================================== */
 /* Group common settings for standard text modules */
-#network, #bluetooth, #battery, #cpu, #memory, #temperature, #tray, 
-#custom-sync, #custom-gallery, #custom-wallpaper, 
-#custom-keybinds, #custom-theme, #custom-budget, #submap {
+#battery, #cpu, #memory, #temperature, #tray, 
+#submap {
     background: transparent;
     color: #ffffff;
     padding: 0 5px;
