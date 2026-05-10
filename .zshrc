@@ -126,8 +126,6 @@ dotsync() {
     rsync -a --delete ~/.config/wal/ ~/dotfiles/.config/wal/
     rsync -a --delete ~/.config/kitty/ ~/dotfiles/.config/kitty/
     rsync -a --delete ~/.config/backgrounds/ ~/dotfiles/.config/backgrounds/
-
-    # Sync home directory files and scripts to the root of the repo
     rsync -a --delete ~/custom-scripts/ ~/dotfiles/custom-scripts/
     cp ~/.zshrc ~/dotfiles/.zshrc
     cp ~/.bashrc ~/dotfiles/.bashrc

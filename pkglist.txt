@@ -18,7 +18,6 @@ dmidecode
 dosfstools
 dunst
 efibootmgr
-extraterm-bin
 falkon
 fastfetch
 fd
@@ -26,6 +25,7 @@ ffmpegthumbnailer
 figlet
 file-roller
 firefox
+foot
 fzf
 gcalcli
 geany
