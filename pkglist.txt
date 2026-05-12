@@ -151,4 +151,5 @@ zsh-completions
 zsh-doc
 zsh-history-substring-search
 zsh-lovers
+zsh-mend-git
 zsh-syntax-highlighting

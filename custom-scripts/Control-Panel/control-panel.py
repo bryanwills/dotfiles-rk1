@@ -44,24 +44,25 @@ class ControlPanel(QWidget):
             self.font_family = "JetBrains Mono"
 
         self.setStyleSheet(f"""
-            QWidget#MainWidget {{ background-color: #000000; border: 1px solid #333333; }}
-            QFrame#Section {{ border: 1px solid #222222; border-radius: 4px; background-color: #050505; }}
+            QWidget#MainWidget {{ background-color: #1d2021; border: 1px solid #050505; }}
+            QFrame#Section {{ border: 1px solid #9c7321; border-radius: 4px; background-color: #1d2021; }}
             QLabel {{ color: #ffffff; font-family: 'JetBrains Mono'; font-size: 11px; }}
-            QLineEdit {{ background-color: #111111; border: 1px solid #333333; color: #ffffff; padding: 5px; border-radius: 4px; }}
-            QListWidget {{ background-color: #000000; border: 1px solid #222222; color: #ffffff; outline: none; border-radius: 4px; }}
+            QLineEdit {{ background-color: #1d2021; border: 1px solid #9c7321; color: #ffffff; padding: 5px; border-radius: 4px; }}
+            QListWidget {{ background-color: #1d2021; border: 1px solid #222222; color: #ffffff; outline: none; border-radius: 4px; }}
             QListWidget::item {{ padding: 8px; border-bottom: 1px solid #111111; }}
-            QListWidget::item:selected {{ background-color: #111111; color: #52fa69; }}
+            QListWidget::item:selected {{ background-color: #111111; color: #9c7321; }}
             QProgressBar {{ border: none; background-color: #111111; height: 4px; border-radius: 5px; color: transparent; }}
             QProgressBar::chunk {{ background-color: #52fa69; border-radius: 5px; }}
             QScrollBar {{ border: none; background: #000000; width: 8px; height: 8px; margin: 0px; }}
             QScrollBar::handle {{ background: #333333; min-height: 20px; min-width: 20px; border-radius: 4px; }}
-            QScrollBar::handle:hover {{ background: #52fa69; }}
-            QPushButton {{ background-color: #111111; border: 1px solid #222222; color: #ffffff; padding: 8px; font-family: 'JetBrains Mono'; border-radius: 4px; }}
+            QScrollBar::handle:hover {{ background: #287b34; }}
+            QPushButton {{ background-color: #1d2021; border: 1px solid #9c7321; color: #ffffff; padding: 8px; font-family: 'JetBrains Mono'; border-radius: 4px; }}
             QSlider::groove:horizontal {{ border: none; height: 2px; background: #333333; }}
             QSlider::handle:horizontal {{ background: #52fa69; border: 1px solid #ffffff; width: 4px; height: 14px; margin: -7px 0; }}
-            QPushButton:hover {{ background-color: #222222; border-color: #52fa69; }}
-            QPushButton#ActiveProfile, QPushButton#ActiveWorkspace {{ background-color: #52fa69; color: #000000; font-weight: bold; border: 1px solid #ffffff; }}
-            QPushButton#TaskItem {{ font-size: 10px; padding: 4px 6px; min-width: 70px; background-color: #0a0a0a; border-color: #222; }}
+            QPushButton:hover {{ background-color: #222222; border-color: #287b34; }}
+            QPushButton:focus {{ background-color: #222222; border: 1px solid #ffffff; outline: none; }}
+            QPushButton#ActiveProfile, QPushButton#ActiveWorkspace {{ background-color: #9c7321; color: #000000; font-weight: bold; border: 1px solid #ffffff; }}
+            QPushButton#TaskItem {{ font-size: 10px; padding: 4px 6px; min-width: 70px; background-color: #1d2021; border-color: #9c7321; }}
         """)
 
         self.apps_list = self.get_installed_apps()
@@ -127,7 +128,9 @@ class ControlPanel(QWidget):
         for i in range(1, 11):
             btn = QPushButton(str(i))
             btn.setFixedSize(32, 32)
+            btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
             btn.clicked.connect(lambda chk, w=i: self.run_cmd(f"hyprctl dispatch workspace {w}"))
+            # btn.clicked.connect(lambda chk, w=i: self.run_cmd(f"hyprctl dispatch 'hl.dsp.workspace(\"{w}\")'")) # Lua transition
             ws_lay.addWidget(btn)
             self.ws_btns[i] = btn
         main_layout.addWidget(ws_sec)
@@ -177,6 +180,7 @@ class ControlPanel(QWidget):
         for i, (icon, tid, cmd) in enumerate(tools):
             btn = QPushButton(icon)
             btn.setStyleSheet("font-size: 16px; padding: 10px;")
+            btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
             btn.clicked.connect(lambda chk, c=cmd: self.launch_app_manual(c))
             g_lay.addWidget(btn, i // 2, i % 2)
             self.tool_btns[tid] = btn
@@ -324,6 +328,7 @@ class ControlPanel(QWidget):
             active = json.loads(res).get("id")
             for i, btn in self.ws_btns.items():
                 btn.setObjectName("ActiveWorkspace" if i == active else "")
+                btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
                 btn.style().unpolish(btn); btn.style().polish(btn)
         except: pass
 
@@ -338,8 +343,10 @@ class ControlPanel(QWidget):
             for i, c in enumerate(valid_tasks):
                 btn = QPushButton(c.get("class")[:10])
                 btn.setObjectName("TaskItem")
+                btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
                 btn.setToolTip(c.get("title"))
                 btn.clicked.connect(lambda chk, a=c.get("address"): self.run_cmd(f"hyprctl dispatch focuswindow address:{a}"))
+                # btn.clicked.connect(lambda chk, a=c.get("address"): self.run_cmd(f"hyprctl dispatch 'hl.dsp.focus({{ window = \"address:{a}\" }})'")) # Transition to Lua
                 self.task_grid.addWidget(btn, i // 3, i % 3)
         except: pass
 
@@ -463,7 +470,20 @@ class ControlPanel(QWidget):
         self.close()
     def run_cmd(self, c): subprocess.Popen(c, shell=True, start_new_session=True)
     def keyPressEvent(self, e):
-        if e.key() == Qt.Key.Key_Escape: self.cleanup_and_exit()
+        if e.key() == Qt.Key.Key_Escape:
+            self.cleanup_and_exit()
+            
+        elif e.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            focused_widget = self.focusWidget()
+            if isinstance(focused_widget, QPushButton):
+                focused_widget.click()
+            elif isinstance(focused_widget, QListWidget):
+                item = focused_widget.currentItem()
+                if item:
+                    self.launch_app(item)
+        
+        else:
+            super().keyPressEvent(e)
     def cleanup_and_exit(self):
         self.timer.stop(); QApplication.quit(); sys.exit(0)
     def clear_all_notifications(self):

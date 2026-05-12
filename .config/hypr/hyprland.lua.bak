@@ -1,0 +1,103 @@
+-- Prepared for Hyprland v0.55+ 
+-- Rename to hyprland.lua to activate
+
+-- Theme Source
+hl.source("/home/rk1/.cache/wal/colors-hyprland.lua")
+
+-- 1. Environment Variables
+hl.env("GDK_BACKEND", "wayland")
+hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+hl.env("CLUTTER_BACKEND", "wayland")
+hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
+hl.env("XDG_SESSION_TYPE", "wayland")
+hl.env("XDG_SESSION_DESKTOP", "Hyprland")
+hl.env("WLR_NO_HARDWARE_CURSORS", "1")
+hl.env("WLR_RENDERER_ALLOW_SOFTWARE", "1")
+hl.env("TERMINAL", "kitty")
+hl.env("LIBVA_DRIVER_NAME", "iHD")
+
+-- 2. Configuration Tables
+hl.config({
+    monitor = {
+        ",preferred,auto,1.0"
+    },
+    input = {
+        kb_layout = "us",
+        follow_mouse = 1,
+        sensitivity = 0,
+        touchpad = {
+            natural_scroll = false,
+            ["tap-to-click"] = true,
+            ["tap-and-drag"] = true
+        }
+    },
+    cursor = {
+        no_hardware_cursors = true
+    },
+    debug = {
+        -- v0.55 moved vfr from misc to debug
+        vfr = true 
+    },
+    misc = {
+        disable_hyprland_logo = true
+    },
+    general = {
+        gaps_in = 5,
+        gaps_out = 5,
+        layout = "master"
+    },
+    master = {
+        new_status = "slave",
+        new_on_active = "none",
+        new_on_top = false,
+        mfact = 0.55,
+        orientation = "left",
+        special_scale_factor = 1.0,
+        slave_count_for_center_master = 2
+    },
+    -- Plugin-style layout for scrolling
+    scrolling = {
+        column_width = 0.9,
+        fullscreen_on_one_column = true,
+        direction = "right"
+    },
+    decoration = {
+        rounding = 0,
+        active_opacity = 1.0,
+        inactive_opacity = 1.0,
+        fullscreen_opacity = 1.0,
+        blur = {
+            enabled = false,
+            size = 8,
+            new_optimizations = true
+        },
+        shadow = {
+            enabled = false,
+            range = 15,
+            render_power = 4,
+            -- Pulls from the wal lua export
+            color = hl.get_var("color6")
+        }
+    },
+    animations = {
+        bezier = {
+            { "myBezier", 0.05, 0.9, 0.1, 1.05 }
+        },
+        animation = {
+            { "windows", 1, 7, "myBezier" },
+            { "workspaces", 1, 7, "default" },
+            { "layers", 1, 15, "myBezier", "slide" }
+        }
+    }
+})
+
+-- 3. Workspace & Gestures
+hl.workspace(4, { layout = "scrolling" })
+hl.gesture(3, "left", hl.dsp.layoutmsg("move +col"))
+hl.gesture(3, "right", hl.dsp.layoutmsg("move -col"))
+
+-- 4. Module Imports
+-- Ensure these files exist as .lua in your configs folder
+require("configs.autostart")
+require("configs.keybinds")
+require("configs.windowrules")
