@@ -1,8 +1,5 @@
 -- Prepared for Hyprland v0.55+ 
--- Rename to hyprland.lua to activate
-
--- Theme Source
-hl.source("/home/rk1/.cache/wal/colors-hyprland.lua")
+-- Configuration based on official migration guidelines
 
 -- 1. Environment Variables
 hl.env("GDK_BACKEND", "wayland")
@@ -17,18 +14,22 @@ hl.env("TERMINAL", "kitty")
 hl.env("LIBVA_DRIVER_NAME", "iHD")
 
 -- 2. Configuration Tables
+hl.monitor({
+    output   = "",
+    mode     = "preferred",
+    position = "auto",
+    scale    = "1",
+})
+
 hl.config({
-    monitor = {
-        ",preferred,auto,1.0"
-    },
     input = {
         kb_layout = "us",
         follow_mouse = 1,
         sensitivity = 0,
         touchpad = {
-            natural_scroll = false,
-            ["tap-to-click"] = true,
-            ["tap-and-drag"] = true
+            -- Lua requires brackets/quotes for keys with hyphens
+            ["tap_to_click"] = true,
+            ["tap_and_drag"] = true,
         }
     },
     cursor = {
@@ -55,7 +56,6 @@ hl.config({
         special_scale_factor = 1.0,
         slave_count_for_center_master = 2
     },
-    -- Plugin-style layout for scrolling
     scrolling = {
         column_width = 0.9,
         fullscreen_on_one_column = true,
@@ -69,34 +69,45 @@ hl.config({
         blur = {
             enabled = false,
             size = 8,
-            new_optimizations = true
         },
         shadow = {
             enabled = false,
             range = 15,
             render_power = 4,
-            -- Pulls from the wal lua export
-            color = hl.get_var("color6")
         }
     },
     animations = {
-        bezier = {
-            { "myBezier", 0.05, 0.9, 0.1, 1.05 }
-        },
-        animation = {
-            { "windows", 1, 7, "myBezier" },
-            { "workspaces", 1, 7, "default" },
-            { "layers", 1, 15, "myBezier", "slide" }
-        }
+        enabled = true,
     }
 })
 
--- 3. Workspace & Gestures
-hl.workspace(4, { layout = "scrolling" })
-hl.gesture(3, "left", hl.dsp.layoutmsg("move +col"))
-hl.gesture(3, "right", hl.dsp.layoutmsg("move -col"))
+-- 3. Animation Definitions (External for cleaner syntax)
+hl.curve("myBezier", { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.05} } })
 
--- 4. Module Imports
+hl.animation({ leaf = "windows",    enabled = true, speed = 7,  bezier = "myBezier" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 7,  bezier = "default" })
+hl.animation({ leaf = "layers",     enabled = true, speed = 15, bezier = "myBezier", style = "slide" })
+
+-- 4. Workspace & Gestures
+-- Use workspace_rule instead of hl.workspace
+hl.workspace_rule({ 
+    workspace = "4", 
+    layout = "scrolling" 
+})
+
+hl.gesture({
+    fingers = 3,
+    direction = "left",
+    action = "workspace"
+})
+
+hl.gesture({
+    fingers = 3,
+    direction = "right",
+    action = "workspace"
+})
+
+-- 5. Module Imports
 -- Ensure these files exist as .lua in your configs folder
 require("configs.autostart")
 require("configs.keybinds")

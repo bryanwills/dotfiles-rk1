@@ -30,6 +30,7 @@ fzf
 gcalcli
 geany
 git
+gnome-keyring
 grim
 gsimplecal
 gvfs
@@ -61,6 +62,7 @@ linux-firmware
 linux-headers
 lolcat
 lsd
+lua-language-server
 man-db
 man-pages
 micro

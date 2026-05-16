@@ -16,15 +16,15 @@ PINS_FILE   = os.path.expanduser("~/.cache/clipbox-pins.json")
 DISPLAY_MAX = 100
 
 # Consistent Theme Colours
-BG = "#000000"
+BG = "#1d2021"
 BG_SEC = "#050505"
 BORDER = "#222222"
-ACC = "#52fa69"
+ACC = "#9c7321"
 FG = "#ffffff"
 FG_DIM = "#aaaaaa"
 
 CSS = f"""
-window {{ background-color: transparent; }}
+window {{ background-color: {BG}; }}
 .frame {{
     background-color: {BG};
     border-radius: 4px;
@@ -32,31 +32,31 @@ window {{ background-color: transparent; }}
     margin: 6px;
 }}
 .header {{
-    background-color: {BG_SEC};
+    background-color: {BG};
     border-radius: 4px;
     padding: 10px 14px; margin-bottom: 6px;
 }}
 .header-label {{
     color: {FG}; font-family: "JetBrains Mono";
-    font-size: 13px; font-weight: bold;
+    font-size: 16px; font-weight: bold;
 }}
 .count-lbl {{
-    color: {FG_DIM}; font-family: "JetBrains Mono";
-    font-size: 10px;
+    color: {FG}; font-family: "JetBrains Mono";
+    font-size: 12px;
 }}
 .search-box {{
-    background-color: #111111; border-radius: 4px;
-    border: 1px solid #333333; padding: 2px 8px;
+    background-color: {BG}; border-radius: 4px;
+    border: 0px solid #9c7321; padding: 2px 8px;
     margin: 0px 12px 6px 12px;
 }}
 .search-entry {{
-    background-color: transparent; color: {FG};
-    font-family: "JetBrains Mono"; font-size: 12px;
-    border: none; padding: 6px 4px;
+    background-color: transparent; color: #ffffff;
+    font-family: "JetBrains Mono"; font-size: 14px;
+    border: 2px solid #9c7321; padding: 6px 4px;
 }}
 .tab-bar {{ background-color: transparent; padding: 0px 12px 6px 12px; }}
 .tab-btn {{
-    background-color: transparent; color: {FG_DIM};
+    background-color: transparent; color: {FG};
     border-radius: 4px; border: none; padding: 4px 14px;
     font-family: "JetBrains Mono"; font-size: 11px;
 }}
@@ -66,12 +66,12 @@ window {{ background-color: transparent; }}
     font-family: "JetBrains Mono"; font-size: 11px; font-weight: bold;
 }}
 .preview-box {{
-    background-color: {BG_SEC}; border-radius: 4px;
-    border: 1px solid {BORDER};
+    background-color: {BG}; border-radius: 4px;
+    border: 1px solid #9c7321;
     padding: 8px 12px; margin: 0px 12px 6px 12px;
 }}
 .preview-text {{
-    color: {FG_DIM}; font-family: "JetBrains Mono";
+    color: {FG}; font-family: "JetBrains Mono";
     font-size: 11px;
 }}
 list {{
@@ -79,9 +79,9 @@ list {{
     padding: 4px 8px;
 }}
 row {{
-    background-color: {BG_SEC};
+    background-color: {BG};
     border-radius: 4px;
-    border: 1px solid {BORDER};
+    border: 1px solid #9c7321;
     padding: 8px;
     margin: 4px 0px;
 }}
@@ -97,20 +97,20 @@ row:selected {{
     font-size: 9px;
 }}
 .action-btn, .del-btn {{
-    background-color: #111111; color: {FG};
-    border: 1px solid {BORDER}; border-radius: 4px; padding: 4px 8px;
+    background-color: {BG}; color: {FG};
+    border: 1px solid #9c7321; border-radius: 4px; padding: 4px 8px;
     font-family: "JetBrains Mono"; font-size: 10px;
 }}
 .action-btn:hover, .del-btn:hover {{ border-color: {ACC}; }}
 .btn {{
-    background-color: #111111; color: {FG};
-    border-radius: 4px; border: 1px solid {BORDER}; padding: 7px 14px;
+    background-color: {BG}; color: {FG};
+    border-radius: 4px; border: 1px solid #9c7321; padding: 7px 14px;
     font-family: "JetBrains Mono"; font-size: 11px;
 }}
 .btn:hover {{ border-color: {ACC}; }}
 .btn-danger {{
-    background-color: #111111; color: #ff5555;
-    border-radius: 4px; border: 1px solid {BORDER}; padding: 7px 14px;
+    background-color: {BG}; color: #ff5555;
+    border-radius: 4px; border: 1px solid #9c7321; padding: 7px 14px;
 }}
 .btn-danger:hover {{ border-color: #ff5555; }}
 .status-bar {{ padding: 8px 14px; border-top: 1px solid {BORDER}; }}
@@ -377,8 +377,16 @@ class ClipBox(Gtk.Window):
             self.status_lbl.set_text("Confirm clear all?")
             return
         self._confirm_clear = False
-        threading.Thread(target=lambda: subprocess.run(['cliphist','wipe'], capture_output=True), daemon=True).start()
-        self._pins.clear(); save_pins(self._pins); self._start_load()
+        
+        def smart_wipe_worker():
+            subprocess.run(['cliphist', 'wipe'], capture_output=True)
+            
+            for text in self._pins:
+                subprocess.run(['cliphist', 'store'], input=text.encode('utf-8'), capture_output=True)
+            
+            GLib.idle_add(self._start_load)
+
+        threading.Thread(target=smart_wipe_worker, daemon=True).start()
 
     def _on_search(self, entry): self._rebuild_list()
     def _on_search_key(self, widget, event): return False

@@ -72,7 +72,6 @@ alias mc="micro"
 alias update="sudo pacman -Syu"
 alias install="sudo pacman -S"
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq); sudo paccache -rk2'
-alias reload="hyprctl reload && killall waybar && waybar &"
 alias keys="~/custom-scripts/keybinds.sh"
 alias dashboard="python3 ~/custom-scripts/Dashboard/dashboard.py"
 alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.conf ~/.config/hypr/configs/windowrules.conf'
@@ -121,7 +120,6 @@ dotsync() {
     # Sync .config folders directly to the repo's .config directory
     # Using the / suffix on source ensures we sync the content into the named destination
     rsync -a --delete ~/.config/hypr/ ~/dotfiles/.config/hypr/
-    rsync -a --delete ~/.config/waybar/ ~/dotfiles/.config/waybar/
     rsync -a --delete ~/.config/nwg-look/ ~/dotfiles/.config/nwg-look/
     rsync -a --delete ~/.config/wal/ ~/dotfiles/.config/wal/
     rsync -a --delete ~/.config/kitty/ ~/dotfiles/.config/kitty/
@@ -195,6 +193,8 @@ export PATH="$HOME/.local/bin:$PATH"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
 # --- Mend plugin ---
+# source $HOME/arch-projects/mend/mend.plugin.zsh
+# fpath=($HOME/arch-projects/mend/functions $fpath)
 source /usr/share/zsh/plugins/mend/mend.plugin.zsh
 fpath=(/usr/share/zsh/plugins/mend/functions $fpath)
 autoload -Uz mend

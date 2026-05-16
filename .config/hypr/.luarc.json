@@ -1,0 +1,12 @@
+{
+    "runtime": {
+        "version": "LuaJIT"
+    },
+    "diagnostics": {
+        "globals": ["hl"]
+    },
+    "workspace": {
+        "library": ["/usr/share/hyprland/"]
+    }
+}
+
