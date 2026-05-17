@@ -60,7 +60,9 @@ end
 
 -- Screenshots & Hardware Keys
 
-hl.bind("Print", hl.dsp.exec_cmd("grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"))
+-- Capture full screen and trigger a desktop notification upon success
+hl.bind("Print", hl.dsp.exec_cmd("grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png && notify-send 'Screenshot Captured'"))
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd([[slurp -b 00000000 -c ffff00 -w 1 | xargs -I {} sh -c "sleep 0.2 && grim -g '{}' ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png" && notify-send "Screenshot Captured"]]))
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl set 5%+"), { locked = true, repeating = true })
