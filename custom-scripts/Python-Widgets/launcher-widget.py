@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # ─────────────────────────────────────────────────────────────────────────────
 #  launcher-widget.py — App launcher + file browser
-#  Bottom-centre, slides from bottom, 800x600, pywal themed
+#  Bottom-centre, slides from bottom, 800x600, Control Panel themed
 # ─────────────────────────────────────────────────────────────────────────────
 
 import gi
@@ -13,51 +13,43 @@ from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell, Gio
 import os, subprocess, threading
 
 WIDGET_W      = 800
-WIDGET_H      = 580
+WIDGET_H      = 680
 ICON_SIZE     = 48
 GRID_COLS     = 6
 HOME          = os.path.expanduser("~")
 
-# ── Pywal colors ──────────────────────────────────────────────────────────────
-def get_wal_colors():
-    try:
-        with open(os.path.expanduser("~/.cache/wal/colors")) as f:
-            return [l.strip() for l in f if l.strip()]
-    except:
-        return ["#1a1a2e","#16213e","#0f3460","#533483",
-                "#e94560","#2d6a4f","#52b788","#a8dadc",
-                "#457b9d","#1d3557","#2d6a4f","#52b788",
-                "#a8dadc","#e9c46a","#f4a261","#ffffff"]
-
-C   = get_wal_colors()
-BG  = C[0];  BG2 = C[1];  ACC = C[2]
-FG  = C[7];  FG2 = C[15] if len(C) > 15 else "#ffffff"
-HIGH= C[4]
+# Consistent Theme Colours matching Control Panel
+BG      = "#1d2021"
+BG_SEC  = "#050505"
+BORDER  = "#222222"
+ACC     = "#767b7e"
+FG      = "#ffffff"
+FG_DIM  = "#aaaaaa"
 
 CSS = f"""
 window {{
-    background-color: transparent;
+    background-color: {BG};
+    border: 2px solid #767b7e;
 }}
 .frame {{
-    background-color: alpha({BG}, 0.97);
-    border-radius: 16px 16px 16px 16px;
-    border: 2px solid {ACC};
-    border-bottom: none;
+    background-color: {BG};
+    border-radius: 4px;
+    border: 2px solid #333333;
+    margin: 6px;
 }}
 .search-box {{
-    background-color: {BG2};
-    border-radius: 10px;
-    border: 1px solid {ACC};
+    background-color: {BG};
+    border-radius: 4px;
+    border: 2px solid {ACC};
     padding: 2px 8px;
     margin: 10px 12px 6px 12px;
 }}
 .search-entry {{
     background-color: transparent;
-    color: {FG2};
-    font-family: "JetBrainsMono Nerd Font";
-    font-size: 13px;
-    border: none;
-    box-shadow: none;
+    color: {FG};
+    font-family: "JetBrains Mono";
+    font-size: 14px;
+    border: 0px solid {ACC};
     padding: 6px 4px;
     min-width: 200px;
 }}
@@ -71,47 +63,44 @@ window {{
 }}
 .tab-btn {{
     background-color: transparent;
-    color: {FG2};
-    border-radius: 8px;
+    color: {FG};
+    border-radius: 4px;
     border: none;
-    padding: 5px 18px;
-    font-family: "JetBrainsMono Nerd Font";
+    padding: 4px 14px;
+    font-family: "JetBrains Mono";
     font-size: 11px;
-    opacity: 0.8;
 }}
 .tab-btn:hover {{
-    opacity: 1.0;
-    color: {FG2};
+    color: {FG};
 }}
 .tab-active {{
     background-color: {ACC};
-    color: {FG2};
-    border-radius: 8px;
+    color: #000000;
+    border-radius: 4px;
     border: none;
-    padding: 5px 18px;
-    font-family: "JetBrainsMono Nerd Font";
+    padding: 4px 14px;
+    font-family: "JetBrains Mono";
     font-size: 11px;
     font-weight: bold;
-    opacity: 1.0;
 }}
 .grid-scroll {{
     background-color: transparent;
     padding: 4px 8px;
 }}
 .app-tile {{
-    background-color: {BG2};
-    border-radius: 10px;
-    border: 2px solid transparent;
+    background-color: {BG};
+    border-radius: 4px;
+    border: 1px solid {ACC};
     padding: 10px 6px 8px 6px;
     margin: 4px;
 }}
 .app-tile:hover {{
-    background-color: {ACC};
-    border-color: {FG2};
+    background-color: #111111;
+    border-color: {ACC};
 }}
 flowboxchild:selected .app-tile {{
-    background-color: {ACC};
-    border-color: {FG2};
+    background-color: #111111;
+    border-color: {ACC};
 }}
 flowboxchild:selected {{
     background-color: transparent;
@@ -120,44 +109,42 @@ flowboxchild:selected {{
     box-shadow: none;
 }}
 .app-name {{
-    color: {FG2};
-    font-family: "JetBrainsMono Nerd Font";
+    color: {FG};
+    font-family: "JetBrains Mono";
     font-size: 10px;
     margin-top: 4px;
 }}
 .file-row {{
-    background-color: transparent;
-    border-radius: 8px;
-    border: 4px solid transparent;
+    background-color: {BG};
+    border-radius: 4px;
+    border: 1px solid {ACC};
     padding: 8px 12px;
-    margin: 10px 8px;
+    margin: 4px 8px;
 }}
 .file-row:hover {{
-    background-color: {ACC};
-    border-color: {FG2};
+    background-color: #111111;
+    border-color: {ACC};
 }}
 .file-name {{
-    color: {FG2};
-    font-family: "JetBrainsMono Nerd Font";
-    font-size: 15px;
+    color: {FG};
+    font-family: "JetBrains Mono";
+    font-size: 12px;
 }}
 .file-path {{
-    color: {FG};
-    font-family: "JetBrainsMono Nerd Font";
+    color: {FG_DIM};
+    font-family: "JetBrains Mono";
     font-size: 9px;
-    opacity: 0.8;
 }}
 .breadcrumb {{
-    background-color: {BG2};
-    border-radius: 8px;
+    background-color: {BG_SEC};
+    border-radius: 4px;
     padding: 4px 12px;
     margin: 0px 12px 6px 12px;
 }}
 .breadcrumb-lbl {{
-    color: {FG2};
-    font-family: "JetBrainsMono Nerd Font";
+    color: {FG_DIM};
+    font-family: "JetBrains Mono";
     font-size: 10px;
-    opacity: 0.7;
 }}
 .breadcrumb-btn {{
     background-color: transparent;
@@ -165,26 +152,24 @@ flowboxchild:selected {{
     border: none;
     border-radius: 4px;
     padding: 2px 6px;
-    font-family: "JetBrainsMono Nerd Font";
+    font-family: "JetBrains Mono";
     font-size: 10px;
 }}
 .breadcrumb-btn:hover {{
-    color: {FG2};
+    color: {FG};
 }}
 .status-bar {{
     background-color: transparent;
-    padding: 4px 16px;
-    border-top: 1px solid alpha({ACC}, 0.3);
+    padding: 8px 14px;
+    border-top: 1px solid {BORDER};
 }}
 .status-lbl {{
-    color: {FG2};
-    font-family: "JetBrainsMono Nerd Font";
+    color: {FG_DIM};
+    font-family: "JetBrains Mono";
     font-size: 9px;
-    opacity: 0.5;
 }}
 """
 
-# ── App discovery ─────────────────────────────────────────────────────────────
 def get_apps():
     apps = []
     seen = set()
@@ -232,7 +217,6 @@ def get_icon_pixbuf(app, size=ICON_SIZE):
     except:
         return None
 
-# ── File helpers ──────────────────────────────────────────────────────────────
 def list_dir(path):
     try:
         entries = os.listdir(path)
@@ -266,19 +250,17 @@ def open_file(path):
     except:
         pass
 
-# ── Widget ────────────────────────────────────────────────────────────────────
 class Launcher(Gtk.Window):
     def __init__(self):
         super().__init__(type=Gtk.WindowType.TOPLEVEL)
         self.set_title("launcher-widget")
 
-        # ── Layer Shell ───────────────────────────────────────────────────────
         GtkLayerShell.init_for_window(self)
         GtkLayerShell.set_layer(self, GtkLayerShell.Layer.TOP)
         GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, True)
         GtkLayerShell.set_exclusive_zone(self, -1)
-        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, 17)
-        GtkLayerShell.set_keyboard_mode(self, GtkLayerShell.KeyboardMode.EXCLUSIVE)
+        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, -1)
+        GtkLayerShell.set_keyboard_mode(self, GtkLayerShell.KeyboardMode.ON_DEMAND)
 
         self.set_decorated(False)
         self.set_resizable(False)
@@ -303,14 +285,12 @@ class Launcher(Gtk.Window):
         self._cur_dir    = HOME
         self._cur_tab    = "apps"
 
-        # ── Outer frame ───────────────────────────────────────────────────────
         frame = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         frame.get_style_context().add_class('frame')
         frame.set_size_request(WIDGET_W, WIDGET_H)
         frame.set_halign(Gtk.Align.CENTER)
         self.add(frame)
 
-        # Search bar
         search_wrap = Gtk.Box()
         search_wrap.get_style_context().add_class('search-box')
         search_icon = Gtk.Label(label="  ")
@@ -324,7 +304,6 @@ class Launcher(Gtk.Window):
         search_wrap.pack_start(self.search, True, True, 0)
         frame.pack_start(search_wrap, False, False, 0)
 
-        # Tab bar
         tab_bar = Gtk.Box(spacing=6)
         tab_bar.get_style_context().add_class('tab-bar')
         self.tab_apps  = Gtk.Button(label="󰀻  Apps")
@@ -338,13 +317,11 @@ class Launcher(Gtk.Window):
         tab_bar.pack_end(self.app_count_lbl, False, False, 0)
         frame.pack_start(tab_bar, False, False, 0)
 
-        # Stack
         self.stack = Gtk.Stack()
         self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
         self.stack.set_transition_duration(150)
         frame.pack_start(self.stack, True, True, 0)
 
-        # ── Apps page ─────────────────────────────────────────────────────────
         apps_scroll = Gtk.ScrolledWindow()
         apps_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         apps_scroll.get_style_context().add_class('grid-scroll')
@@ -358,10 +335,8 @@ class Launcher(Gtk.Window):
         apps_scroll.add(self.apps_grid)
         self.stack.add_named(apps_scroll, "apps")
 
-        # ── Files page ────────────────────────────────────────────────────────
         files_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
-        # Breadcrumb
         self.breadcrumb_box = Gtk.Box(spacing=2)
         self.breadcrumb_box.get_style_context().add_class('breadcrumb')
         files_box.pack_start(self.breadcrumb_box, False, False, 0)
@@ -374,7 +349,6 @@ class Launcher(Gtk.Window):
         files_box.pack_start(files_scroll, True, True, 0)
         self.stack.add_named(files_box, "files")
 
-        # Status bar
         status = Gtk.Box()
         status.get_style_context().add_class('status-bar')
         self.status_lbl = Gtk.Label(label="ESC to close  •  Enter to launch  •  ↑↓ to navigate")
@@ -385,10 +359,8 @@ class Launcher(Gtk.Window):
         self._switch_tab("apps")
         self._update_tab_styles()
 
-        # Load apps in background
         threading.Thread(target=self._load_apps, daemon=True).start()
 
-    # ── Tab switching ─────────────────────────────────────────────────────────
     def _switch_tab(self, name):
         self._cur_tab = name
         self.stack.set_visible_child_name(name)
@@ -404,7 +376,6 @@ class Launcher(Gtk.Window):
             ctx.remove_class('tab-active')
             ctx.add_class('tab-active' if self._cur_tab == name else 'tab-btn')
 
-    # ── App loading ───────────────────────────────────────────────────────────
     def _load_apps(self):
         apps = get_apps()
         self._all_apps = apps
@@ -441,7 +412,6 @@ class Launcher(Gtk.Window):
         lbl.set_tooltip_text(name)
         box.pack_start(lbl, False, False, 0)
 
-        # Store app ref
         box._app = app
         return box
 
@@ -456,7 +426,6 @@ class Launcher(Gtk.Window):
                     subprocess.Popen(cmd.split())
             Gtk.main_quit()
 
-    # ── File loading ──────────────────────────────────────────────────────────
     def _load_files(self, path):
         self._cur_dir = path
         self._update_breadcrumb(path)
@@ -519,7 +488,6 @@ class Launcher(Gtk.Window):
         if not parts:
             parts = ['~']
 
-        # Build clickable breadcrumb segments
         built = HOME
         for i, part in enumerate(parts):
             if i > 0:
@@ -538,7 +506,6 @@ class Launcher(Gtk.Window):
 
         self.breadcrumb_box.show_all()
 
-    # ── Search ────────────────────────────────────────────────────────────────
     def _on_search(self, entry):
         query = entry.get_text().lower().strip()
 
@@ -559,21 +526,17 @@ class Launcher(Gtk.Window):
                 self.files_list.pack_start(self._make_file_row(name, full), False, False, 0)
             self.files_list.show_all()
 
-    # ── Keyboard ──────────────────────────────────────────────────────────────
     def _on_grid_key(self, widget, event):
         key = event.keyval
-        # Enter activates selected child
         if key in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
             selected = self.apps_grid.get_selected_children()
             if selected:
                 self.apps_grid.emit("child-activated", selected[0])
             return True
-        # Escape returns focus to search
         if key == Gdk.KEY_Escape:
             self.apps_grid.unselect_all()
             self.search.grab_focus()
             return True
-        # Any printable character → jump back to search and type
         if event.string and event.string.isprintable():
             self.search.grab_focus()
             self.search.set_text(self.search.get_text() + event.string)
@@ -583,7 +546,6 @@ class Launcher(Gtk.Window):
 
     def _on_search_key(self, widget, event):
         key = event.keyval
-        # Arrow down from search → focus the grid
         if key == Gdk.KEY_Down:
             if self._cur_tab == "apps":
                 children = self.apps_grid.get_children()
@@ -595,7 +557,6 @@ class Launcher(Gtk.Window):
                 if children:
                     children[0].grab_focus()
             return True
-        # Enter from search → activate first result
         if key in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
             if self._cur_tab == "apps":
                 children = self.apps_grid.get_children()
@@ -606,8 +567,8 @@ class Launcher(Gtk.Window):
                 if children:
                     path = os.path.join(self._cur_dir,
                                         children[0].get_child()
-                                        .get_children()[0]  # row box
-                                        .get_children()[1]  # name label
+                                        .get_children()[0]
+                                        .get_children()[1]
                                         .get_text())
                     self._on_file_click(path)
             return True

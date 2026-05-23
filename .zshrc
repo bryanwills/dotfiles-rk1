@@ -52,7 +52,8 @@ PROMPT='%F{33}%~%f${vcs_info_msg_0_}
 %(?.%F{141}❯%f.%F{196}❯%f) '
 RPROMPT='%F{240}%D{%H:%M}%f %(?.%F{green}✓.%F{196}✗ %?)%f'
 
-fastfetch
+# fastfetch
+figlet -f smslant Welcome Back - Rk 1 | lolcat
 
 # --- User Configuration ---
 export LANG=en_GB.UTF-8
@@ -60,6 +61,8 @@ export LC_ALL=en_GB.UTF-8
 export EDITOR='micro'
 export VISUAL='geany'
 export PATH="$HOME/custom-scripts:$PATH"
+# Set the correct directory for figlet fonts
+export FIGLET_FONTDIR="/usr/share/figlet/fonts"
 
 # --- Aliases ---
 alias la="lsd -a"
@@ -74,7 +77,7 @@ alias install="sudo pacman -S"
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq); sudo paccache -rk2'
 alias keys="~/custom-scripts/keybinds.sh"
 alias dashboard="python3 ~/custom-scripts/Dashboard/dashboard.py"
-alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.conf ~/.config/hypr/configs/windowrules.conf'
+alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.lua ~/.config/hypr/configs/windowrules.lua'
 alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
 alias als="~/custom-scripts/Show-Aliases/show-aliases.sh"
 alias lg='lazygit'

@@ -17,7 +17,7 @@ hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("~/.local/bin/toggle-theme"))
 hl.bind(altMod .. " + N", hl.dsp.exec_cmd("~/.local/bin/nightlight"))
 
 -- App Launchers
-hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("pkill -f launcher-widget.py || python3 $HOME/custom-scripts/Python-Widgets/launcher-widget.py"))
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/Python-Widgets/launcher-widget.py"))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("kitty --class yazi -e yazi"))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("thunar"))
 hl.bind(altMod .. " + 1", hl.dsp.exec_cmd("kitty --class rtm -e python3 ~/arch-projects/RTM/rtm.py"))
@@ -30,10 +30,12 @@ hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("kitty --class bt-menu -e $HOME/custo
 hl.bind(altMod .. " + W", hl.dsp.exec_cmd("kitty --class floating_wifi -e ~/custom-scripts/wifi/wwifi"))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Python-Widgets/changewall-widget.py"))
 hl.bind(altMod .. " + M", hl.dsp.exec_cmd("kitty --class music --app-id=music kew"))
-hl.bind(altMod .. " + R", hl.dsp.exec_cmd("kitty --title='Mirec' -e ~/arch-projects/MIREC/mirec"))
-hl.bind(altMod .. " + 9", hl.dsp.exec_cmd("kitty --title 'Audio Switcher' -e ~/custom-scripts/Shell-Widgets/change-audio.sh"))
+hl.bind(altMod .. " + R", hl.dsp.exec_cmd("kitty --class 'Mirec' -e $HOME/arch-projects/MIREC/mirec"))
+hl.bind(altMod .. " + 9", hl.dsp.exec_cmd("kitty --class 'Audio Switcher' -e ~/custom-scripts/Shell-Widgets/change-audio.sh"))
 hl.bind(altMod .. " + C", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Python-Widgets/clipbox-widget2.py"))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Control-Panel/control-panel.py"))
+-- Construct an explicit path using native system environment tools
+hl.bind(altMod .. " + T", hl.dsp.exec_cmd("kitty --class tt -e " .. os.getenv("HOME") .. "/.local/bin/tt tui"))
 
 -- Navigation (Master Layout)
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
@@ -80,3 +82,4 @@ hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 hl.bind("ALT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 -- To see the hiden window and workspace you can use: 
 hl.bind("ALT + SHIFT + S", hl.dsp.workspace.toggle_special("magic"))
+

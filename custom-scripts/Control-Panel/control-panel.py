@@ -7,7 +7,7 @@
 # Version: 0.1.0
 # Descriptions: 
 # A unified, Waybar-free dashboard built with PyQt6 for Hyprland.
-#----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------@
 
 import sys
 import os
@@ -44,25 +44,25 @@ class ControlPanel(QWidget):
             self.font_family = "JetBrains Mono"
 
         self.setStyleSheet(f"""
-            QWidget#MainWidget {{ background-color: #1d2021; border: 1px solid #050505; }}
-            QFrame#Section {{ border: 1px solid #9c7321; border-radius: 4px; background-color: #1d2021; }}
+            QWidget#MainWidget {{ background-color: #1d2021; border: 2px solid #767b7e; }}
+            QFrame#Section {{ border: 1px solid #767b7e; border-radius: 4px; background-color: #1d2021; }}
             QLabel {{ color: #ffffff; font-family: 'JetBrains Mono'; font-size: 11px; }}
-            QLineEdit {{ background-color: #1d2021; border: 1px solid #9c7321; color: #ffffff; padding: 5px; border-radius: 4px; }}
+            QLineEdit {{ background-color: #1d2021; border: 1px solid #767b7e; color: #ffffff; padding: 5px; border-radius: 4px; }}
             QListWidget {{ background-color: #1d2021; border: 1px solid #222222; color: #ffffff; outline: none; border-radius: 4px; }}
             QListWidget::item {{ padding: 8px; border-bottom: 1px solid #111111; }}
-            QListWidget::item:selected {{ background-color: #111111; color: #9c7321; }}
+            QListWidget::item:selected {{ background-color: #111111; color: #767b7e; }}
             QProgressBar {{ border: none; background-color: #111111; height: 4px; border-radius: 5px; color: transparent; }}
-            QProgressBar::chunk {{ background-color: #52fa69; border-radius: 5px; }}
+            QProgressBar::chunk {{ background-color: #767b7e; border-radius: 5px; }}
             QScrollBar {{ border: none; background: #000000; width: 8px; height: 8px; margin: 0px; }}
             QScrollBar::handle {{ background: #333333; min-height: 20px; min-width: 20px; border-radius: 4px; }}
             QScrollBar::handle:hover {{ background: #287b34; }}
-            QPushButton {{ background-color: #1d2021; border: 1px solid #9c7321; color: #ffffff; padding: 8px; font-family: 'JetBrains Mono'; border-radius: 4px; }}
+            QPushButton {{ background-color: #1d2021; border: 1px solid #767b7e; color: #ffffff; padding: 8px; font-family: 'JetBrains Mono'; border-radius: 4px; }}
             QSlider::groove:horizontal {{ border: none; height: 2px; background: #333333; }}
-            QSlider::handle:horizontal {{ background: #52fa69; border: 1px solid #ffffff; width: 4px; height: 14px; margin: -7px 0; }}
-            QPushButton:hover {{ background-color: #222222; border-color: #287b34; }}
-            QPushButton:focus {{ background-color: #222222; border: 1px solid #ffffff; outline: none; }}
-            QPushButton#ActiveProfile, QPushButton#ActiveWorkspace {{ background-color: #9c7321; color: #000000; font-weight: bold; border: 1px solid #ffffff; }}
-            QPushButton#TaskItem {{ font-size: 10px; padding: 4px 6px; min-width: 70px; background-color: #1d2021; border-color: #9c7321; }}
+            QSlider::handle:horizontal {{ background: #767b7e; border: 0px solid #ffffff; width: 4px; height: 14px; margin: -7px 0; }}
+            QPushButton:hover {{ background-color: #222222; border-color: #b5bc90; }}
+            QPushButton:focus {{ background-color: #222222; border: 1px solid #b5bc90; outline: none; }}
+            QPushButton#ActiveProfile, QPushButton#ActiveWorkspace {{ background-color: #b5bc90; color: #000000; font-weight: bold; border: 1px solid #ffffff; }}
+            QPushButton#TaskItem {{ font-size: 10px; padding: 4px 6px; min-width: 70px; background-color: #1d2021; border-color: #767b7e; }}
         """)
 
         self.apps_list = self.get_installed_apps()
@@ -137,16 +137,6 @@ class ControlPanel(QWidget):
 
         body = QHBoxLayout()
         left = QVBoxLayout()
-        
-        # Tasks Section
-        task_sec = self.create_section()
-        task_lay = QVBoxLayout(task_sec)
-        task_lay.addWidget(QLabel("󰖯  OPEN TASKS"))
-        self.task_grid = QGridLayout()
-        self.task_grid.setSpacing(5)
-        task_lay.addLayout(self.task_grid)
-        task_lay.addStretch()
-        left.addWidget(task_sec)
 
         # App Launcher
         s_sec = self.create_section()
@@ -162,6 +152,35 @@ class ControlPanel(QWidget):
         self.results.itemDoubleClicked.connect(self.launch_app)
         s_lay.addWidget(self.results)
         left.addWidget(s_sec)
+        
+        # Tasks Section
+        task_sec = self.create_section()
+        task_lay = QVBoxLayout(task_sec)
+        task_lay.addWidget(QLabel("󰖯  OPEN TASKS"))
+        self.task_grid = QGridLayout()
+        self.task_grid.setSpacing(5)
+        task_lay.addLayout(self.task_grid)
+        task_lay.addStretch()
+        left.addWidget(task_sec)
+
+        # Project Time Tracker Status
+        tt_sec = self.create_section()
+        tt_lay = QVBoxLayout(tt_sec)
+        tt_lay.addWidget(QLabel("󱎫  PROJECT TIME TRACKER"))
+        tt_lay.setContentsMargins(15, 12, 15, 12)
+        
+        tt_title_lay = QHBoxLayout()
+        self.tt_project_lbl = QLabel("Inactive")
+        self.tt_project_lbl.setStyleSheet("font-size: 13px; color: #ffffff;")
+        
+        self.tt_status_icon = QLabel("󱎫 ")
+        self.tt_status_icon.setStyleSheet("color: #aaaaaa; font-size: 13px;")
+        
+        tt_title_lay.addWidget(self.tt_project_lbl)
+        tt_title_lay.addWidget(self.tt_status_icon, 0, Qt.AlignmentFlag.AlignRight)
+        tt_lay.addLayout(tt_title_lay)
+        
+        left.addWidget(tt_sec)
 
         # Tools Grid with ID tracking
         g_sec = self.create_section()
@@ -223,7 +242,7 @@ class ControlPanel(QWidget):
         r_lay.addSpacing(10)
         r_lay.addWidget(QLabel("BATTERY"))
         self.bat_stats = QLabel("Checking battery...")
-        self.bat_stats.setStyleSheet("color: #aaaaaa; font-size: 11px;")
+        self.bat_stats.setStyleSheet("color: #ffffff; font-size: 11px;")
         self.bat_stats.setWordWrap(True)
         r_lay.addWidget(self.bat_stats)
         right.addWidget(r_sec)
@@ -320,7 +339,8 @@ class ControlPanel(QWidget):
         self.update_taskbar()
         self.highlight_active_profile()
         self.refresh_notifications()
-
+        self.update_tracker_display()
+        
     # --- Workspace and Taskbar Syncing ---
     def update_workspaces(self):
         try:
@@ -349,7 +369,39 @@ class ControlPanel(QWidget):
                 # btn.clicked.connect(lambda chk, a=c.get("address"): self.run_cmd(f"hyprctl dispatch 'hl.dsp.focus({{ window = \"address:{a}\" }})'")) # Transition to Lua
                 self.task_grid.addWidget(btn, i // 3, i % 3)
         except: pass
-
+        
+    def update_tracker_display(self):
+        import time
+        tracker_log = os.path.expanduser("~/.tt_running")
+        if os.path.exists(tracker_log):
+            try:
+                with open(tracker_log, "r", encoding="utf-8") as f:
+                    lines = [line.strip() for line in f if line.strip()]
+                
+                if len(lines) >= 2:
+                    # Parse initial epoch time and label string
+                    start_time = int(lines[0])
+                    proj_name = lines[1]
+                    
+                    # Compute running duration math directly in the update frame
+                    now = int(time.time())
+                    elapsed_seconds = max(0, now - start_time)
+                    
+                    # Group seconds into structural clock properties
+                    hours, remainder = divmod(elapsed_seconds, 3600)
+                    minutes, seconds = divmod(remainder, 60)
+                    time_str = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+                
+                    self.tt_project_lbl.setText(f"󰄶  {proj_name} ({time_str})")
+                    self.tt_status_icon.setStyleSheet("color: #52fa69; font-size: 13px;")
+                    return
+            except Exception as e:
+                pass
+                
+        # Default state when tracking file is removed on stop
+        self.tt_project_lbl.setText("Inactive")
+        self.tt_status_icon.setStyleSheet("color: #dd4832; font-size: 13px;")
+            
     # --- Notification Handling ---
     def show_notif_menu(self, pos):
         if not self.notif_list.itemAt(pos): return
