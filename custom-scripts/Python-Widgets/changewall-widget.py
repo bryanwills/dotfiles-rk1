@@ -20,12 +20,12 @@ WIDGET_MARGIN = 335
 # --- Control Panel Color Palette ---
 BG      = "#1d2021"  # Deep background
 BG_ALT  = "#111111"  # Darker contrast
-ACCENT  = "#9c7321"  # Gold/Brown accent
+ACCENT  = "#767b7e"  # Gray accent
 FG      = "#ffffff"  # Pure white
 FG_DIM  = "#aaaaaa"  # Dimmed text
 
 CSS = f"""
-window {{ background-color: {BG}; border: 0px solid {BG_ALT}; border-radius: 4px; }}
+window {{ background-color: {BG}; border: 2px solid {ACCENT}; border-radius: 4px; }}
 .frame {{ background-color: {BG}; border-radius: 4px; border: 1px solid {ACCENT}; margin: 6px; }}
 .bar   {{ background-color: transparent; padding: 6px 16px 4px 16px; border-bottom: 1px solid #222222; }}
 .title {{ color: {FG}; font-family: 'JetBrains Mono'; font-size: 12px; font-weight: bold; }}
@@ -39,7 +39,7 @@ window {{ background-color: {BG}; border: 0px solid {BG_ALT}; border-radius: 4px
 .thumb-box:hover {{ border-color: {ACCENT}; background-color: #222222; }}
 .thumb-active {{
     background-color: {BG}; border-radius: 4px;
-    border: 1px solid {FG}; margin: 2px 5px; padding: 4px;
+    border: 1px solid {ACCENT}; margin: 2px 5px; padding: 4px;
 }}
 .thumb-name        {{ color: {FG_DIM}; font-family: 'JetBrains Mono'; font-size: 9px; }}
 .thumb-name-active {{ color: {FG}; font-family: 'JetBrains Mono'; font-size: 9px; font-weight: bold; }}
@@ -87,7 +87,7 @@ def apply_wallpaper(path, status_cb, done_cb):
     GLib.idle_add(status_cb, f"󰐍  Switching to {name}...")
     # swww transition logic
     subprocess.run(['awww', 'img', path, '--transition-type', 'grow', 
-                    '--transition-pos', 'center', '--transition-fps', '60'], capture_output=True)
+                    '--transition-pos', 'center', '--transition-fps', '120'], capture_output=True)
     GLib.idle_add(status_cb, f"✓  Active: {name}")
     GLib.idle_add(done_cb)
 
@@ -112,6 +112,8 @@ class WallWidget(Gtk.Window):
 
         self._applying = False
         self._thumb_boxes = {}
+        self._paths_list = []
+        self._current_index = -1
 
         # Main Layout
         frame = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -124,7 +126,7 @@ class WallWidget(Gtk.Window):
         title.get_style_context().add_class('title'); title.set_halign(Gtk.Align.START)
         self.status_lbl = Gtk.Label(label="")
         self.status_lbl.get_style_context().add_class('applying')
-        hint = Gtk.Label(label="ESC to close  •  Scroll to browse")
+        hint = Gtk.Label(label="←/→ Browse  •  ENTER Select  •  ESC Close")
         hint.get_style_context().add_class('hint'); hint.set_halign(Gtk.Align.END)
         
         bar.pack_start(title, False, False, 0)
@@ -183,19 +185,59 @@ class WallWidget(Gtk.Window):
         evbox.connect("button-press-event", self._on_click, path)
         self.gallery.pack_start(evbox, False, False, 0)
         self._thumb_boxes[path] = (evbox, name_lbl)
+        self._paths_list.append(path)
+        
+        if self._current_index == -1:
+            self._current_index = 0
+            self._update_highlight()
+
         self.gallery.show_all()
+
+    def _update_highlight(self):
+        if not self._paths_list or self._current_index < 0: return
+        target_path = self._paths_list[self._current_index]
+        
+        for p, (eb, nl) in self._thumb_boxes.items():
+            if p == target_path:
+                eb.get_style_context().remove_class('thumb-box')
+                eb.get_style_context().add_class('thumb-active')
+                nl.get_style_context().add_class('thumb-name-active')
+                
+                # Adjust viewport scroll boundary dynamically
+                adj = self._scroll.get_hadjustment()
+                alloc = eb.get_allocation()
+                # Use default width if the widget asset hasn't completed initial realization
+                item_w = alloc.width if alloc.width > 1 else (THUMB_SIZE + 18)
+                
+                # Compute parent layout offsets
+                item_x = eb.translate_coordinates(self.gallery, 0, 0)
+                if item_x is not None:
+                    item_left = item_x[0]
+                    item_right = item_left + item_w
+                    
+                    view_left = adj.get_value()
+                    view_w = self._scroll.get_allocated_width()
+                    view_right = view_left + (view_w if view_w > 1 else (Gdk.Screen.get_default().get_primary_monitor().get_geometry().width - WIDGET_MARGIN * 2))
+                    
+                    if item_left < view_left:
+                        adj.set_value(max(0, item_left - 10))
+                    elif item_right > view_right:
+                        adj.set_value(min(adj.get_upper() - adj.get_page_size(), item_right - view_w + 10))
+            else:
+                eb.get_style_context().remove_class('thumb-active')
+                eb.get_style_context().add_class('thumb-box')
+                nl.get_style_context().remove_class('thumb-name-active')
 
     def _on_click(self, w, event, path):
         if self._applying or event.button != 1: return
+        if path in self._paths_list:
+            self._current_index = self._paths_list.index(path)
+            self._update_highlight()
+        self._trigger_switch(path)
+
+    def _trigger_switch(self, path):
+        if self._applying: return
         self._applying = True
-        for p, (eb, nl) in self._thumb_boxes.items():
-            eb.get_style_context().remove_class('thumb-active')
-            eb.get_style_context().add_class('thumb-box')
-            nl.get_style_context().remove_class('thumb-name-active')
-        
-        self._thumb_boxes[path][0].get_style_context().add_class('thumb-active')
-        self._thumb_boxes[path][1].get_style_context().add_class('thumb-name-active')
-        
         threading.Thread(target=apply_wallpaper, args=(path, self._set_status, self._done_applying), daemon=True).start()
 
     def _set_status(self, msg): self.status_lbl.set_text(msg)
@@ -213,7 +255,29 @@ class WallWidget(Gtk.Window):
         return True
 
     def _on_key(self, widget, event):
-        if event.keyval == Gdk.KEY_Escape: Gtk.main_quit()
+        if event.keyval == Gdk.KEY_Escape: 
+            Gtk.main_quit()
+            return True
+            
+        if not self._paths_list:
+            return False
+
+        if event.keyval == Gdk.KEY_Left:
+            if self._current_index > 0:
+                self._current_index -= 1
+                self._update_highlight()
+            return True
+        elif event.keyval == Gdk.KEY_Right:
+            if self._current_index < len(self._paths_list) - 1:
+                self._current_index += 1
+                self._update_highlight()
+            return True
+        elif event.keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+            if 0 <= self._current_index < len(self._paths_list):
+                self._trigger_switch(self._paths_list[self._current_index])
+            return True
+            
+        return False
 
 if __name__ == "__main__":
     win = WallWidget()

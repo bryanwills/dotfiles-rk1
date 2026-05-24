@@ -19,7 +19,7 @@ DISPLAY_MAX = 100
 BG = "#1d2021"
 BG_SEC = "#050505"
 BORDER = "#222222"
-ACC = "#9c7321"
+ACC = "#b5bc90"
 FG = "#ffffff"
 FG_DIM = "#aaaaaa"
 
@@ -28,7 +28,7 @@ window {{ background-color: {BG}; }}
 .frame {{
     background-color: {BG};
     border-radius: 4px;
-    border: 1px solid #333333;
+    border: 1px solid #767b7e;
     margin: 6px;
 }}
 .header {{
@@ -46,13 +46,13 @@ window {{ background-color: {BG}; }}
 }}
 .search-box {{
     background-color: {BG}; border-radius: 4px;
-    border: 0px solid #9c7321; padding: 2px 8px;
+    border: 0px solid #767b7e; padding: 2px 8px;
     margin: 0px 12px 6px 12px;
 }}
 .search-entry {{
     background-color: transparent; color: #ffffff;
     font-family: "JetBrains Mono"; font-size: 14px;
-    border: 2px solid #9c7321; padding: 6px 4px;
+    border: 2px solid #767b7e; padding: 6px 4px;
 }}
 .tab-bar {{ background-color: transparent; padding: 0px 12px 6px 12px; }}
 .tab-btn {{
@@ -61,13 +61,13 @@ window {{ background-color: {BG}; }}
     font-family: "JetBrains Mono"; font-size: 11px;
 }}
 .tab-active {{
-    background-color: {ACC}; color: #000000;
+    background-color: {ACC}; color: #ffffff;
     border-radius: 4px; border: none; padding: 4px 14px;
     font-family: "JetBrains Mono"; font-size: 11px; font-weight: bold;
 }}
 .preview-box {{
     background-color: {BG}; border-radius: 4px;
-    border: 1px solid #9c7321;
+    border: 1px solid #767b7e;
     padding: 8px 12px; margin: 0px 12px 6px 12px;
 }}
 .preview-text {{
@@ -81,7 +81,7 @@ list {{
 row {{
     background-color: {BG};
     border-radius: 4px;
-    border: 1px solid #9c7321;
+    border: 1px solid #767b7e;
     padding: 8px;
     margin: 4px 0px;
 }}
@@ -98,19 +98,19 @@ row:selected {{
 }}
 .action-btn, .del-btn {{
     background-color: {BG}; color: {FG};
-    border: 1px solid #9c7321; border-radius: 4px; padding: 4px 8px;
+    border: 1px solid #b5bc90; border-radius: 4px; padding: 4px 8px;
     font-family: "JetBrains Mono"; font-size: 10px;
 }}
 .action-btn:hover, .del-btn:hover {{ border-color: {ACC}; }}
 .btn {{
     background-color: {BG}; color: {FG};
-    border-radius: 4px; border: 1px solid #9c7321; padding: 7px 14px;
+    border-radius: 4px; border: 1px solid #b5bc90; padding: 7px 14px;
     font-family: "JetBrains Mono"; font-size: 11px;
 }}
 .btn:hover {{ border-color: {ACC}; }}
 .btn-danger {{
     background-color: {BG}; color: #ff5555;
-    border-radius: 4px; border: 1px solid #9c7321; padding: 7px 14px;
+    border-radius: 4px; border: 1px solid #b5bc90; padding: 7px 14px;
 }}
 .btn-danger:hover {{ border-color: #ff5555; }}
 .status-bar {{ padding: 8px 14px; border-top: 1px solid {BORDER}; }}
