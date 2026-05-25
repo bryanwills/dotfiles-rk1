@@ -36,6 +36,7 @@ hl.bind(altMod .. " + C", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Pyth
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Control-Panel/control-panel.py"))
 -- Construct an explicit path using native system environment tools
 hl.bind(altMod .. " + T", hl.dsp.exec_cmd("kitty --class tt -e " .. os.getenv("HOME") .. "/.local/bin/tt tui"))
+hl.bind(altMod .. " + I", hl.dsp.exec_cmd("kitty --class sysinfo-widget -e /home/rk1/custom-scripts/Shell-Widgets/sysinfo-widget"))
 
 -- Navigation (Master Layout)
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))

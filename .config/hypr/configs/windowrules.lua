@@ -23,6 +23,18 @@ end
 -- App Launcher & Clipboard
 -- Changed: active/inactive_opacity replaced by consolidated opacity
 hl.window_rule({ 
+    name = "sysinfo-widget", 
+    match = { class = "sysinfo-widget" }, 
+    float = true, 
+    move = {1365, 0}, 
+    size = {550, 400}, 
+    border_size = 2, 
+    border_color = "rgb(767b7e)", 
+    animation = "slide right", 
+    opacity = 0.9 
+})
+
+hl.window_rule({ 
     name = "control-panel-widget", 
     match = { title = "control-panel.py" }, 
     float = true, 

@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh
+
+# ----------------------------------------------------------------------------------------
+# MINIMALIST SYSTEM METRICS FZF WIDGET SCRIPT
+# Expanded Telemetry with Configuration Profiles
+# May 2026 v0.1.0
+# ----------------------------------------------------------------------------------------
+
+if ! command -v fzf &> /dev/null; then
+    echo "Error: fzf not found. Please install it to use this script."
+    exit 1
+fi
+
+# Hardware and OS telemetry directly from source paths
+host_name=$(uname -n)
+kernel_version=$(uname -r)
+uptime_info=$(uptime -p | sed 's/up //')
+
+# Shell extraction from active environment profile
+current_shell=$(basename "$SHELL")
+
+# Explicitly installed native packages via pacman database files
+pkg_count=$(pacman -Qe | wc -l)
+
+# Core memory metrics
+memory_stats=$(free -h | awk '/Mem:/ {print $3 " / " $2}')
+
+# Parse active storage space status on the root partition
+disk_usage=$(df -h / | awk 'NR==2 {print $3 " / " $2 " (" $5 ")"}')
+
+# Battery capacity thresholds if hardware paths exist
+if [ -d /sys/class/power_supply/BAT0 ]; then
+    bat_capacity=$(cat /sys/class/power_supply/BAT0/capacity)
+    bat_status=$(cat /sys/class/power_supply/BAT0/status)
+    battery_info="${bat_capacity}% (${bat_status})"
+else
+    battery_info="N/A"
+fi
+
+# Clean static data matching the custom widget design layout
+metrics_stack=(
+    "󰣇  OS          Arch Linux"
+    "󰒋  Host        $host_name"
+    "󰚌  Kernel      $kernel_version"
+    "󱘖  Uptime      $uptime_info"
+    "󰏖  Packages    $pkg_count (explicit)"
+    "󰍛  Memory      $memory_stats"
+    "󰋊  Storage     $disk_usage"
+    "󰁹  Battery     $battery_info"
+    "󰞷  Shell       $current_shell"
+    "󰆍  Terminal    kitty"
+    "󰖲  WM          Hyprland"
+)
+
+print -l "${metrics_stack[@]}" | \
+    fzf --height 100% \
+        --reverse \
+        --border rounded \
+        --margin=1,2 \
+        --header "SYSTEM INFO v0.1.0" \
+        --info inline \
+        --prompt "󰄘 Info: " \
+        --color="bg+:-1,bg:-1,hl:3,fg:7,header:3,info:4,pointer:-1,marker:-1,prompt:3" \
+        > /dev/null
