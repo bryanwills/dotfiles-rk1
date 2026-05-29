@@ -55,4 +55,7 @@ Here is the Tools section that you can modify to fit your own purpose.
 
 > *NOTE: I will continue to work on the Control Panel and all updates will be posted on Discord. [You can join here!!](https://discord.gg/Yqxpzs8JHJ) and ask questions or request features.*
 
+### License
+
+Distributed under the MIT License. See LICENSE for details.
 

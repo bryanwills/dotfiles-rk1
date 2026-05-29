@@ -37,6 +37,7 @@ gvfs
 htop
 hyprland
 hyprpaper
+hyprpicker
 hyprpolkitagent
 hyprshot
 hyprsunset

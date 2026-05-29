@@ -22,6 +22,42 @@ end
 
 -- App Launcher & Clipboard
 -- Changed: active/inactive_opacity replaced by consolidated opacity
+hl.window_rule({
+    name = "theme-widget",
+    match = { class = "theme-widget.py" },
+    float = true,
+    size = { 500, 240 },
+    move = {1380, 1},
+    border_size = 0,
+    animation = "slide right",
+    opacity = 0.8
+})
+
+hl.window_rule({
+    name = "schedule-widget",
+    match = { class = "schedule-widget" },
+    float = true,
+    size = { 450, 120 },
+    center = true,
+    border_size = 2,
+    border_color = "rgb(767b7e)",
+    animation = "fade",
+    opacity = 0.8
+})
+
+-- Scheduler alert pop-up layout configuration
+hl.window_rule({
+    name = "schedule-alert",
+    match = { class = "schedule-alert" },
+    float = true,
+    size = { 500, 200 },
+    center = true,
+    border_size = 2,
+    border_color = "rgb(767b7e)",
+    animation = "fade",
+    opacity = 0.8
+})
+
 hl.window_rule({ 
     name = "sysinfo-widget", 
     match = { class = "sysinfo-widget" }, 
@@ -38,11 +74,11 @@ hl.window_rule({
     name = "control-panel-widget", 
     match = { title = "control-panel.py" }, 
     float = true, 
-    size = {750, 650}, 
-    move = {585, 50}, 
-    border_size = 1, 
-    border_color = "rgb(767b7e)",
-    opacity = 0.9, 
+    size = {750, 800}, 
+    move = {585, 0}, 
+    border_size = 1,
+    no_blur = false, 
+    border_color = "rgb(767b7e)", 
     animation = "slide top" 
 })
 
@@ -98,9 +134,8 @@ hl.window_rule({
 
 -- File Managers
 hl.window_rule({
-    name = "file-managers",
+    name = "yazi",
     match = { class = "yazi" },
-    animation = "fade",
     opacity = 0.9,
     workspace = 3,
     border_size = 0

@@ -7,7 +7,7 @@
 # Version: 0.1.0
 # Descriptions: 
 # A unified, Waybar-free dashboard built with PyQt6 for Hyprland.
-#----------------------------------------------------------------------------------@
+#----------------------------------------------------------------------------------
 
 import sys
 import os
@@ -26,13 +26,14 @@ from PyQt6.QtGui import QIcon, QFontDatabase
 
 BAT = "/sys/class/power_supply/BAT0"
 LOG_FILE = os.path.expanduser("~/.cache/notification_history.log")
+THEME_FILE = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
 
 class ControlPanel(QWidget):
     def __init__(self):
         super().__init__()
-        # Adjust height for better vertical distribution
-        self.setFixedSize(700, 750) 
+        self.setFixedSize(750, 800) 
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setObjectName("MainWidget")
         self.home = os.path.expanduser("~")
         
@@ -43,10 +44,34 @@ class ControlPanel(QWidget):
         else:
             self.font_family = "JetBrains Mono"
 
+        # Apply the runtime theme styling profile
+        self.apply_theme_profile()
+
+        self.apps_list = self.get_installed_apps()
+        self.init_ui()
+        self.sync_hardware_sliders()
+        
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update_live_data)
+        self.timer.start(1500)
+
+    def apply_theme_profile(self):
+        """Loads the hot-swappable stylesheet variables from the target theme file."""
+        if os.path.exists(THEME_FILE):
+            try:
+                with open(THEME_FILE, "r", encoding="utf-8") as f:
+                    self.setStyleSheet(f.read())
+                return
+            except Exception:
+                pass
+
+        # Clean fallback defaults that do not hardcode fixed child style traits
         self.setStyleSheet(f"""
             QWidget#MainWidget {{ background-color: #1d2021; border: 2px solid #767b7e; }}
             QFrame#Section {{ border: 1px solid #767b7e; border-radius: 4px; background-color: #1d2021; }}
             QLabel {{ color: #ffffff; font-family: 'JetBrains Mono'; font-size: 11px; }}
+            QLabel#ClockLabel {{ font-size: 16px; font-family: '{self.font_family}'; font-weight: 900; }}
+            QLabel#DateLabel {{ font-size: 12px; color: #aaaaaa; letter-spacing: 1px; }}
             QLineEdit {{ background-color: #1d2021; border: 1px solid #767b7e; color: #ffffff; padding: 5px; border-radius: 4px; }}
             QListWidget {{ background-color: #1d2021; border: 1px solid #222222; color: #ffffff; outline: none; border-radius: 4px; }}
             QListWidget::item {{ padding: 8px; border-bottom: 1px solid #111111; }}
@@ -64,14 +89,6 @@ class ControlPanel(QWidget):
             QPushButton#ActiveProfile, QPushButton#ActiveWorkspace {{ background-color: #b5bc90; color: #000000; font-weight: bold; border: 1px solid #ffffff; }}
             QPushButton#TaskItem {{ font-size: 10px; padding: 4px 6px; min-width: 70px; background-color: #1d2021; border-color: #767b7e; }}
         """)
-
-        self.apps_list = self.get_installed_apps()
-        self.init_ui()
-        self.sync_hardware_sliders()
-        
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.update_live_data)
-        self.timer.start(1500)
 
     def get_installed_apps(self):
         import gi
@@ -130,7 +147,6 @@ class ControlPanel(QWidget):
             btn.setFixedSize(32, 32)
             btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
             btn.clicked.connect(lambda chk, w=i: self.run_cmd(f"hyprctl dispatch workspace {w}"))
-            # btn.clicked.connect(lambda chk, w=i: self.run_cmd(f"hyprctl dispatch 'hl.dsp.workspace(\"{w}\")'")) # Lua transition
             ws_lay.addWidget(btn)
             self.ws_btns[i] = btn
         main_layout.addWidget(ws_sec)
@@ -171,10 +187,10 @@ class ControlPanel(QWidget):
         
         tt_title_lay = QHBoxLayout()
         self.tt_project_lbl = QLabel("Inactive")
-        self.tt_project_lbl.setStyleSheet("font-size: 13px; color: #ffffff;")
+        self.tt_project_lbl.setObjectName("TrackerProjectLabel")
         
         self.tt_status_icon = QLabel("󱎫 ")
-        self.tt_status_icon.setStyleSheet("color: #aaaaaa; font-size: 13px;")
+        self.tt_status_icon.setObjectName("TrackerStatusIcon")
         
         tt_title_lay.addWidget(self.tt_project_lbl)
         tt_title_lay.addWidget(self.tt_status_icon, 0, Qt.AlignmentFlag.AlignRight)
@@ -182,7 +198,7 @@ class ControlPanel(QWidget):
         
         left.addWidget(tt_sec)
 
-        # Tools Grid with ID tracking
+        # Tools Grid
         g_sec = self.create_section()
         g_lay = QGridLayout(g_sec)
         self.tool_btns = {}
@@ -198,7 +214,7 @@ class ControlPanel(QWidget):
         ]
         for i, (icon, tid, cmd) in enumerate(tools):
             btn = QPushButton(icon)
-            btn.setStyleSheet("font-size: 16px; padding: 10px;")
+            btn.setObjectName("ToolButton")
             btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
             btn.clicked.connect(lambda chk, c=cmd: self.launch_app_manual(c))
             g_lay.addWidget(btn, i // 2, i % 2)
@@ -226,7 +242,7 @@ class ControlPanel(QWidget):
         temp_lay = QHBoxLayout()
         temp_lay.addWidget(QLabel("SYSTEM RESOURCES"))
         self.temp_lbl = QLabel("󰔏 0°C")
-        self.temp_lbl.setStyleSheet("color: #52fa69; font-weight: bold; font-size: 13px;")
+        self.temp_lbl.setObjectName("TempLabel")
         temp_lay.addWidget(self.temp_lbl, 0, Qt.AlignmentFlag.AlignRight)
         r_lay.addLayout(temp_lay)
 
@@ -242,7 +258,6 @@ class ControlPanel(QWidget):
         r_lay.addSpacing(10)
         r_lay.addWidget(QLabel("BATTERY"))
         self.bat_stats = QLabel("Checking battery...")
-        self.bat_stats.setStyleSheet("color: #ffffff; font-size: 11px;")
         self.bat_stats.setWordWrap(True)
         r_lay.addWidget(self.bat_stats)
         right.addWidget(r_sec)
@@ -288,11 +303,11 @@ class ControlPanel(QWidget):
         # Bottom Power Action Row
         p_sec_bottom = self.create_section()
         p_lay_bottom = QHBoxLayout(p_sec_bottom)
-        p_clrs = {"󰐥": "#ff5555", "󰑐": "#f1fa8c", "󰤄": "#bd93f9", "󰈆": "#8be9fd", "󰖔": "#ffb86c"}
+        p_clrs = {"󰐥": "#ff5555", "󰑐": "#21ab00", "󰤄": "#bd93f9", "󰈆": "#8be9fd", "󰖔": "#ffb86c"}
         p_acts = {"󰐥": "shutdown now", "󰑐": "reboot", "󰤄": "systemctl suspend", "󰈆": "hyprctl dispatch exit", "󰖔": f"bash {self.home}/.local/bin/nightlight"}
         for icon, cmd in p_acts.items():
             pb = QPushButton(icon)
-            pb.setStyleSheet(f"font-size: 16px; color: {p_clrs.get(icon, '#ffffff')};")
+            pb.setObjectName(f"PowerBtn_{icon}")
             pb.clicked.connect(lambda chk, c=cmd: self.run_cmd(c))
             p_lay_bottom.addWidget(pb)
         main_layout.addWidget(p_sec_bottom)
@@ -302,12 +317,9 @@ class ControlPanel(QWidget):
         self.clock_lbl.setText(now.strftime("%H:%M:%S"))
         self.date_lbl.setText(now.strftime("%A, %d %B %Y").upper())
     
-        # Fetch fresh hardware stats
         cpu_percent = psutil.cpu_percent()
         mem = psutil.virtual_memory()
         
-        # Calculate Gigabytes (1024^3)
-        true_used_bytes = mem.total - mem.available
         used_gb = mem.used / 1073741824
         total_gb = mem.total / 1073741824
     
@@ -327,13 +339,18 @@ class ControlPanel(QWidget):
         # Connection status sensing for WiFi and Bluetooth
         try:
             wifi_con = subprocess.run("nmcli -t -f TYPE,STATE dev | grep -q '^wifi:connected'", shell=True).returncode == 0
-            w_col = "#52fa69" if wifi_con else "#ffffff"
-            self.tool_btns["wifi"].setStyleSheet(f"font-size: 16px; padding: 10px; color: {w_col};")
+            # Set a custom property that the stylesheet can read
+            self.tool_btns["wifi"].setProperty("connected", "true" if wifi_con else "false")
+            # Force PyQt6 to recalculate the style for this specific widget
+            self.tool_btns["wifi"].style().unpolish(self.tool_btns["wifi"])
+            self.tool_btns["wifi"].style().polish(self.tool_btns["wifi"])
             
             bt_con = subprocess.run("bluetoothctl devices Connected | grep -q '.'", shell=True).returncode == 0
-            b_col = "#3b82f6" if bt_con else "#ffffff"
-            self.tool_btns["bt"].setStyleSheet(f"font-size: 16px; padding: 10px; color: {b_col};")
-        except: pass
+            self.tool_btns["bt"].setProperty("connected", "true" if bt_con else "false")
+            self.tool_btns["bt"].style().unpolish(self.tool_btns["bt"])
+            self.tool_btns["bt"].style().polish(self.tool_btns["bt"])
+        except Exception:
+            pass
 
         self.update_workspaces()
         self.update_taskbar()
@@ -341,7 +358,6 @@ class ControlPanel(QWidget):
         self.refresh_notifications()
         self.update_tracker_display()
         
-    # --- Workspace and Taskbar Syncing ---
     def update_workspaces(self):
         try:
             res = subprocess.check_output(["hyprctl", "activeworkspace", "-j"])
@@ -366,7 +382,6 @@ class ControlPanel(QWidget):
                 btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
                 btn.setToolTip(c.get("title"))
                 btn.clicked.connect(lambda chk, a=c.get("address"): self.run_cmd(f"hyprctl dispatch focuswindow address:{a}"))
-                # btn.clicked.connect(lambda chk, a=c.get("address"): self.run_cmd(f"hyprctl dispatch 'hl.dsp.focus({{ window = \"address:{a}\" }})'")) # Transition to Lua
                 self.task_grid.addWidget(btn, i // 3, i % 3)
         except: pass
         
@@ -379,30 +394,23 @@ class ControlPanel(QWidget):
                     lines = [line.strip() for line in f if line.strip()]
                 
                 if len(lines) >= 2:
-                    # Parse initial epoch time and label string
                     start_time = int(lines[0])
                     proj_name = lines[1]
                     
-                    # Compute running duration math directly in the update frame
                     now = int(time.time())
                     elapsed_seconds = max(0, now - start_time)
                     
-                    # Group seconds into structural clock properties
                     hours, remainder = divmod(elapsed_seconds, 3600)
                     minutes, seconds = divmod(remainder, 60)
                     time_str = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
                 
                     self.tt_project_lbl.setText(f"󰄶  {proj_name} ({time_str})")
-                    self.tt_status_icon.setStyleSheet("color: #52fa69; font-size: 13px;")
                     return
-            except Exception as e:
+            except Exception:
                 pass
                 
-        # Default state when tracking file is removed on stop
         self.tt_project_lbl.setText("Inactive")
-        self.tt_status_icon.setStyleSheet("color: #dd4832; font-size: 13px;")
             
-    # --- Notification Handling ---
     def show_notif_menu(self, pos):
         if not self.notif_list.itemAt(pos): return
         menu = QMenu()
@@ -441,7 +449,6 @@ class ControlPanel(QWidget):
         self.notif_list.clear()
         for n in self.get_notifications(): self.notif_list.addItem(n)
 
-    # --- System State Sensing ---
     def get_battery_info(self):
         def read_sys(file):
             try:
@@ -511,20 +518,16 @@ class ControlPanel(QWidget):
         self.smart_launch(c)
 
     def smart_launch(self, cmd):
-        # List of apps that must run in kitty/terminal
         tui_apps = ["btop", "htop", "nvtop", "top", "vim", "nvim", "micro"]
-        
-        # Check if the command is a TUI app and not already wrapped in kitty/terminal
         if any(app in cmd.lower() for app in tui_apps) and "kitty" not in cmd:
             cmd = f"kitty {cmd}"
-            
         self.run_cmd(cmd)
         self.close()
+
     def run_cmd(self, c): subprocess.Popen(c, shell=True, start_new_session=True)
     def keyPressEvent(self, e):
         if e.key() == Qt.Key.Key_Escape:
             self.cleanup_and_exit()
-            
         elif e.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
             focused_widget = self.focusWidget()
             if isinstance(focused_widget, QPushButton):
@@ -533,9 +536,9 @@ class ControlPanel(QWidget):
                 item = focused_widget.currentItem()
                 if item:
                     self.launch_app(item)
-        
         else:
             super().keyPressEvent(e)
+
     def cleanup_and_exit(self):
         self.timer.stop(); QApplication.quit(); sys.exit(0)
     def clear_all_notifications(self):

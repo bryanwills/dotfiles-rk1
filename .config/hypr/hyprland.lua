@@ -91,21 +91,22 @@ hl.animation({ leaf = "layers",     enabled = true, speed = 15, bezier = "myBezi
 -- 4. Workspace & Gestures
 -- Use workspace_rule instead of hl.workspace
 hl.workspace_rule({ 
-    workspace = "4", 
-    layout = "scrolling" 
+    workspace = "3", 
+    layout = "scrolling",
+    layout_opts = { direction = "down" } 
 })
 
 hl.gesture({
     fingers = 3,
-    direction = "left",
+    direction = "horizontal",
     action = "workspace"
 })
-
 hl.gesture({
     fingers = 3,
-    direction = "right",
-    action = "workspace"
+    direction = "vertical",
+    action = "scroll_move"
 })
+
 
 -- 5. Module Imports
 -- Ensure these files exist as .lua in your configs folder

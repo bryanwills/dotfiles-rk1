@@ -48,12 +48,11 @@ autoload -Uz vcs_info +X add-zsh-hook
 zstyle ':vcs_info:git+set-message:*' hooks git-counts
 setopt PROMPT_SUBST
 
-PROMPT='%F{33}%~%f${vcs_info_msg_0_}
-%(?.%F{141}❯%f.%F{196}❯%f) '
-RPROMPT='%F{240}%D{%H:%M}%f %(?.%F{green}✓.%F{196}✗ %?)%f'
+PROMPT='%F{blue}%~%f${vcs_info_msg_0_}
+%(?.%F{magenta}❯%f.%F{red}❯%f) '
+RPROMPT='%F{spatial}%D{%H:%M}%f %(?.%F{green}✓.%F{red}✗ %?)%f'
 
-# fastfetch
-figlet -f smslant Welcome Back - Rk 1 | lolcat
+figlet -f smslant Welcome Back - Rk 1
 
 # --- User Configuration ---
 export LANG=en_GB.UTF-8
@@ -196,10 +195,10 @@ export PATH="$HOME/.local/bin:$PATH"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
 # --- Mend plugin ---
-# source $HOME/arch-projects/mend/mend.plugin.zsh
-# fpath=($HOME/arch-projects/mend/functions $fpath)
-source /usr/share/zsh/plugins/mend/mend.plugin.zsh
-fpath=(/usr/share/zsh/plugins/mend/functions $fpath)
+source $HOME/arch-projects/mend/mend.plugin.zsh
+fpath=($HOME/arch-projects/mend/functions $fpath)
+# source /usr/share/zsh/plugins/mend/mend.plugin.zsh
+# fpath=(/usr/share/zsh/plugins/mend/functions $fpath)
 autoload -Uz mend
 
 # --- 2. The Function ---

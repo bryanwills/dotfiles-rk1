@@ -19,7 +19,7 @@ hl.bind(altMod .. " + N", hl.dsp.exec_cmd("~/.local/bin/nightlight"))
 -- App Launchers
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/Python-Widgets/launcher-widget.py"))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("kitty --class yazi -e yazi"))
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("thunar"))
+-- hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("thunar"))
 hl.bind(altMod .. " + 1", hl.dsp.exec_cmd("kitty --class rtm -e python3 ~/arch-projects/RTM/rtm.py"))
 hl.bind(altMod .. " + 2", hl.dsp.exec_cmd("kitty --class budget-buddy -e python3 ~/arch-projects/Budget-Buddy/budget-buddy.py"))
 
@@ -34,9 +34,12 @@ hl.bind(altMod .. " + R", hl.dsp.exec_cmd("kitty --class 'Mirec' -e $HOME/arch-p
 hl.bind(altMod .. " + 9", hl.dsp.exec_cmd("kitty --class 'Audio Switcher' -e ~/custom-scripts/Shell-Widgets/change-audio.sh"))
 hl.bind(altMod .. " + C", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Python-Widgets/clipbox-widget2.py"))
 hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Control-Panel/control-panel.py"))
--- Construct an explicit path using native system environment tools
-hl.bind(altMod .. " + T", hl.dsp.exec_cmd("kitty --class tt -e " .. os.getenv("HOME") .. "/.local/bin/tt tui"))
+hl.bind(altMod .. " + T", hl.dsp.exec_cmd("kitty --class schedule-widget -e ~/custom-scripts/Shell-Widgets/schedule-widget"))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kitty --class tt -e " .. os.getenv("HOME") .. "/.local/bin/tt tui"))
 hl.bind(altMod .. " + I", hl.dsp.exec_cmd("kitty --class sysinfo-widget -e /home/rk1/custom-scripts/Shell-Widgets/sysinfo-widget"))
+hl.bind(mainMod .. " + 0", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Control-Panel/theme-widget.py"))
+
+hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a -f hex"))
 
 -- Navigation (Master Layout)
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))

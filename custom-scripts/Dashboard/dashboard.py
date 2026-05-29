@@ -24,7 +24,6 @@ PROJECTS = [
 # Live folders to watch for changes
 LIVE_CONFIGS = [
     os.path.expanduser("~/.config/hypr"),
-    os.path.expanduser("~/.config/waybar"),
     os.path.expanduser("~/.config/kitty"),
     os.path.expanduser("~/.config/fastfetch"),
     os.path.expanduser("~/custom-scripts")
