@@ -9,7 +9,7 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
 
     -- 2. Theme & Wallpaper
-    hl.exec_cmd("awww-daemon && awww img $(cat ~/.cache/wal/wal)")
+    hl.exec_cmd("awww-daemon & sleep 0.5 && awww img $(cat ~/.cache/wal/wal)")
     hl.exec_cmd("dunst")
 
     -- 3. Hardware & Utilities

@@ -1,0 +1,55 @@
+#!/bin/zsh
+
+#----------------------------------------------------------------------------------
+# KITTY THEMES
+# Author: Lukas Grumlik - Rakosn1cek
+# Created: 2026-05
+# Version: 0.1.2
+# Descriptions: 
+# Minimalist Kitty themes switcher widget for Hyprland.
+#----------------------------------------------------------------------------------
+
+# File to store the current state
+STATE_FILE="$HOME/.cache/current_theme"
+
+# List of available themes
+themes=(
+    "Custom Dark"
+    "Custom Light"
+    "Gruvbox Dark Hard"
+    "Gruvbox Light"
+    "E-Ink"
+    "E-Ink Dark"
+    "Dumbledore"
+    "Hachiko"
+    "Vesper"
+    "Base2Tone Lavender Dark"
+    "Retrowave Light"
+)
+
+# Pipe it into fzf for interactive selection
+HEADER_TEXT="
+        KITTY THEMES v0.1.2
+ Minimalist Kitty themes switcher
+"
+
+# Pipe the array into fzf with --header-first and --reverse
+while true; do
+    CHOICE=$(printf '%s\n' "${themes[@]}" | fzf \
+        --header="$HEADER_TEXT" \
+        --header-first \
+        --prompt="> " \
+        --height=100% \
+        --reverse \
+        --border)
+
+# Break the loop and close the window if Escape is pressed (empty choice)
+    if [[ -z "$CHOICE" ]]; then
+        break
+    fi
+
+    # Save and apply the chosen theme instantly
+    echo "$CHOICE" > "$STATE_FILE"
+    kitten themes --reload-in=all "$CHOICE"
+    notify-send "System Theme" "Switched to $CHOICE" -u low
+done

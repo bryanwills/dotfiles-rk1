@@ -13,7 +13,8 @@ hl.bind(mainMod .. " + X", hl.dsp.window.close())
 hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exit())
-hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("~/.local/bin/toggle-theme"))
+-- hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("~/.local/bin/toggle-theme"))
+hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("kitty --class kitty-themes -e ~/custom-scripts/Shell-Widgets/kitty-toggle-theme"))
 hl.bind(altMod .. " + N", hl.dsp.exec_cmd("~/.local/bin/nightlight"))
 
 -- App Launchers

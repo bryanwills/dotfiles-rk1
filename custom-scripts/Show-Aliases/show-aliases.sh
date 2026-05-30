@@ -1,17 +1,35 @@
 #!/bin/zsh
 
+#----------------------------------------------------------------------------------
+# SHOW ALIASES
+# Author: Lukas Grumlik - Rakosn1cek
+# Created: 2026-01
+# Version: 0.1.2
+# Descriptions: 
+# Minimalist Aliases zsh+fzf widget for Hyprland.
+#----------------------------------------------------------------------------------
+
+
 # 1. Search both .zshrc and the new .zsh_aliases file
 # -h ensures grep doesn't print the filename, keeping the list clean
 alias_list=$(grep -h "^alias " ~/.zshrc ~/.zsh_aliases 2>/dev/null | sed -E "s/^alias ([^=]+)=['\"](.*)['\"]$/\1 ➜ \2/")
 
-# 3. Interactive fzf
+HEADER_TEXT="
+		        SHOW ALIASES v0.1.2
+		   Minimalist Alias view widget
+
+ENTER: Run | ESC: Quit
+"
+
+# 2. Interactive fzf
 selected=$(echo "$alias_list" | column -t -s '➜' | fzf --ansi \
-    --header "ENTER: Run | ESC: Quit" \
-    --border="rounded" \
+    --header "$HEADER_TEXT" \
+    --header-first \
+    --border \
     --margin=5% \
     --prompt="Alias > " \
-    --color="border:yellow,header:cyan" \
-    --preview-window="top:5:wrap" \
+    --reverse \
+    --preview-window="bottom:5:wrap" \
     --preview="echo 'Full Command:'; echo {2..}")
 
 # 4. Execution Logic
@@ -22,6 +40,6 @@ if [ -n "$selected" ]; then
     clear
     echo -e "\033[1;33m>> Running Alias:\033[0m $alias_name\n"
     
-    # Use 'zsh -i' to ensure the shell knows aliases before running
+    # Using 'zsh -i' to ensure the shell knows aliases before running
     zsh -ic "$alias_name"
 fi

@@ -1,6 +1,22 @@
 #!/bin/bash
 
+#----------------------------------------------------------------------------------
+# HYPRLAND KEYBINDS
+# Author: Lukas Grumlik - Rakosn1cek
+# Created: 2026-01
+# Version: 0.1.0
+# Descriptions: 
+# Minimalist Hyprland keybinds zsh+fzf widget for Hyprland.
+#----------------------------------------------------------------------------------
+
+
 CONFIG="$HOME/.config/hypr/configs/keybinds.conf"
+
+HEADER_TEXT="
+		     󰢭  HYPRLAND KEYBINDS v0.1.0
+		 Minimalist Hyprland keybinds view widget
+"
+
 
 # 1. Fetch bind and bindd
 # 2. Convert $mainMod to SUPER
@@ -23,4 +39,4 @@ grep -E '^bind[a-z]*' "$CONFIG" | \
             printf "%-10s | %-10s | ➜  %s\n", mod, key, desc
     }' | \
     column -t -s '|' | \
-    fzf --header "󰌌 Keybinds" --reverse
+    fzf --header "$HEADER_TEXT" --header-first --reverse

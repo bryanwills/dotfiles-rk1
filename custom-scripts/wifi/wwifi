@@ -1,10 +1,11 @@
 #!/usr/bin/env zsh
 
-# ----------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------
 # WIFI CONNECTION FZF WIDGET SCRIPT
+# Version: v0.1.0
 # Created by Lukas Grumlik - (Rakosn1cek)
-# April 2026 v0.1.0
-# ----------------------------------------------------------------------------------------
+# April 2026
+# --------------------------------------------------------------------------------------
 
 # Check for dependencies
 if ! command -v nmcli &> /dev/null || ! command -v fzf &> /dev/null; then
@@ -12,6 +13,12 @@ if ! command -v nmcli &> /dev/null || ! command -v fzf &> /dev/null; then
     exit 1
 fi
 
+HEADER_TEXT="
+	   󰖩  WIFI CONNECTION v0.1.0
+	Minimalist wi-fi connection widget
+
+Select WiFi Network ESC to quit
+"
 # Using a tab character as a delimiter to keep columns separate but easy to parse
 # The --fields order for the 'cut' command later
 selected_network=$(nmcli --terse --fields "SSID,BARS,SECURITY,IN-USE" device wifi list | \
@@ -20,11 +27,11 @@ selected_network=$(nmcli --terse --fields "SSID,BARS,SECURITY,IN-USE" device wif
     fzf --height 100% \
         --reverse \
         --border rounded \
-        --margin=1,2 \
-        --header "Select WiFi Network (ESC to quit)" \
+        --header "$HEADER_TEXT" \
+        --header-first \
         --info inline \
         --tabstop=20 \
-        --color="bg+:-1,bg:-1,hl:3,fg:7,header:3,info:4,pointer:3,marker:3,prompt:3")
+)
 
 # Exit if no selection was made
 [ -z "$selected_network" ] && exit

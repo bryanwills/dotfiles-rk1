@@ -1,10 +1,13 @@
 #!/usr/bin/env zsh
 
-# ----------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
 # MINIMALIST SYSTEM METRICS FZF WIDGET SCRIPT
+# Author: Lukas Grumlik - Rakosn1cek
+# Version v0.1.0
+# Created: May 2026
+# Descriptions:
 # Expanded Telemetry with Configuration Profiles
-# May 2026 v0.1.0
-# ----------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
 
 if ! command -v fzf &> /dev/null; then
     echo "Error: fzf not found. Please install it to use this script."
@@ -52,13 +55,18 @@ metrics_stack=(
     "󰖲  WM          Hyprland"
 )
 
+HEADER_TEXT="
+	     SYSTEM INFO v0.1.0
+    Minimalist system info view widget
+"
+
 print -l "${metrics_stack[@]}" | \
     fzf --height 100% \
         --reverse \
         --border rounded \
         --margin=1,2 \
-        --header "SYSTEM INFO v0.1.0" \
+        --header "$HEADER_TEXT" \
+        --header-first \
         --info inline \
         --prompt "󰄘 Info: " \
-        --color="bg+:-1,bg:-1,hl:3,fg:7,header:3,info:4,pointer:-1,marker:-1,prompt:3" \
         > /dev/null
