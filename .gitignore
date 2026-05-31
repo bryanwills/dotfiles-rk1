@@ -24,6 +24,7 @@ Thumbs.db
 **/*.pem
 **/*.key
 .zshrc.local
+.pass
 
 # --- Large Binary Files ---
 *.mp4
@@ -33,3 +34,4 @@ Thumbs.db
 # --- Custom-Scripts ---
 ~/dotfiles/shell-common/custom-scripts/RTM
 ~/dotfiles/shell-common/custom-scripts/Budget-Buddy
+~/dotfiles/custom-scripts/pass

@@ -22,6 +22,17 @@ end
 
 -- App Launcher & Clipboard
 hl.window_rule({
+    name = "pass-manager",
+    match = { class = "pass" },
+    float = true,
+    size = { 800, 400 },
+    center = true,
+    border_size = 0,
+    animation = "fade",
+    opacity = 0.8
+})
+
+hl.window_rule({
     name = "kitty-themes",
     match = { class = "kitty-themes" },
     float = true,
