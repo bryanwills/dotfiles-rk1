@@ -4,7 +4,7 @@
 # SHOW ALIASES
 # Author: Lukas Grumlik - Rakosn1cek
 # Created: 2026-01
-# Version: 0.1.2
+# Version: 0.1.4
 # Descriptions: 
 # Minimalist Aliases zsh+fzf widget for Hyprland.
 #----------------------------------------------------------------------------------
@@ -15,10 +15,10 @@
 alias_list=$(grep -h "^alias " ~/.zshrc ~/.zsh_aliases 2>/dev/null | sed -E "s/^alias ([^=]+)=['\"](.*)['\"]$/\1 ➜ \2/")
 
 HEADER_TEXT="
-		        SHOW ALIASES v0.1.2
+		        SHOW ALIASES v0.1.4
 		   Minimalist Alias view widget
 
-ENTER: Run | ESC: Quit
+ENTER: Copy to Clipboard | ESC: Quit
 "
 
 # 2. Interactive fzf
@@ -32,14 +32,14 @@ selected=$(echo "$alias_list" | column -t -s '➜' | fzf --ansi \
     --preview-window="bottom:5:wrap" \
     --preview="echo 'Full Command:'; echo {2..}")
 
-# 4. Execution Logic
+# 4. Clipboard Logic
 if [ -n "$selected" ]; then
     # Grab the first word as the alias name
     alias_name=$(echo "$selected" | awk '{print $1}')
     
-    clear
-    echo -e "\033[1;33m>> Running Alias:\033[0m $alias_name\n"
+    # Strip any trailing line breaks and copy the pure alias name to the clipboard
+    echo -n "$alias_name" | wl-copy
     
-    # Using 'zsh -i' to ensure the shell knows aliases before running
-    zsh -ic "$alias_name"
+    # Exit the script so the hosting terminal window drops immediately
+    kill -15 $PPID
 fi

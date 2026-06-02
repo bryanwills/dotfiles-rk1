@@ -73,7 +73,9 @@ ACCENTS = {
     "Yellow": "#c9a800",
     "Black": "#151515",
     "Fire": "rgba(255, 137, 22, 0.86)",
-    "Flames": "#f8541f"
+    "Flames": "#f8541f",
+    "Brown": "#352e12",
+    "Pink": "#f25bff"
 }
 
 # --- Base Application Styling ---

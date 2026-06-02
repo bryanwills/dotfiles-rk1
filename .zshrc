@@ -62,6 +62,7 @@ export VISUAL='geany'
 export PATH="$HOME/custom-scripts:$PATH"
 # Set the correct directory for figlet fonts
 export FIGLET_FONTDIR="/usr/share/figlet/fonts"
+cdpath=(. ~)
 
 # --- Aliases ---
 alias la="lsd -a"
@@ -90,7 +91,8 @@ alias album='yt-dlp -x --audio-format mp3 --audio-quality 0 --yes-playlist --emb
 alias uprelease='~/arch-projects/arch-update-check/release.sh'
 
 # Arch Update Check before updating system
-alias upcheck="/usr/bin/arch-update-check"
+# alias upcheck="/usr/bin/arch-update-check"
+alias upcheck="~/arch-projects/arch-update-check/arch-update-check.sh"
 
 # Timeshift aliases
 alias restore-list='timeshift --list'

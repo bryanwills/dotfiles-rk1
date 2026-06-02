@@ -42,6 +42,7 @@ hl.bind(mainMod .. " + 0", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Con
 
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a -f hex"))
 hl.bind(altMod .. "+ P", hl.dsp.exec_cmd("kitty --class pass -e ~/custom-scripts/pass"))
+hl.bind(altMod .. "+ SPACE", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Hypr-Workspaces/hypr-workspaces.py"))
 
 -- Navigation (Master Layout)
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))

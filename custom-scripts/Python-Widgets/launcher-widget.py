@@ -19,7 +19,7 @@ GRID_COLS     = 6
 HOME          = os.path.expanduser("~")
 
 # Consistent Theme Colours matching Control Panel
-BG      = "#1d2021"
+BG      = "rgba(29, 32, 33, 0.6)"
 BG_SEC  = "#050505"
 BORDER  = "#222222"
 ACC     = "#767b7e"
@@ -32,7 +32,7 @@ window {{
     border: 2px solid #767b7e;
 }}
 .frame {{
-    background-color: {BG};
+    background-color: rgba(29, 32, 33, 0.7);
     border-radius: 4px;
     border: 2px solid #333333;
     margin: 6px;
@@ -88,18 +88,18 @@ window {{
     padding: 4px 8px;
 }}
 .app-tile {{
-    background-color: {BG};
+    background-color: rgba(29, 32, 33, 0.7);
     border-radius: 4px;
     border: 1px solid {ACC};
     padding: 10px 6px 8px 6px;
     margin: 4px;
 }}
 .app-tile:hover {{
-    background-color: #111111;
+    background-color: {FG_DIM};
     border-color: {ACC};
 }}
 flowboxchild:selected .app-tile {{
-    background-color: #111111;
+    background-color: {ACC};
     border-color: {ACC};
 }}
 flowboxchild:selected {{
@@ -136,7 +136,7 @@ flowboxchild:selected {{
     font-size: 9px;
 }}
 .breadcrumb {{
-    background-color: {BG_SEC};
+    background-color: {BG};
     border-radius: 4px;
     padding: 4px 12px;
     margin: 0px 12px 6px 12px;

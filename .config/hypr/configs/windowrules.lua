@@ -22,6 +22,17 @@ end
 
 -- App Launcher & Clipboard
 hl.window_rule({
+    name = "Workspaces Profiles",
+    match = { title = "hypr-workspaces.py" },
+    float = true,
+    size = { 400, 520 },
+    center = true,
+    border_size = 0,
+    animation = "gnomed",
+    opacity = 0.8
+})
+
+hl.window_rule({
     name = "pass-manager",
     match = { class = "pass" },
     float = true,

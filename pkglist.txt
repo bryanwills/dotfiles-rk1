@@ -18,7 +18,6 @@ dmidecode
 dosfstools
 dunst
 efibootmgr
-falkon
 fastfetch
 fd
 ffmpegthumbnailer
@@ -111,6 +110,7 @@ thunar
 thunar-archive-plugin
 thunar-volman
 timeshift
+tree
 ttf-jetbrains-mono-nerd
 tumbler
 ufw
