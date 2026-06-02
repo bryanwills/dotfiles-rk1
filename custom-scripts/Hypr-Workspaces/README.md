@@ -47,6 +47,10 @@ Paste the complete Python script code into this file, save it, and alter the sys
 
 `chmod +x ~/.local/bin/hypr-workspace.py`
 
+Or you can run this from your terminal:
+
+`curl -sL "https://raw.githubusercontent.com/Rakosn1cek/dotfiles-rk1/refs/heads/main/custom-scripts/Hypr-Workspaces/hypr-workspaces.py" -o ~/.local/bin/hypr-workspace.py && chmod +x ~/.local/bin/hypr-workspace.py`
+
 3. Add the Hyprland Window Rules and Keybindings
 
 Example windowrule:
@@ -69,6 +73,13 @@ Example keybind:
 `hl.bind(altMod .. "+ SPACE", hl.dsp.exec_cmd("python3 ~/.local/bin/hypr-workspaces.py"))`
 
 > *Note: Replace $mainMod with your designated modifier key (e.g., SUPER).*
+
+## Adapting to Other Window Managers & Compositors
+
+The core Python script is completely desktop-agnostic. While it defaults to working as a floating panel under Hyprland, it can be adapted to any window manager or compositor by applying equivalent floating layout rules to catch the window title (`Workspace Profiles`).
+
+## Traditional Desktops (GNOME / KDE / Xfce)
+No special configuration files are required. When opened, the window manager will launch the widget as a standard independent window context. You can use your desktop's native "Window Rules" settings panel to strip away the title bar decorations and anchor the positioning coordinates to the right side of the screen display bounds.
 
 ## Usage & Workflow
 Opening the Widget:
