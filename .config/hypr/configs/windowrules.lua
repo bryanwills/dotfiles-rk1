@@ -22,6 +22,15 @@ end
 
 -- App Launcher & Clipboard
 hl.window_rule({
+    name = "Wallpaper Changer",
+    match = { class = "changewall-widget.py" },
+    float = true,
+    move = {335, 830},
+    border_size = 0,
+    animation = "gnomed",
+})
+
+hl.window_rule({
     name = "Workspaces Profiles",
     match = { title = "hypr-workspaces.py" },
     float = true,
@@ -29,7 +38,6 @@ hl.window_rule({
     move = {750, 2},
     border_size = 0,
     animation = "slide top",
-    opacity = 0.8
 })
 
 hl.window_rule({
@@ -39,8 +47,8 @@ hl.window_rule({
     size = { 800, 400 },
     center = true,
     border_size = 0,
-    animation = "fade",
-    opacity = 0.8
+    animation = "gnomed",
+    opacity = 0.6
 })
 
 hl.window_rule({
@@ -52,7 +60,7 @@ hl.window_rule({
     border_size = 0,
     animation = "slide right",
     no_max_size = true,
-    opacity = 0.8
+    opacity = 0.6
 })
 
 hl.window_rule({
@@ -63,7 +71,6 @@ hl.window_rule({
     move = {1380, 1},
     border_size = 0,
     animation = "slide right",
-    opacity = 0.8
 })
 
 hl.window_rule({
@@ -74,8 +81,8 @@ hl.window_rule({
     center = true,
     border_size = 2,
     border_color = "rgb(767b7e)",
-    animation = "fade",
-    opacity = 0.8
+    animation = "gnomed",
+    opacity = 0.6
 })
 
 -- Scheduler alert pop-up layout configuration
@@ -87,8 +94,8 @@ hl.window_rule({
     center = true,
     border_size = 2,
     border_color = "rgb(767b7e)",
-    animation = "fade",
-    opacity = 0.8
+    animation = "gnomed",
+    opacity = 0.6
 })
 
 hl.window_rule({ 

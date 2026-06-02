@@ -1,31 +1,61 @@
 #!/usr/bin/env python3
 # changewall-widget.py — Minimalist Wallpaper switcher for Control Panel setup
-# Uses swww for transitions and matches Control Panel styling.
+# Uses awww for transitions and matches Control Panel styling.
 
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf
-import os, subprocess, glob, threading, hashlib
+import os, subprocess, glob, threading, hashlib, re
 from concurrent.futures import ThreadPoolExecutor
 
 # --- Configuration ---
 WALLPAPER_DIR = os.path.expanduser("~/Pictures/Wallpapers")
 CACHE_DIR     = os.path.expanduser("~/.cache/changewall-widget")
+THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
 THUMB_SIZE    = 160
 WIDGET_HEIGHT = 220
 WIDGET_MARGIN = 335
 
-# --- Control Panel Color Palette ---
-BG      = "#1d2021"  # Deep background
-BG_ALT  = "#111111"  # Darker contrast
-ACCENT  = "#767b7e"  # Gray accent
-FG      = "#ffffff"  # Pure white
-FG_DIM  = "#aaaaaa"  # Dimmed text
+def load_control_panel_colors():
+    """Extracts raw styling colors directly out of the generated current_theme.css structure."""
+    defaults = {
+        "bg": "#1d2021",
+        "accent": "#767b7e",
+        "fg": "#ffffff",
+        "fg_dim": "#aaaaaa"
+    }
+    if os.path.exists(THEME_FILE):
+        try:
+            with open(THEME_FILE, "r", encoding="utf-8") as f:
+                content = f.read()
+            bg_match = re.search(r"QWidget#MainWidget\s*\{\s*background-color:\s*([^;]+);", content)
+            accent_match = re.search(r"border:\s*2px\s*solid\s*([^;]+);", content)
+            text_match = re.search(r"QLabel\s*\{\s*color:\s*([^;]+);", content)
+            hint_match = re.search(r"QLabel#DateLabel\s*\{\s*color:\s*([^;]+);", content)
+            
+            if bg_match:
+                defaults["bg"] = bg_match.group(1).strip()
+            if accent_match:
+                defaults["accent"] = accent_match.group(1).strip()
+            if text_match:
+                defaults["fg"] = text_match.group(1).strip()
+            if hint_match:
+                defaults["fg_dim"] = hint_match.group(1).strip()
+        except Exception:
+            pass
+    return defaults
+
+# --- Extract active colors prior to stylesheet compiling ---
+THEME_PALETTE = load_control_panel_colors()
+BG     = THEME_PALETTE["bg"]
+ACCENT = THEME_PALETTE["accent"]
+FG     = THEME_PALETTE["fg"]
+FG_DIM = THEME_PALETTE["fg_dim"]
 
 CSS = f"""
-window {{ background-color: {BG}; border: 2px solid {ACCENT}; border-radius: 4px; }}
+window {{ background-color: {BG}; border: 0px solid {ACCENT}; border-radius: 4px; }}
 .frame {{ background-color: {BG}; border-radius: 4px; border: 1px solid {ACCENT}; margin: 6px; }}
 .bar   {{ background-color: transparent; padding: 6px 16px 4px 16px; border-bottom: 1px solid #222222; }}
 .title {{ color: {FG}; font-family: 'JetBrains Mono'; font-size: 12px; font-weight: bold; }}
@@ -85,9 +115,10 @@ def find_wallpapers():
 def apply_wallpaper(path, status_cb, done_cb):
     name = os.path.basename(path)
     GLib.idle_add(status_cb, f"󰐍  Switching to {name}...")
-    # swww transition logic
-    subprocess.run(['awww', 'img', path, '--transition-type', 'grow', 
-                    '--transition-pos', 'center', '--transition-fps', '120'], capture_output=True)
+    # awww transition logic
+    subprocess.Popen(['awww', 'img', path, '--transition-type', 'fade', 
+                        '--transition-pos', 'left', '--transition-fps', '120',
+                        '--transition-step', '150'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     GLib.idle_add(status_cb, f"✓  Active: {name}")
     GLib.idle_add(done_cb)
 

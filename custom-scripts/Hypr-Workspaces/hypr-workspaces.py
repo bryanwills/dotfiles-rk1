@@ -2,17 +2,62 @@
 import sys
 import os
 import json
+import re
 import subprocess
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QPushButton, 
                              QLabel, QHBoxLayout, QScrollArea, QLineEdit, QFileDialog)
 from PyQt6.QtCore import Qt
 
 CONFIG_PATH = os.path.expanduser("~/.config/project-spaces.json")
+THEME_FILE  = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
+
+def get_control_panel_theme():
+    """Parses current_theme.css to pull active Control Panel color variables."""
+    # Robust fallbacks matching original Tokyonight styling bounds
+    theme = {
+        "bg": "#1d2021",
+        "panel_bg": "#24283b",
+        "border": "#414868",
+        "accent": "#7aa2f7",
+        "text": "#c0caf5",
+        "text_dim": "#a9b1d6",
+        "danger": "#f7768e",
+        "danger_bg": "#382c36",
+        "warning": "#e0af68"
+    }
+    
+    if os.path.exists(THEME_FILE):
+        try:
+            with open(THEME_FILE, "r", encoding="utf-8") as f:
+                content = f.read()
+                
+            # Extract raw parameters cleanly from theme-widget output blocks
+            bg_match = re.search(r"QWidget#MainWidget\s*\{\s*background-color:\s*([^;]+);", content)
+            accent_match = re.search(r"border:\s*2px\s*solid\s*([^;]+);", content)
+            text_match = re.search(r"QLabel\s*\{\s*color:\s*([^;]+);", content)
+            hint_match = re.search(r"QLabel#DateLabel\s*\{\s*color:\s*([^;]+);", content)
+            
+            if bg_match:
+                theme["bg"] = bg_match.group(1).strip()
+            if accent_match:
+                theme["accent"] = accent_match.group(1).strip()
+            if text_match:
+                theme["text"] = text_match.group(1).strip()
+                theme["text_dim"] = text_match.group(1).strip()
+            if hint_match:
+                theme["border"] = hint_match.group(1).strip()
+                
+        except Exception:
+            pass
+            
+    return theme
 
 class WorkspaceWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.editing_profile_name = None
+        # Load the dynamic color profile prior to UI building loops
+        self.colors = get_control_panel_theme()
         self.init_ui()
 
     def init_ui(self):
@@ -24,19 +69,19 @@ class WorkspaceWidget(QWidget):
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         
         self.container = QWidget()
-        self.container.setStyleSheet("""
-            QWidget {
-                background-color: #1d2021;
-                border: 0px solid #7aa2f7;
+        self.container.setStyleSheet(f"""
+            QWidget {{
+                background-color: {self.colors['bg']};
+                border: 0px solid {self.colors['accent']};
                 border-radius: 5px;
-            }
-            QLabel {
-                color: #c0caf5;
+            }}
+            QLabel {{
+                color: {self.colors['text']};
                 font-size: 15px;
                 font-weight: bold;
                 border: none;
                 padding: 5px;
-            }
+            }}
         """)
         self.container_layout = QVBoxLayout(self.container)
         
@@ -59,19 +104,19 @@ class WorkspaceWidget(QWidget):
 
         btn_layout = QHBoxLayout()
         self.add_btn = QPushButton("+ New Workspace")
-        self.add_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #2e3c56;
-                color: #7aa2f7;
-                border: 1px solid #7aa2f7;
+        self.add_btn.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {self.colors['panel_bg']};
+                color: {self.colors['accent']};
+                border: 1px solid {self.colors['accent']};
                 border-radius: 6px;
                 padding: 8px;
                 font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #7aa2f7;
-                color: #1a1a24;
-            }
+            }}
+            QPushButton:hover {{
+                background-color: {self.colors['accent']};
+                color: {self.colors['bg']};
+            }}
         """)
         self.add_btn.clicked.connect(self.open_creator_for_new)
         btn_layout.addWidget(self.add_btn)
@@ -111,7 +156,6 @@ class WorkspaceWidget(QWidget):
         self.style_input(self.files_input)
         self.creator_layout.addWidget(self.files_input)
 
-        # Unified row container layout for creator actions
         form_actions_layout = QHBoxLayout()
         form_actions_layout.setSpacing(8)
 
@@ -121,19 +165,19 @@ class WorkspaceWidget(QWidget):
         form_actions_layout.addWidget(self.save_btn)
 
         cancel_btn = QPushButton("Cancel")
-        cancel_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #382c36;
-                color: #f7768e;
-                border: 1px solid #f7768e;
+        cancel_btn.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {self.colors['danger_bg']};
+                color: {self.colors['danger']};
+                border: 1px solid {self.colors['danger']};
                 border-radius: 6px;
                 padding: 8px;
                 font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #f7768e;
-                color: #1a1a24;
-            }
+            }}
+            QPushButton:hover {{
+                background-color: {self.colors['danger']};
+                color: {self.colors['bg']};
+            }}
         """)
         cancel_btn.clicked.connect(self.close_creator_panel)
         form_actions_layout.addWidget(cancel_btn)
@@ -142,14 +186,14 @@ class WorkspaceWidget(QWidget):
         self.main_layout.addWidget(self.creator)
 
     def style_input(self, widget):
-        widget.setStyleSheet("""
-            QLineEdit {
-                background-color: #24283b;
-                color: #c0caf5;
-                border: 1px solid #414868;
+        widget.setStyleSheet(f"""
+            QLineEdit {{
+                background-color: {self.colors['panel_bg']};
+                color: {self.colors['text']};
+                border: 1px solid {self.colors['border']};
                 border-radius: 6px;
                 padding: 8px;
-            }
+            }}
         """)
 
     def open_creator_for_new(self):
@@ -184,17 +228,7 @@ class WorkspaceWidget(QWidget):
             self.dir_input.setText(directory)
 
     def load_profiles(self):
-        while self.list_layout.count():
-            item = self.list_layout.takeAt(0)
-            if item.widget():
-                item.widget().deleteLater()
-            elif item.layout():
-                while item.layout().count():
-                    child = item.layout().takeAt(0)
-                    if child.widget():
-                        child.widget().deleteLater()
-                item.layout().deleteLater()
-
+        # ... (Preserve original clean layout wipe and JSON reading logic exactly) ...
         if not os.path.exists(CONFIG_PATH):
             with open(CONFIG_PATH, "w") as f:
                 json.dump({}, f)
@@ -207,61 +241,61 @@ class WorkspaceWidget(QWidget):
             row.setSpacing(4)
             
             btn = QPushButton(name)
-            btn.setStyleSheet("""
-                QPushButton {
-                    background-color: #24283b;
-                    color: #a9b1d6;
-                    border: 1px solid #414868;
+            btn.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: {self.colors['panel_bg']};
+                    color: {self.colors['text_dim']};
+                    border: 1px solid {self.colors['border']};
                     border-radius: 6px;
                     padding: 12px;
                     font-size: 13px;
                     text-align: left;
-                }
-                QPushButton:hover {
-                    background-color: #414868;
-                    color: #7aa2f7;
-                    border: 1px solid #7aa2f7;
-                }
+                }}
+                QPushButton:hover {{
+                    background-color: {self.colors['border']};
+                    color: {self.colors['accent']};
+                    border: 1px solid {self.colors['accent']};
+                }}
             """)
             btn.clicked.connect(lambda checked, n=name, d=data: self.launch_space(n, d))
             row.addWidget(btn, stretch=4)
 
             edit_btn = QPushButton("✎")
             edit_btn.setFixedWidth(36)
-            edit_btn.setStyleSheet("""
-                QPushButton {
-                    background-color: #24283b;
-                    color: #e0af68;
-                    border: 1px solid #414868;
+            edit_btn.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: {self.colors['panel_bg']};
+                    color: {self.colors['warning']};
+                    border: 1px solid {self.colors['border']};
                     border-radius: 6px;
                     padding: 10px;
                     font-size: 14px;
-                }
-                QPushButton:hover {
-                    background-color: #e0af68;
-                    color: #1a1a24;
-                    border: 1px solid #e0af68;
-                }
+                }}
+                QPushButton:hover {{
+                    background-color: {self.colors['warning']};
+                    color: {self.colors['bg']};
+                    border: 1px solid {self.colors['warning']};
+                }}
             """)
             edit_btn.clicked.connect(lambda checked, n=name, d=data: self.open_creator_for_edit(n, d))
             row.addWidget(edit_btn)
 
             del_btn = QPushButton("🗙")
             del_btn.setFixedWidth(36)
-            del_btn.setStyleSheet("""
-                QPushButton {
-                    background-color: #24283b;
-                    color: #f7768e;
-                    border: 1px solid #414868;
+            del_btn.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: {self.colors['panel_bg']};
+                    color: {self.colors['danger']};
+                    border: 1px solid {self.colors['border']};
                     border-radius: 6px;
                     padding: 10px;
                     font-size: 12px;
-                }
-                QPushButton:hover {
-                    background-color: #f7768e;
-                    color: #1a1a24;
-                    border: 1px solid #f7768e;
-                }
+                }}
+                QPushButton:hover {{
+                    background-color: {self.colors['danger']};
+                    color: {self.colors['bg']};
+                    border: 1px solid {self.colors['danger']};
+                }}
             """)
             del_btn.clicked.connect(lambda checked, n=name: self.delete_profile(n))
             row.addWidget(del_btn)

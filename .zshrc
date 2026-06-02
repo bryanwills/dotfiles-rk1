@@ -154,6 +154,9 @@ dotsync() {
     fi
 }
 
+# Source external shell utility functions
+[[ -f ~/.config/zsh/functions/jknot.zsh ]] && source ~/.config/zsh/functions/jknot.zsh
+
 # --- zsh-autosuggestions (sourced directly, no plugin manager) ---
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
