@@ -25,10 +25,10 @@ hl.window_rule({
     name = "Workspaces Profiles",
     match = { title = "hypr-workspaces.py" },
     float = true,
-    size = { 400, 560 },
-    center = true,
+    size = {450, 560},
+    move = {750, 2},
     border_size = 0,
-    animation = "gnomed",
+    animation = "slide top",
     opacity = 0.8
 })
 

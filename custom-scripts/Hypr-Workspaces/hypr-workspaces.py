@@ -111,11 +111,34 @@ class WorkspaceWidget(QWidget):
         self.style_input(self.files_input)
         self.creator_layout.addWidget(self.files_input)
 
+        # Unified row container layout for creator actions
+        form_actions_layout = QHBoxLayout()
+        form_actions_layout.setSpacing(8)
+
         self.save_btn = QPushButton("Save Workspace")
         self.save_btn.setStyleSheet(self.add_btn.styleSheet())
         self.save_btn.clicked.connect(self.save_profile)
-        self.creator_layout.addWidget(self.save_btn)
-        
+        form_actions_layout.addWidget(self.save_btn)
+
+        cancel_btn = QPushButton("Cancel")
+        cancel_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #382c36;
+                color: #f7768e;
+                border: 1px solid #f7768e;
+                border-radius: 6px;
+                padding: 8px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #f7768e;
+                color: #1a1a24;
+            }
+        """)
+        cancel_btn.clicked.connect(self.close_creator_panel)
+        form_actions_layout.addWidget(cancel_btn)
+
+        self.creator_layout.addLayout(form_actions_layout)
         self.main_layout.addWidget(self.creator)
 
     def style_input(self, widget):
@@ -138,7 +161,7 @@ class WorkspaceWidget(QWidget):
         self.files_input.clear()
         
         if not self.creator.isVisible():
-            self.setFixedSize(680, 520)
+            self.setFixedSize(900, 560)
             self.creator.setVisible(True)
 
     def open_creator_for_edit(self, name, data):
@@ -152,7 +175,7 @@ class WorkspaceWidget(QWidget):
         self.files_input.setText(", ".join(files_list))
         
         if not self.creator.isVisible():
-            self.setFixedSize(680, 520)
+            self.setFixedSize(900, 560)
             self.creator.setVisible(True)
 
     def browse_directory(self):
@@ -166,7 +189,6 @@ class WorkspaceWidget(QWidget):
             if item.widget():
                 item.widget().deleteLater()
             elif item.layout():
-                # Clean out nested button row layouts recursively
                 while item.layout().count():
                     child = item.layout().takeAt(0)
                     if child.widget():
@@ -184,7 +206,6 @@ class WorkspaceWidget(QWidget):
             row = QHBoxLayout()
             row.setSpacing(4)
             
-            # Main launch button
             btn = QPushButton(name)
             btn.setStyleSheet("""
                 QPushButton {
@@ -205,7 +226,6 @@ class WorkspaceWidget(QWidget):
             btn.clicked.connect(lambda checked, n=name, d=data: self.launch_space(n, d))
             row.addWidget(btn, stretch=4)
 
-            # Quick action button layout configuration
             edit_btn = QPushButton("✎")
             edit_btn.setFixedWidth(36)
             edit_btn.setStyleSheet("""
@@ -258,12 +278,20 @@ class WorkspaceWidget(QWidget):
         with open(CONFIG_PATH, "w") as f:
             json.dump(profiles, f, indent=4)
             
-        # Hide the editing panel if the profile being modified was deleted
         if self.editing_profile_name == name:
             self.creator.setVisible(False)
-            self.setFixedSize(340, 520)
+            self.setFixedSize(450, 560)
             
         self.load_profiles()
+
+    def close_creator_panel(self):
+        self.name_input.clear()
+        self.dir_input.clear()
+        self.files_input.clear()
+        self.editing_profile_name = None
+        
+        self.creator.setVisible(False)
+        self.setFixedSize(450, 560)
 
     def save_profile(self):
         name = self.name_input.text().strip()
@@ -300,7 +328,7 @@ class WorkspaceWidget(QWidget):
         self.files_input.clear()
         
         self.creator.setVisible(False)
-        self.setFixedSize(340, 520)
+        self.setFixedSize(450, 560)
         self.load_profiles()
 
     def launch_space(self, name, data):
@@ -317,12 +345,9 @@ class WorkspaceWidget(QWidget):
             except OSError:
                 pass
 
-        # Capture the current system environment variables safely
         env_config = os.environ.copy()
-        # Force Kitty to accept remote commands for this specific instance
         env_config["KITTY_ALLOW_REMOTE_CONTROL"] = "yes"
 
-        # Spawn the isolated terminal boundary without breaking on invalid flags
         subprocess.Popen([
             "kitty",
             "--listen-on", f"unix:{socket_path}",
@@ -330,7 +355,6 @@ class WorkspaceWidget(QWidget):
             "--title", name
         ], env=env_config, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-        # Dynamic connection check: wait up to 4 seconds for the socket file to become available
         import time
         socket_ready = False
         for _ in range(40):
@@ -343,7 +367,6 @@ class WorkspaceWidget(QWidget):
             print(f"Error: Timing out waiting for socket allocation at {socket_path}")
             return
 
-        # Give the window server an extra moment to bind operational parameters
         time.sleep(0.2)
         
         first = True
@@ -354,13 +377,11 @@ class WorkspaceWidget(QWidget):
                 cmd_args = ["/usr/bin/yazi"]
             
             if first:
-                # Dispatch the command to the default shell layer spawned on startup
                 full_cmd = " ".join(cmd_args)
                 subprocess.run(["kitty", "@", "--to", f"unix:{socket_path}", "send-text", f"clear && {full_cmd}\n"])
                 subprocess.run(["kitty", "@", "--to", f"unix:{socket_path}", "set-tab-title", target["file"]])
                 first = False
             else:
-                # Open subsequent targets natively inside fresh workspace tabs
                 subprocess.run([
                     "kitty", "@", "--to", f"unix:{socket_path}",
                     "launch", "--type=tab", "--cwd", project_dir,
