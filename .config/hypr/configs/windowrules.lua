@@ -6,7 +6,7 @@
 local widgets = {
     { name = "keybinds-widget", match = { class = "keybinds" }, float = true, size = {750, 650}, move = {585, 1}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
     { name = "aliases-widget", match = { class = "show-aliases" }, float = true, size = {750, 650}, move = {585, 1}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
-    { name = "clipbox-widget", match = { title = "clipbox-widget" }, float = true, size = {750, 650}, move = {585, 1}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
+    { name = "clipbox-widget", match = { title = "clipbox-widget" }, float = true, size = {750, 680}, move = {590, 3}, border_size = 0, border_color = "rgb(767b7e)", animation = "fadeIn" },
     { name = "control-panel-widget", match = { title = "control-panel.py" }, float = true, size = {750, 650}, move = {585, 50}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.9 },
     { name = "audio-widget", match = { class = "Audio Switcher" }, float = true, move = {710, 0}, size = {500, 250}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
     { name = "mirec-widget", match = { class = "Mirec" }, float = true, move = {5, 1}, size = {500, 300}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide left", opacity = 0.7 },

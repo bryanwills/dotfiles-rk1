@@ -10,29 +10,61 @@ gi.require_version('Gdk', '3.0')
 gi.require_version('GtkLayerShell', '0.1')
 gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell, Gio
-import os, subprocess, threading
+import os, subprocess, threading, re
 
+# --- Configuration ---
 WIDGET_W      = 800
 WIDGET_H      = 680
 ICON_SIZE     = 48
 GRID_COLS     = 6
 HOME          = os.path.expanduser("~")
+THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
 
-# Consistent Theme Colours matching Control Panel
-BG      = "rgba(29, 32, 33, 0.6)"
+def load_control_panel_colors():
+    """Extracts raw styling colors directly out of the generated current_theme.css structure."""
+    defaults = {
+        "bg": "rgba(29, 32, 33, 0.6)",
+        "accent": "#767b7e",
+        "fg": "#ffffff",
+        "fg_dim": "#aaaaaa"
+    }
+    if os.path.exists(THEME_FILE):
+        try:
+            with open(THEME_FILE, "r", encoding="utf-8") as f:
+                content = f.read()
+            bg_match = re.search(r"QWidget#MainWidget\s*\{\s*background-color:\s*([^;]+);", content)
+            accent_match = re.search(r"border:\s*2px\s*solid\s*([^;]+);", content)
+            text_match = re.search(r"QLabel\s*\{\s*color:\s*([^;]+);", content)
+            hint_match = re.search(r"QLabel#DateLabel\s*\{\s*color:\s*([^;]+);", content)
+            
+            if bg_match:
+                defaults["bg"] = bg_match.group(1).strip()
+            if accent_match:
+                defaults["accent"] = accent_match.group(1).strip()
+            if text_match:
+                defaults["fg"] = text_match.group(1).strip()
+            if hint_match:
+                defaults["fg_dim"] = hint_match.group(1).strip()
+        except Exception:
+            pass
+    return defaults
+
+# --- Extract active colors prior to stylesheet compiling ---
+THEME_PALETTE = load_control_panel_colors()
+BG      = THEME_PALETTE["bg"]
 BG_SEC  = "#050505"
 BORDER  = "#222222"
-ACC     = "#767b7e"
-FG      = "#ffffff"
-FG_DIM  = "#aaaaaa"
+ACC     = THEME_PALETTE["accent"]
+FG      = THEME_PALETTE["fg"]
+FG_DIM  = THEME_PALETTE["fg_dim"]
 
 CSS = f"""
 window {{
     background-color: {BG};
-    border: 2px solid #767b7e;
+    border: 2px solid {ACC};
 }}
 .frame {{
-    background-color: rgba(29, 32, 33, 0.7);
+    background-color: {BG};
     border-radius: 4px;
     border: 2px solid #333333;
     margin: 6px;
@@ -88,7 +120,7 @@ window {{
     padding: 4px 8px;
 }}
 .app-tile {{
-    background-color: rgba(29, 32, 33, 0.7);
+    background-color: {BG};
     border-radius: 4px;
     border: 1px solid {ACC};
     padding: 10px 6px 8px 6px;

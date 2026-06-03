@@ -8,27 +8,59 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version('GtkLayerShell', '0.1')
 from gi.repository import Gtk, Gdk, GLib, Pango, GtkLayerShell
-import os, subprocess, json, threading
+import os, subprocess, json, threading, re
 
+# --- Configuration ---
 WIDGET_W    = 700
 WIDGET_H    = 680
 PINS_FILE   = os.path.expanduser("~/.cache/clipbox-pins.json")
+THEME_FILE  = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
 DISPLAY_MAX = 100
 
-# Consistent Theme Colours
-BG = "#1d2021"
+def load_control_panel_colors():
+    """Extracts raw styling colors directly out of the generated current_theme.css structure."""
+    defaults = {
+        "bg": "#1d2021",
+        "accent": "#b5bc90",
+        "fg": "#ffffff",
+        "fg_dim": "#aaaaaa"
+    }
+    if os.path.exists(THEME_FILE):
+        try:
+            with open(THEME_FILE, "r", encoding="utf-8") as f:
+                content = f.read()
+            bg_match = re.search(r"QWidget#MainWidget\s*\{\s*background-color:\s*([^;]+);", content)
+            accent_match = re.search(r"border:\s*2px\s*solid\s*([^;]+);", content)
+            text_match = re.search(r"QLabel\s*\{\s*color:\s*([^;]+);", content)
+            hint_match = re.search(r"QLabel#DateLabel\s*\{\s*color:\s*([^;]+);", content)
+            
+            if bg_match:
+                defaults["bg"] = bg_match.group(1).strip()
+            if accent_match:
+                defaults["accent"] = accent_match.group(1).strip()
+            if text_match:
+                defaults["fg"] = text_match.group(1).strip()
+            if hint_match:
+                defaults["fg_dim"] = hint_match.group(1).strip()
+        except Exception:
+            pass
+    return defaults
+
+# --- Extract active colors prior to stylesheet compiling ---
+THEME_PALETTE = load_control_panel_colors()
+BG     = THEME_PALETTE["bg"]
 BG_SEC = "#050505"
 BORDER = "#222222"
-ACC = "#b5bc90"
-FG = "#ffffff"
-FG_DIM = "#aaaaaa"
+ACC    = THEME_PALETTE["accent"]
+FG     = THEME_PALETTE["fg"]
+FG_DIM = THEME_PALETTE["fg_dim"]
 
 CSS = f"""
 window {{ background-color: {BG}; }}
 .frame {{
     background-color: {BG};
     border-radius: 4px;
-    border: 1px solid #767b7e;
+    border: 1px solid {ACC};
     margin: 6px;
 }}
 .header {{
@@ -46,13 +78,13 @@ window {{ background-color: {BG}; }}
 }}
 .search-box {{
     background-color: {BG}; border-radius: 4px;
-    border: 0px solid #767b7e; padding: 2px 8px;
+    border: 0px solid {ACC}; padding: 2px 8px;
     margin: 0px 12px 6px 12px;
 }}
 .search-entry {{
-    background-color: transparent; color: #ffffff;
+    background-color: transparent; color: {FG};
     font-family: "JetBrains Mono"; font-size: 14px;
-    border: 2px solid #767b7e; padding: 6px 4px;
+    border: 2px solid {ACC}; padding: 6px 4px;
 }}
 .tab-bar {{ background-color: transparent; padding: 0px 12px 6px 12px; }}
 .tab-btn {{
@@ -61,13 +93,13 @@ window {{ background-color: {BG}; }}
     font-family: "JetBrains Mono"; font-size: 11px;
 }}
 .tab-active {{
-    background-color: {ACC}; color: #ffffff;
+    background-color: {ACC}; color: #000000;
     border-radius: 4px; border: none; padding: 4px 14px;
     font-family: "JetBrains Mono"; font-size: 11px; font-weight: bold;
 }}
 .preview-box {{
     background-color: {BG}; border-radius: 4px;
-    border: 1px solid #767b7e;
+    border: 1px solid {ACC};
     padding: 8px 12px; margin: 0px 12px 6px 12px;
 }}
 .preview-text {{
@@ -81,7 +113,7 @@ list {{
 row {{
     background-color: {BG};
     border-radius: 4px;
-    border: 1px solid #767b7e;
+    border: 1px solid {ACC};
     padding: 8px;
     margin: 4px 0px;
 }}
@@ -98,19 +130,19 @@ row:selected {{
 }}
 .action-btn, .del-btn {{
     background-color: {BG}; color: {FG};
-    border: 1px solid #b5bc90; border-radius: 4px; padding: 4px 8px;
+    border: 1px solid {ACC}; border-radius: 4px; padding: 4px 8px;
     font-family: "JetBrains Mono"; font-size: 10px;
 }}
 .action-btn:hover, .del-btn:hover {{ border-color: {ACC}; }}
 .btn {{
     background-color: {BG}; color: {FG};
-    border-radius: 4px; border: 1px solid #b5bc90; padding: 7px 14px;
+    border-radius: 4px; border: 1px solid {ACC}; padding: 7px 14px;
     font-family: "JetBrains Mono"; font-size: 11px;
 }}
 .btn:hover {{ border-color: {ACC}; }}
 .btn-danger {{
     background-color: {BG}; color: #ff5555;
-    border-radius: 4px; border: 1px solid #b5bc90; padding: 7px 14px;
+    border-radius: 4px; border: 1px solid {ACC}; padding: 7px 14px;
 }}
 .btn-danger:hover {{ border-color: #ff5555; }}
 .status-bar {{ padding: 8px 14px; border-top: 1px solid {BORDER}; }}

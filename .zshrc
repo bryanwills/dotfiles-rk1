@@ -195,7 +195,6 @@ if [[ -o interactive && "$TERM" =~ "foot|xterm-kitty" ]]; then
 fi
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
-source ~/.local/share/extraterm/extraterm-commands-0.9.4/setup_extraterm_zsh.zsh
 export PATH="$HOME/.local/bin:$PATH"
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 

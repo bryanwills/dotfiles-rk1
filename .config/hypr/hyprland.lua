@@ -12,6 +12,8 @@ hl.env("WLR_NO_HARDWARE_CURSORS", "1")
 hl.env("WLR_RENDERER_ALLOW_SOFTWARE", "1")
 hl.env("TERMINAL", "kitty")
 hl.env("LIBVA_DRIVER_NAME", "iHD")
+hl.env("HYPRCURSOR_THEME", "Empty-Butterfly-Yellow-vr8")
+hl.env("HYPRCURSOR_SIZE", "24")
 
 -- 2. Configuration Tables
 hl.monitor({
@@ -94,6 +96,11 @@ hl.workspace_rule({
     workspace = "3", 
     layout = "scrolling",
     layout_opts = { direction = "down" } 
+})
+
+hl.workspace_rule({ 
+    workspace = "2", 
+    layout = "dwindle"
 })
 
 hl.gesture({
