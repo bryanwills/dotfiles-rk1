@@ -63,6 +63,12 @@ hl.config({
         fullscreen_on_one_column = true,
         direction = "right"
     },
+    dwindle = {
+        preserve_split = true,
+        smart_split = false,
+        smart_resizing = true,
+        force_split = 0
+    },
     decoration = {
         rounding = 0,
         active_opacity = 1.0,

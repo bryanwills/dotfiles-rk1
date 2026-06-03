@@ -17,7 +17,7 @@ import subprocess
 import re
 
 # --- Core Configuration Paths ---
-THEME_FILE = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
+THEME_FILE = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
 
 # --- Default Fallback State ---
 STATE = {
@@ -251,55 +251,54 @@ class ThemeWidget(Gtk.Window):
         output_qss = (
             "QWidget#MainWidget { background-color: " + STATE["bg"] + "; border: 2px solid " + STATE["accent"] + "; }\n"
             "QFrame#Section { border: 1px solid " + STATE["accent"] + "; border-radius: 4px; background-color: " + STATE["bg"] + "; }\n"
-            "QLabel { color: " + STATE["text"] + "; font-family: 'JetBrains Mono'; font-size: 14px; }\n"
-            "QLabel#ClockLabel { color: " + STATE["accent"] + "; }\n"
-            "QLabel#DateLabel { color: " + STATE["hint"] + "; }\n"
-            "QLabel#TempLabel { color: " + STATE["accent"] + "; }\n"
-            "QLabel#TrackerProjectLabel { color: " + STATE["text"] + "; }\n"
-            "QLabel#TrackerStatusIcon { color: " + STATE["accent"] + "; }\n"
-            "QLineEdit { background-color: " + STATE["bg"] + "; border: 1px solid " + STATE["accent"] + "; color: " + STATE["text"] + "; padding: 5px; border-radius: 4px; }\n"
-            "QLineEdit:focus { border: 2px solid " + STATE["accent"] + "; outline: none; }\n"
-            "QListWidget { background-color: " + STATE["bg"] + "; border: 1px solid " + STATE["accent"] + "; color: " + STATE["text"] + "; outline: none; border-radius: 4px; }\n"
-            "QListWidget::item { padding: 8px; border-bottom: 1px solid #111111; }\n"
-            "QListWidget::item:selected { background-color: " + STATE["accent"] + "; color: " + STATE["bg"] + "; font-weight: bold; }\n"
             
-            "QPushButton { background-color: " + STATE["bg"] + "; border: 1px solid " + STATE["accent"] + "; color: " + STATE["text"] + "; padding: 8px; font-family: 'JetBrains Mono'; border-radius: 4px; }\n"
+            # Label selectors enforcing explicit font styling parameters
+            "QLabel { color: " + STATE["text"] + "; font-family: 'JetBrains Mono'; font-size: 14px; font-weight: 900; }\n"
+            "QLabel#ClockLabel { color: " + STATE["accent"] + "; font-family: 'JetBrains Mono'; font-size: 36px; font-weight: bold; }\n"
+            "QLabel#DateLabel { color: " + STATE["hint"] + "; font-family: 'JetBrains Mono'; font-size: 14px; }\n"
+            "QLabel#TempLabel { color: " + STATE["accent"] + "; font-family: 'JetBrains Mono'; }\n"
+            "QLabel#TrackerProjectLabel { color: " + STATE["text"] + "; font-family: 'JetBrains Mono'; }\n"
+            "QLabel#TrackerStatusIcon { color: " + STATE["accent"] + "; font-family: 'JetBrains Mono'; }\n"
+            
+            # Form elements and list configurations
+            "QLineEdit { background-color: " + STATE["bg"] + "; border: 1px solid " + STATE["accent"] + "; color: " + STATE["text"] + "; padding: 5px; border-radius: 4px; font-family: 'JetBrains Mono'; }\n"
+            "QLineEdit:focus { border: 2px solid " + STATE["accent"] + "; outline: none; }\n"
+            "QListWidget { background-color: " + STATE["bg"] + "; border: 1px solid " + STATE["accent"] + "; color: " + STATE["text"] + "; outline: none; border-radius: 4px; font-family: 'JetBrains Mono'; }\n"
+            "QListWidget::item { padding: 8px; border-bottom: 1px solid #111111; font-family: 'JetBrains Mono'; }\n"
+            "QListWidget::item:selected { background-color: " + STATE["accent"] + "; color: " + STATE["bg"] + "; font-weight: bold; font-family: 'JetBrains Mono'; }\n"
+            
+            # Global button behaviors
+            "QPushButton { background-color: " + STATE["bg"] + "; border: 1px solid " + STATE["accent"] + "; color: " + STATE["text"] + "; padding: 8px; font-family: 'JetBrains Mono'; font-size: 14px; border-radius: 4px; }\n"
             "QPushButton:hover { background-color: #222222; border-color: " + STATE["text"] + "; }\n"
             "QPushButton:focus { background-color: #b0b0b0; border: 2px solid " + STATE["text"] + "; outline: none; }\n"
             
-            "QPushButton#ActiveProfile, QPushButton#ActiveWorkspace { background-color: " + STATE["accent"] + "; color: " + STATE["bg"] + "; font-weight: bold; border: 1px solid " + STATE["text"] + "; }\n"
+            # Contextual panel buttons
+            "QPushButton#ActiveProfile, QPushButton#ActiveWorkspace { background-color: " + STATE["accent"] + "; color: " + STATE["bg"] + "; font-weight: bold; border: 1px solid " + STATE["text"] + "; font-family: 'JetBrains Mono'; font-size: 14px; }\n"
             "QPushButton#ActiveWorkspace:focus { border: 2px solid " + STATE["text"] + "; }\n"
-            "QPushButton#TaskItem { font-size: 10px; padding: 4px 6px; min-width: 70px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: " + STATE["text"] + "; }\n"
+            "QPushButton#TaskItem { font-size: 12px; padding: 4px 6px; min-width: 70px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: " + STATE["text"] + "; font-family: 'JetBrains Mono'; }\n"
             "QPushButton#TaskItem:focus { border: 2px solid " + STATE["text"] + "; }\n"
             
-            # Base tool button layout definition
-            "QPushButton#ToolButton { font-size: 16px; padding: 10px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: " + STATE["text"] + "; }\n"
+            # System tools navigation nodes
+            "QPushButton#ToolButton { font-size: 16px; padding: 10px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: " + STATE["text"] + "; font-family: 'JetBrains Mono'; }\n"
             "QPushButton#ToolButton:focus { border: 2px solid " + STATE["text"] + "; }\n"
-            
-            # Explicit property styling overrides global button rules
             "QPushButton#ToolButton[connected='true'] { color: #52fa69; }\n"
             "QPushButton#ToolButton[objectName='ToolButton'][id='bt'][connected='true'] { color: #3b82f6; }\n"
-            "QPushButton#ToolButton { font-size: 16px; padding: 10px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; }\n"
             "QPushButton#ToolButton[connected='false'] { color: " + STATE["text"] + "; }\n"
-            # Wifi is green and bluetooth is blue when active:
-            "QPushButton#ToolButton { font-size: 16px; padding: 10px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: " + STATE["text"] + "; }\n"
-            "QPushButton#ToolButton:focus { border: 2px solid " + STATE["text"] + "; }\n"
-            # Final specific selectors for network connections
-            "QPushButton#ToolButton[connected='true'] { color: #52fa69; }\n" 
             "QPushButton#ToolButton[connected='wifi_on'] { color: #52fa69; }\n"
             "QPushButton#ToolButton[connected='bt_on'] { color: #3b82f6; }\n"
-            # Adjust the output string logic to support distinct colors easily:
             "QPushButton#ToolButton[connected='wifi'] { color: #52fa69; }\n"
             "QPushButton#ToolButton[connected='bluetooth'] { color: #3b82f6; }\n"
             "QPushButton#ToolButton[connected='none'] { color: " + STATE["text"] + "; }\n"
-            # Individual power menu buttons
-            "QPushButton#PowerBtn_󰐥 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #ff5555; }\n"
-            "QPushButton#PowerBtn_󰑐 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #21ab00; }\n"
-            "QPushButton#PowerBtn_󰤄 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #bd93f9; }\n"
-            "QPushButton#PowerBtn_󰈆 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #8be9fd; }\n"
-            "QPushButton#PowerBtn_󰖔 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #ffb86c; }\n"
+            
+            # Bottom bar session triggers
+            "QPushButton#PowerBtn_󰐥 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #ff5555; font-family: 'JetBrains Mono'; }\n"
+            "QPushButton#PowerBtn_󰑐 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #21ab00; font-family: 'JetBrains Mono'; }\n"
+            "QPushButton#PowerBtn_󰤄 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #bd93f9; font-family: 'JetBrains Mono'; }\n"
+            "QPushButton#PowerBtn_󰈆 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #8be9fd; font-family: 'JetBrains Mono'; }\n"
+            "QPushButton#PowerBtn_󰖔 { font-size: 16px; background-color: " + STATE["bg"] + "; border-color: " + STATE["accent"] + "; color: #ffb86c; font-family: 'JetBrains Mono'; }\n"
             "QPushButton[objectName^='PowerBtn_']:focus { border: 2px solid " + STATE["text"] + "; }\n"
             
+            # Sliders, tracking graphics, and scrollbars
             "QProgressBar { border: none; background-color: #111111; height: 4px; border-radius: 5px; color: transparent; }\n"
             "QProgressBar::chunk { background-color: " + STATE["accent"] + "; border-radius: 5px; }\n"
             "QSlider::groove:horizontal { border: none; height: 2px; background: #333333; }\n"

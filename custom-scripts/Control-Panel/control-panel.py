@@ -26,7 +26,7 @@ from PyQt6.QtGui import QIcon, QFontDatabase
 
 BAT = "/sys/class/power_supply/BAT0"
 LOG_FILE = os.path.expanduser("~/.cache/notification_history.log")
-THEME_FILE = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
+THEME_FILE = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
 
 class ControlPanel(QWidget):
     def __init__(self):
@@ -69,9 +69,9 @@ class ControlPanel(QWidget):
         self.setStyleSheet(f"""
             QWidget#MainWidget {{ background-color: #1d2021; border: 2px solid #767b7e; }}
             QFrame#Section {{ border: 1px solid #767b7e; border-radius: 4px; background-color: #1d2021; }}
-            QLabel {{ color: #ffffff; font-family: 'JetBrains Mono'; font-size: 11px; }}
-            QLabel#ClockLabel {{ font-size: 16px; font-family: '{self.font_family}'; font-weight: 900; }}
-            QLabel#DateLabel {{ font-size: 12px; color: #aaaaaa; letter-spacing: 1px; }}
+            QLabel {{ color: #ffffff; font-family: 'JetBrains Mono'; font-size: 14px; }}
+            QLabel#ClockLabel {{ font-size: 26px; font-family: '{self.font_family}'; font-weight: 900; }}
+            QLabel#DateLabel {{ font-size: 14px; color: #aaaaaa; letter-spacing: 1px; }}
             QLineEdit {{ background-color: #1d2021; border: 1px solid #767b7e; color: #ffffff; padding: 5px; border-radius: 4px; }}
             QListWidget {{ background-color: #1d2021; border: 1px solid #222222; color: #ffffff; outline: none; border-radius: 4px; }}
             QListWidget::item {{ padding: 8px; border-bottom: 1px solid #111111; }}
@@ -133,7 +133,7 @@ class ControlPanel(QWidget):
         self.clock_lbl.setStyleSheet(f"font-size: 36px; font-family: '{self.font_family}'; font-weight: 900;")
         self.date_lbl = QLabel()
         self.date_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.date_lbl.setStyleSheet("font-size: 12px; color: #aaaaaa; letter-spacing: 1px;")
+        self.date_lbl.setStyleSheet("font-size: 14px; color: #aaaaaa; letter-spacing: 1px;")
         top_lay.addWidget(self.clock_lbl)
         top_lay.addWidget(self.date_lbl)
         main_layout.addWidget(top_sec)
