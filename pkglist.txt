@@ -32,6 +32,7 @@ git
 gnome-keyring
 grim
 gsimplecal
+gtk4-layer-shell
 gvfs
 htop
 hyprland

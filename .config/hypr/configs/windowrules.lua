@@ -6,7 +6,7 @@
 local widgets = {
     { name = "keybinds-widget", match = { class = "keybinds" }, float = true, size = {750, 650}, move = {585, 1}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
     { name = "aliases-widget", match = { class = "show-aliases" }, float = true, size = {750, 650}, move = {585, 1}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
-    { name = "clipbox-widget", match = { title = "clipbox-widget" }, float = true, size = {750, 680}, move = {590, 3}, border_size = 0, border_color = "rgb(767b7e)", animation = "fadeIn" },
+    { name = "clipbox-widget", match = { title = "clipbox-widget" }, float = true, size = {700, 680}, move = {600, 3}, border_size = 0, border_color = "rgb(767b7e)", animation = "slide down" },
     { name = "control-panel-widget", match = { title = "control-panel.py" }, float = true, size = {750, 650}, move = {585, 50}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.9 },
     { name = "audio-widget", match = { class = "Audio Switcher" }, float = true, move = {710, 0}, size = {500, 250}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
     { name = "mirec-widget", match = { class = "Mirec" }, float = true, move = {5, 1}, size = {500, 300}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide left", opacity = 0.7 },
@@ -21,11 +21,32 @@ for _, rule in ipairs(widgets) do
 end
 
 -- App Launcher & Clipboard
+hl.window_rule({ 
+    name = "control-panel-widget", 
+    match = { title = "control-panel2.py" }, 
+    float = true, 
+    size = {750, 800}, 
+    move = {560, 0}, 
+    border_size = 0,
+    no_blur = false, 
+    border_color = "rgb(767b7e)", 
+    animation = "slide top" 
+})
+
+hl.window_rule({
+    name = "App Launcher",
+    match = { title = "launcher-widget" },
+    float = true,
+    move = {2, 2},
+    border_size = 0,
+    animation = "slide left",
+})
+
 hl.window_rule({
     name = "Wallpaper Changer",
     match = { class = "changewall-widget.py" },
     float = true,
-    move = {335, 830},
+    move = {355, 830},
     border_size = 0,
     animation = "gnomed",
 })
@@ -35,7 +56,7 @@ hl.window_rule({
     match = { title = "hypr-workspaces.py" },
     float = true,
     size = {450, 560},
-    move = {750, 2},
+    move = {760, 12},
     border_size = 0,
     animation = "slide top",
 })
@@ -67,8 +88,8 @@ hl.window_rule({
     name = "theme-widget",
     match = { class = "theme-widget.py" },
     float = true,
-    size = { 500, 240 },
-    move = {1380, 1},
+    size = { 440, 240 },
+    move = {1400, 0},
     border_size = 0,
     animation = "slide right",
 })
@@ -115,7 +136,7 @@ hl.window_rule({
     match = { title = "control-panel.py" }, 
     float = true, 
     size = {750, 800}, 
-    move = {585, 0}, 
+    move = {560, 0}, 
     border_size = 1,
     no_blur = false, 
     border_color = "rgb(767b7e)", 

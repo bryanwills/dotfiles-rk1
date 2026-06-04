@@ -13,10 +13,10 @@ from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell, Gio
 import os, subprocess, threading, re
 
 # --- Configuration ---
-WIDGET_W      = 800
-WIDGET_H      = 680
-ICON_SIZE     = 48
-GRID_COLS     = 6
+WIDGET_W      = 200
+WIDGET_H      = 1050
+ICON_SIZE     = 36
+GRID_COLS     = 4
 HOME          = os.path.expanduser("~")
 THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
 
@@ -287,17 +287,11 @@ class Launcher(Gtk.Window):
         super().__init__(type=Gtk.WindowType.TOPLEVEL)
         self.set_title("launcher-widget")
 
-        GtkLayerShell.init_for_window(self)
-        GtkLayerShell.set_layer(self, GtkLayerShell.Layer.TOP)
-        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, True)
-        GtkLayerShell.set_exclusive_zone(self, -1)
-        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, -1)
-        GtkLayerShell.set_keyboard_mode(self, GtkLayerShell.KeyboardMode.ON_DEMAND)
-
+        # Configure window traits to signal the compositor to keep it floating
         self.set_decorated(False)
         self.set_resizable(False)
-        self.set_app_paintable(True)
-        self.set_size_request(WIDGET_W, WIDGET_H)
+        self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
+        self.set_keep_above(True)
 
         screen = self.get_screen()
         visual = screen.get_rgba_visual()

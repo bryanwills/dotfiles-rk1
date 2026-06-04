@@ -37,12 +37,8 @@ class ControlPanel(QWidget):
         self.setObjectName("MainWidget")
         self.home = os.path.expanduser("~")
         
-        font_path = os.path.expanduser("~/.local/share/fonts/OpenDyslexicMNerdFontMono-Regular.otf")
-        if os.path.exists(font_path):
-            font_id = QFontDatabase.addApplicationFont(font_path)
-            self.font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
-        else:
-            self.font_family = "JetBrains Mono"
+        # Enforce standard JetBrains Mono variable layout across elements
+        self.font_family = "JetBrains Mono"
 
         # Apply the runtime theme styling profile
         self.apply_theme_profile()
@@ -70,8 +66,7 @@ class ControlPanel(QWidget):
             QWidget#MainWidget {{ background-color: #1d2021; border: 2px solid #767b7e; }}
             QFrame#Section {{ border: 1px solid #767b7e; border-radius: 4px; background-color: #1d2021; }}
             QLabel {{ color: #ffffff; font-family: 'JetBrains Mono'; font-size: 14px; }}
-            QLabel#ClockLabel {{ font-size: 26px; font-family: '{self.font_family}'; font-weight: 900; }}
-            QLabel#DateLabel {{ font-size: 14px; color: #aaaaaa; letter-spacing: 1px; }}
+            QLabel#HeaderLabel {{ font-size: 26px; font-family: '{self.font_family}'; font-weight: 900; letter-spacing: 1px; }}
             QLineEdit {{ background-color: #1d2021; border: 1px solid #767b7e; color: #ffffff; padding: 5px; border-radius: 4px; }}
             QListWidget {{ background-color: #1d2021; border: 1px solid #222222; color: #ffffff; outline: none; border-radius: 4px; }}
             QListWidget::item {{ padding: 8px; border-bottom: 1px solid #111111; }}
@@ -124,18 +119,17 @@ class ControlPanel(QWidget):
     def init_ui(self):
         main_layout = QVBoxLayout(self)
 
-        # Header Section
+        # Header Section - Replaced time elements with a centered text label
         top_sec = self.create_section()
-        top_sec.setFixedHeight(90)
+        top_sec.setFixedHeight(65)
         top_lay = QVBoxLayout(top_sec)
-        self.clock_lbl = QLabel()
-        self.clock_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.clock_lbl.setStyleSheet(f"font-size: 36px; font-family: '{self.font_family}'; font-weight: 900;")
-        self.date_lbl = QLabel()
-        self.date_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.date_lbl.setStyleSheet("font-size: 14px; color: #aaaaaa; letter-spacing: 1px;")
-        top_lay.addWidget(self.clock_lbl)
-        top_lay.addWidget(self.date_lbl)
+        
+        self.header_lbl = QLabel("RK1 - CONTROL PANEL")
+        self.header_lbl.setObjectName("HeaderLabel")
+        self.header_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.header_lbl.setStyleSheet(f"font-size: 22px; font-family: '{self.font_family}'; font-weight: 900; letter-spacing: 2px;")
+        
+        top_lay.addWidget(self.header_lbl)
         main_layout.addWidget(top_sec)
 
         # Workspaces Row
@@ -203,14 +197,14 @@ class ControlPanel(QWidget):
         g_lay = QGridLayout(g_sec)
         self.tool_btns = {}
         tools = [
-            ("  ", "rtm", f"kitty --class rtm -e python3 {self.home}/arch-projects/RTM/rtm.py"),
-            (" 󱀇 ", "budget", f"kitty --class budget-buddy -e python3 {self.home}/arch-projects/Budget-Buddy/budget-buddy.py"),
-            ("  ", "mirec", f"kitty --title Mirec -e {self.home}/arch-projects/MIREC/mirec"),
-            (" 󰖩 ", "wifi", f"kitty --class floating_wifi -e {self.home}/custom-scripts/wifi/wwifi"),
-            ("  ", "bt", f"kitty --class bt-menu -e {self.home}/custom-scripts/bluetooth/bt"),
-            (" 󰌌 ", "keys", f"kitty --class keybinds -e {self.home}/custom-scripts/keybinds.sh"),
-            (" 󰬈 ", "alias", f"kitty --class show-aliases -e {self.home}/custom-scripts/Show-Aliases/show-aliases.sh"),
-            (" 󱫉 ", "clip", f"python3 {self.home}/custom-scripts/Python-Widgets/clipbox-widget2.py")
+            ("    ", "rtm", f"kitty --class rtm -e python3 {self.home}/arch-projects/RTM/rtm.py"),
+            ("  󱀇  ", "budget", f"kitty --class budget-buddy -e python3 {self.home}/arch-projects/Budget-Buddy/budget-buddy.py"),
+            ("    ", "mirec", f"kitty --title Mirec -e {self.home}/arch-projects/MIREC/mirec"),
+            ("  󰖩  ", "wifi", f"kitty --class floating_wifi -e {self.home}/custom-scripts/wifi/wwifi"),
+            ("    ", "bt", f"kitty --class bt-menu -e {self.home}/custom-scripts/bluetooth/bt"),
+            ("  󰖛  ", "keys", f"kitty --class keybinds -e {self.home}/custom-scripts/keybinds.sh"),
+            ("  󰬈  ", "alias", f"kitty --class show-aliases -e {self.home}/custom-scripts/Show-Aliases/show-aliases.sh"),
+            ("  󱫉  ", "clip", f"python3 {self.home}/custom-scripts/Python-Widgets/clipbox-widget2.py")
         ]
         for i, (icon, tid, cmd) in enumerate(tools):
             btn = QPushButton(icon)
@@ -313,10 +307,6 @@ class ControlPanel(QWidget):
         main_layout.addWidget(p_sec_bottom)
 
     def update_live_data(self):
-        now = datetime.datetime.now()
-        self.clock_lbl.setText(now.strftime("%H:%M:%S"))
-        self.date_lbl.setText(now.strftime("%A, %d %B %Y").upper())
-    
         cpu_percent = psutil.cpu_percent()
         mem = psutil.virtual_memory()
         
@@ -339,9 +329,7 @@ class ControlPanel(QWidget):
         # Connection status sensing for WiFi and Bluetooth
         try:
             wifi_con = subprocess.run("nmcli -t -f TYPE,STATE dev | grep -q '^wifi:connected'", shell=True).returncode == 0
-            # Set a custom property that the stylesheet can read
             self.tool_btns["wifi"].setProperty("connected", "true" if wifi_con else "false")
-            # Force PyQt6 to recalculate the style for this specific widget
             self.tool_btns["wifi"].style().unpolish(self.tool_btns["wifi"])
             self.tool_btns["wifi"].style().polish(self.tool_btns["wifi"])
             

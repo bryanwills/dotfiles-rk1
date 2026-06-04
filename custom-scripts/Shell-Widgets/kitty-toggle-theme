@@ -25,6 +25,7 @@ themes=(
     "Vesper"
     "Base2Tone Lavender Dark"
     "Retrowave Light"
+    "Hacker Movie"
 )
 
 # Pipe it into fzf for interactive selection

@@ -14,11 +14,11 @@ import os, subprocess, json, threading, re
 WIDGET_W    = 700
 WIDGET_H    = 680
 PINS_FILE   = os.path.expanduser("~/.cache/clipbox-pins.json")
-THEME_FILE  = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
+THEME_FILE  = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
 DISPLAY_MAX = 100
 
 def load_control_panel_colors():
-    """Extracts raw styling colors directly out of the generated current_theme.css structure."""
+    """Extracts raw styling colors directly out of the generated current-theme.css structure."""
     defaults = {
         "bg": "#1d2021",
         "accent": "#b5bc90",

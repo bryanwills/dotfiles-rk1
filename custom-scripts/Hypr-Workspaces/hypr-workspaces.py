@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QPushButton,
 from PyQt6.QtCore import Qt
 
 CONFIG_PATH = os.path.expanduser("~/.config/project-spaces.json")
-THEME_FILE  = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
+THEME_FILE  = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
 
 def get_control_panel_theme():
     """Parses current_theme.css to pull active Control Panel color variables."""

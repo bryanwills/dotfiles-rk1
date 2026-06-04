@@ -31,5 +31,8 @@ hl.on("hyprland.start", function ()
     -- Toggle between these by commenting out the unwanted line
     hl.exec_cmd("geany")
     -- hl.exec_cmd("kitty --class yazi -e yazi")
+
+    -- Clock Widget
+    hl.exec_cmd("python3 ~/custom-scripts/Python-Widgets/desktop-clock.py")
 end)
 

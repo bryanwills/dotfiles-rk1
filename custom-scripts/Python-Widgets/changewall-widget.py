@@ -13,13 +13,13 @@ from concurrent.futures import ThreadPoolExecutor
 # --- Configuration ---
 WALLPAPER_DIR = os.path.expanduser("~/Pictures/Wallpapers")
 CACHE_DIR     = os.path.expanduser("~/.cache/changewall-widget")
-THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
+THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
 THUMB_SIZE    = 160
 WIDGET_HEIGHT = 220
 WIDGET_MARGIN = 335
 
 def load_control_panel_colors():
-    """Extracts raw styling colors directly out of the generated current_theme.css structure."""
+    """Extracts raw styling colors directly out of the generated current-theme.css structure."""
     defaults = {
         "bg": "#1d2021",
         "accent": "#767b7e",

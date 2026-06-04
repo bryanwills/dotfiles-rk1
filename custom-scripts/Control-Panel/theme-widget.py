@@ -87,7 +87,7 @@ window {{ background-color: transparent; }}
 .row-label {{ color: {text}; font-family: 'JetBrains Mono'; font-size: 16px; padding: 5px; margin-right: 8px; }}
 
 /* Mode Choice Selection Elements */
-.mode-btn {{ background-color: #282828; color: #ffffff; font-family: 'JetBrains Mono'; font-size: 12px; border: 1px solid #3c3836; padding: 5px 12px; margin-right: 5px; }}
+.mode-btn {{ background-color: #282828; color: #ffffff; font-family: 'JetBrains Mono'; font-size: 12px; border: 1px solid #3c3836; padding: 5px 12px; margin-right: 1px; }}
 .mode-btn:hover {{ border-color: {accent}; }}
 
 /* Dynamic Accent Dot Base Implementation */
@@ -119,7 +119,7 @@ class ThemeWidget(Gtk.Window):
     def load_current_state(self):
         """Reads the actual properties currently set in the QSS sheet to update the STATE matrix."""
         global STATE
-        theme_path = os.path.expanduser("~/custom-scripts/Control-Panel/current_theme.css")
+        theme_path = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
         
         if os.path.exists(theme_path):
             try:
@@ -228,7 +228,7 @@ class ThemeWidget(Gtk.Window):
         monitor = display.get_primary_monitor() or display.get_monitor(0)
         geo = monitor.get_geometry()
         
-        x = geo.x + (geo.width - 500) // 2
+        x = geo.x + (geo.width - 440) // 1
         y = geo.y + geo.height - 240 - 40
         self.move(x, y)
 
@@ -301,11 +301,13 @@ class ThemeWidget(Gtk.Window):
             # Sliders, tracking graphics, and scrollbars
             "QProgressBar { border: none; background-color: #111111; height: 4px; border-radius: 5px; color: transparent; }\n"
             "QProgressBar::chunk { background-color: " + STATE["accent"] + "; border-radius: 5px; }\n"
-            "QSlider::groove:horizontal { border: none; height: 2px; background: #333333; }\n"
+            "QSlider::groove:horizontal { border: none; height: 4px; background: #333333; }\n"
             "QSlider::handle:horizontal { background: " + STATE["accent"] + "; border: 0px solid #ffffff; width: 4px; height: 14px; margin: -7px 0; }\n"
             "QScrollBar { border: none; background: #000000; width: 8px; height: 8px; margin: 0px; }\n"
             "QScrollBar::handle { background: #333333; min-height: 20px; min-width: 20px; border-radius: 4px; }\n"
-            "QScrollBar::handle:hover { background: " + STATE["accent"] + "; }"
+            "QScrollBar::handle:hover { background: " + STATE["accent"] + "; }\n\n"
+            
+            f":root {{ --clock-bg: {STATE['bg']}; --clock-fg: {STATE['accent']}; }}\n"
         )
 
         os.makedirs(os.path.dirname(THEME_FILE), exist_ok=True)
