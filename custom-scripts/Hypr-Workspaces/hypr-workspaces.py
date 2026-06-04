@@ -12,8 +12,7 @@ CONFIG_PATH = os.path.expanduser("~/.config/project-spaces.json")
 THEME_FILE  = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
 
 def get_control_panel_theme():
-    """Parses current_theme.css to pull active Control Panel color variables."""
-    # Robust fallbacks matching original Tokyonight styling bounds
+    """Parses current-theme.css to pull active Control Panel color variables."""
     theme = {
         "bg": "#1d2021",
         "panel_bg": "#24283b",
@@ -31,7 +30,6 @@ def get_control_panel_theme():
             with open(THEME_FILE, "r", encoding="utf-8") as f:
                 content = f.read()
                 
-            # Extract raw parameters cleanly from theme-widget output blocks
             bg_match = re.search(r"QWidget#MainWidget\s*\{\s*background-color:\s*([^;]+);", content)
             accent_match = re.search(r"border:\s*2px\s*solid\s*([^;]+);", content)
             text_match = re.search(r"QLabel\s*\{\s*color:\s*([^;]+);", content)
@@ -56,7 +54,6 @@ class WorkspaceWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.editing_profile_name = None
-        # Load the dynamic color profile prior to UI building loops
         self.colors = get_control_panel_theme()
         self.init_ui()
 
@@ -228,7 +225,16 @@ class WorkspaceWidget(QWidget):
             self.dir_input.setText(directory)
 
     def load_profiles(self):
-        # ... (Preserve original clean layout wipe and JSON reading logic exactly) ...
+        while self.list_layout.count():
+            item = self.list_layout.takeAt(0)
+            if item.layout():
+                while item.layout().count():
+                    subitem = item.layout().takeAt(0)
+                    if subitem.widget():
+                        subitem.widget().deleteLater()
+            if item.widget():
+                item.widget().deleteLater()
+
         if not os.path.exists(CONFIG_PATH):
             with open(CONFIG_PATH, "w") as f:
                 json.dump({}, f)
@@ -339,8 +345,15 @@ class WorkspaceWidget(QWidget):
         for f in files_raw:
             f_clean = f.strip()
             if f_clean:
-                ext = os.path.splitext(f_clean)[1].lower()
-                t_type = "editor" if ext in [".py", ".lua", ".conf", ".sh", ".txt", ".json", ".toml", ".lock", ".md", ".bash", ".fish", ".zsh", ".yaml", ".yml", ".ini", ".theme", ".rules", ".desktop", ".service", ".awk", ".sed"] else "manager"
+                if f_clean.lower() == "yazi":
+                    t_type = "manager"
+                else:
+                    ext = os.path.splitext(f_clean)[1].lower()
+                    # Treat empty extensions (like xc or mend) as editors by default instead of falling back to manager
+                    if ext == "" or ext in [".py", ".lua", ".conf", ".sh", ".txt", ".json", ".toml", ".lock", ".md", ".bash", ".fish", ".zsh", ".yaml", ".yml", ".ini", ".theme", ".rules", ".desktop", ".service", ".awk", ".sed"]:
+                        t_type = "editor"
+                    else:
+                        t_type = "manager"
                 targets.append({"type": t_type, "file": f_clean})
 
         if not targets:
@@ -405,21 +418,42 @@ class WorkspaceWidget(QWidget):
         
         first = True
         for target in data["targets"]:
+            target_file = target["file"]
+            resolved_path = target_file
+            
+            if target["type"] == "editor" and not os.path.isabs(target_file):
+                base_target_name = os.path.basename(target_file)
+                found = False
+                
+                for root, dirs, files in os.walk(project_dir):
+                    # Check for direct base name match or relative path fragment alignment
+                    if base_target_name in files:
+                        full_path = os.path.join(root, base_target_name)
+                        rel_candidate = os.path.relpath(full_path, project_dir)
+                        
+                        if target_file in rel_candidate:
+                            resolved_path = rel_candidate
+                            found = True
+                            break
+                            
+                if not found:
+                    resolved_path = target_file
+
             if target["type"] == "editor":
-                cmd_args = ["/usr/bin/micro", target["file"]]
+                cmd_args = ["/usr/bin/micro", resolved_path]
             else:
                 cmd_args = ["/usr/bin/yazi"]
             
             if first:
                 full_cmd = " ".join(cmd_args)
                 subprocess.run(["kitty", "@", "--to", f"unix:{socket_path}", "send-text", f"clear && {full_cmd}\n"])
-                subprocess.run(["kitty", "@", "--to", f"unix:{socket_path}", "set-tab-title", target["file"]])
+                subprocess.run(["kitty", "@", "--to", f"unix:{socket_path}", "set-tab-title", os.path.basename(target_file)])
                 first = False
             else:
                 subprocess.run([
                     "kitty", "@", "--to", f"unix:{socket_path}",
                     "launch", "--type=tab", "--cwd", project_dir,
-                    "--tab-title", target["file"]
+                    "--tab-title", os.path.basename(target_file)
                 ] + cmd_args)
         
         self.close()
