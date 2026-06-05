@@ -69,8 +69,8 @@ class DesktopClock(Gtk.Application):
 
     def load_theme(self):
         """Extracts variables natively to avoid passing incompatible Qt code to GTK."""
-        bg_color = "#1d2021"
-        fg_color = "#767b7e"
+        bg_color = None
+        fg_color = None
 
         if os.path.exists(THEME_FILE):
             try:
@@ -84,6 +84,11 @@ class DesktopClock(Gtk.Application):
                 if fg_match: fg_color = fg_match.group(1).strip()
             except Exception:
                 pass
+
+        # If values are blank due to a suspend race condition, queue a retry in 1 second
+        if not bg_color or not fg_color:
+            GLib.timeout_add(1000, self.load_theme)
+            return False
 
         clean_gtk_css = f"""
             .main-window {{
