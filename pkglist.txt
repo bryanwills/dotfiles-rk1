@@ -10,7 +10,6 @@ bluez-obex
 bluez-utils
 brightnessctl
 btop
-claude-desktop-bin
 cliphist
 dart-sass
 distrobox
@@ -28,7 +27,9 @@ foot
 fzf
 gcalcli
 geany
+geany-plugins
 git
+glow
 gnome-keyring
 grim
 gsimplecal
@@ -132,6 +133,7 @@ woff2-font-awesome
 wtype
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
+xdg-desktop-portal-termfilechooser-hunkyburrito-git
 xdg-utils
 xf86-video-amdgpu
 xf86-video-ati

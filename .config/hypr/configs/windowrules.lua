@@ -21,6 +21,24 @@ for _, rule in ipairs(widgets) do
 end
 
 -- App Launcher & Clipboard
+hl.window_rule({
+	name = "floating yazi",
+	match = { class = "floating_yazi"},
+	float = true,
+	size = {900, 600},
+	center = true,
+	animation = "gnomed",
+})
+
+hl.window_rule({
+	name = "file_chooser",
+	match = { class = "file_chooser"},
+	float = true,
+	size = {900, 600},
+	center = true,
+	animation = "gnomed",
+})
+
 hl.window_rule({ 
     name = "control-panel-widget", 
     match = { title = "control-panel2.py" }, 

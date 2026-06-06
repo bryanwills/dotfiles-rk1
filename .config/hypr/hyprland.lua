@@ -14,6 +14,8 @@ hl.env("TERMINAL", "kitty")
 hl.env("LIBVA_DRIVER_NAME", "iHD")
 hl.env("HYPRCURSOR_THEME", "Empty-Butterfly-Yellow-vr8")
 hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("GTK_USE_PORTAL", "1")
+hl.env("GDK_DEBUG", "portals")
 
 -- 2. Configuration Tables
 hl.monitor({
