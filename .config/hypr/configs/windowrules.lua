@@ -22,9 +22,29 @@ end
 
 -- App Launcher & Clipboard
 hl.window_rule({
+	name = "hyprdash",
+	match = { class = "hyprdash"},
+	float = true,
+	size = {1560, 1000},
+	move = {350, 40},
+	border_size = 0,
+	animation = "gnomed",
+})
+
+hl.window_rule({
+	name = "S-Bar",
+	match = { title = "s-bar"},
+	float = true,
+	size = {500, 500},
+	move = {700, 5},
+	border_size = 0,
+	animation = "slide top",
+})
+
+hl.window_rule({
 	name = "floating yazi",
 	match = { class = "floating_yazi"},
-	float = true,
+	float = false,
 	size = {900, 600},
 	center = true,
 	animation = "gnomed",
@@ -57,7 +77,7 @@ hl.window_rule({
     float = true,
     move = {2, 2},
     border_size = 0,
-    animation = "slide left",
+    animation = "fadeIn",
 })
 
 hl.window_rule({
@@ -207,17 +227,24 @@ hl.window_rule({
 hl.window_rule({
     name = "kitty",
     match = { class = "kitty" },
+    float = true,
+    size = {1545, 1069},
+    move = {364, 1},
     border_size = 0,
     workspace = 2,
-    opacity = 0.9
+    opacity = 0.8,
+    no_blur = false
 })
 
 -- File Managers
 hl.window_rule({
     name = "yazi",
     match = { class = "yazi" },
-    opacity = 0.9,
+    float = true,
+    size = {1545, 1069},
+    opacity = 0.8,
     workspace = 3,
+    move = {364, 1},
     border_size = 0
 })
 
@@ -226,7 +253,7 @@ hl.window_rule({
     match = { class = "thunar" },
     animation = "fade",
     opacity = 0.9,
-    workspace = 3,
+    workspace = 4,
     border_size = 0
 })
 
@@ -235,7 +262,7 @@ hl.window_rule({
     name = "geany-rule",
     match = { class = "geany" },
     animation = "fade",
-    workspace = 3,
+    workspace = 5,
     opacity = 0.9,
     border_size = 0
 })

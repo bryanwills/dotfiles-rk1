@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # ─────────────────────────────────────────────────────────────────────────────
 #  launcher-widget.py — App launcher + file browser
-#  Bottom-centre, slides from bottom, 800x600, Control Panel themed
+#  Bottom-centre, slides from bottom, 800x600, Control Panel themed (List View)
 # ─────────────────────────────────────────────────────────────────────────────
 
 import gi
@@ -13,10 +13,9 @@ from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell, Gio
 import os, subprocess, threading, re
 
 # --- Configuration ---
-WIDGET_W      = 800
-WIDGET_H      = 600
-ICON_SIZE     = 36
-GRID_COLS     = 4
+WIDGET_W      = 500
+WIDGET_H      = 500
+ICON_SIZE     = 42
 HOME          = os.path.expanduser("~")
 THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
 
@@ -24,7 +23,7 @@ def load_control_panel_colors():
     """Extracts raw styling colors directly out of the generated current-theme.css structure."""
     defaults = {
         "bg": "#1d2021",
-        "accent": "#767b7e",
+        "accent": "#9c7321",
         "fg": "#ffffff",
         "fg_dim": "#aaaaaa"
     }
@@ -33,16 +32,16 @@ def load_control_panel_colors():
             with open(THEME_FILE, "r", encoding="utf-8") as f:
                 content = f.read()
             
-            # Match the background from QWidget#MainWidget string definitions
-            bg_match = re.search(r'QWidget#MainWidget\s*\{\s*background-color:\s*([^;}\n]+)', content)
-            # Match the accent color from the standard border definitions
-            accent_match = re.search(r'border:\s*\d+px\s+solid\s+([^;}\n]+)', content)
-            # Match the text foreground out of the primary label parameters
-            text_match = re.search(r'QLabel\s*\{\s*color:\s*([^;}\n]+)', content)
+            # Robust extraction matching background properties across formatting types
+            bg_match = re.search(r"QWidget#MainWidget\s*\{\s*background-color:\s*([^;}\n]+)", content)
+            accent_match = re.search(r"border:\s*2px\s+solid\s+([^;}\n]+)", content)
+            text_match = re.search(r"QLabel\s*\{\s*color:\s*([^;}\n]+)", content)
+            hint_match = re.search(r"QLabel#DateLabel\s*\{\s*color:\s*([^;}\n]+)", content)
             
             if bg_match: defaults["bg"] = bg_match.group(1).strip()
             if accent_match: defaults["accent"] = accent_match.group(1).strip()
             if text_match: defaults["fg"] = text_match.group(1).strip()
+            if hint_match: defaults["fg_dim"] = hint_match.group(1).strip()
         except Exception:
             pass
     return defaults
@@ -59,12 +58,12 @@ FG_DIM  = THEME_PALETTE["fg_dim"]
 CSS = f"""
 window {{
     background-color: {BG};
-    border: 2px solid {ACC};
+    border: 1px solid {ACC};
 }}
 .frame {{
     background-color: {BG};
     border-radius: 4px;
-    border: 2px solid #333333;
+    border: 1px solid #333333;
     margin: 6px;
 }}
 .search-box {{
@@ -79,7 +78,7 @@ window {{
     color: {FG};
     font-family: "JetBrains Mono";
     font-size: 14px;
-    border: 0px solid {ACC};
+    border: 0px solid transparent;
     padding: 6px 4px;
     min-width: 200px;
 }}
@@ -98,72 +97,69 @@ window {{
     border: none;
     padding: 4px 14px;
     font-family: "JetBrains Mono";
-    font-size: 11px;
+    font-size: 14px;
 }}
 .tab-btn:hover {{
     color: {FG};
 }}
 .tab-active {{
     background-color: {ACC};
-    color: #000000;
+    color: {BG_SEC};
     border-radius: 4px;
     border: none;
     padding: 4px 14px;
     font-family: "JetBrains Mono";
-    font-size: 11px;
+    font-size: 14px;
     font-weight: bold;
 }}
-.grid-scroll {{
+.list-scroll {{
     background-color: transparent;
     padding: 4px 8px;
 }}
-.app-tile {{
-    background-color: {BG};
-    border-radius: 4px;
-    border: 1px solid {ACC};
-    padding: 10px 6px 8px 6px;
-    margin: 4px;
-}}
-.app-tile:hover {{
-    background-color: {FG_DIM};
-    border-color: {ACC};
-}}
-flowboxchild:selected .app-tile {{
-    background-color: {ACC};
-    border-color: {ACC};
-}}
-flowboxchild:selected {{
-    background-color: transparent;
-    border: none;
-    outline: none;
-    box-shadow: none;
-}}
-.app-name {{
-    color: {FG};
-    font-family: "JetBrains Mono";
-    font-size: 10px;
-    margin-top: 4px;
-}}
-.file-row {{
+.app-row {{
     background-color: {BG};
     border-radius: 4px;
     border: 1px solid {ACC};
     padding: 8px 12px;
     margin: 4px 8px;
 }}
+.app-row:hover {{
+    background-color: {ACC};
+    border-color: {ACC};
+}}
+.app-row:focus {{
+    background-color: {ACC};
+    border-color: {ACC};
+}}
+.app-name {{
+    color: {FG};
+    font-family: "JetBrains Mono";
+    font-size: 14px;
+}}
+.file-row {{
+    background-color: {BG};
+    border-radius: 4px;
+    border: 1px solid {ACC};
+    padding: 16px 18px;
+    margin: 10px 14px;
+}}
 .file-row:hover {{
-    background-color: #111111;
+    background-color: {ACC};
+    border-color: {ACC};
+}}
+.file-row:focus {{
+    background-color: {ACC};
     border-color: {ACC};
 }}
 .file-name {{
     color: {FG};
     font-family: "JetBrains Mono";
-    font-size: 12px;
+    font-size: 16px;
 }}
 .file-path {{
     color: {FG_DIM};
     font-family: "JetBrains Mono";
-    font-size: 9px;
+    font-size: 12px;
 }}
 .breadcrumb {{
     background-color: {BG};
@@ -283,9 +279,9 @@ def open_file(path):
 class Launcher(Gtk.Window):
     def __init__(self):
         super().__init__(type=Gtk.WindowType.TOPLEVEL)
-        self.set_title("launcher-widget")
+        self.set_title("s-bar")
 
-        # Configure window traits to signal the compositor to keep it floating
+        # Layout allocation configurations targeting bottom layer setup parameters
         self.set_decorated(False)
         self.set_resizable(False)
         self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
@@ -346,19 +342,15 @@ class Launcher(Gtk.Window):
         self.stack.set_transition_duration(150)
         frame.pack_start(self.stack, True, True, 0)
 
+        # ── Apps List Layout Section ──
         apps_scroll = Gtk.ScrolledWindow()
         apps_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        apps_scroll.get_style_context().add_class('grid-scroll')
-        self.apps_grid = Gtk.FlowBox()
-        self.apps_grid.set_max_children_per_line(GRID_COLS)
-        self.apps_grid.set_min_children_per_line(GRID_COLS)
-        self.apps_grid.set_selection_mode(Gtk.SelectionMode.SINGLE)
-        self.apps_grid.set_homogeneous(True)
-        self.apps_grid.connect("child-activated", self._on_app_activate)
-        self.apps_grid.connect("key-press-event", self._on_grid_key)
-        apps_scroll.add(self.apps_grid)
+        apps_scroll.get_style_context().add_class('list-scroll')
+        self.apps_list = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        apps_scroll.add(self.apps_list)
         self.stack.add_named(apps_scroll, "apps")
 
+        # ── Files List Layout Section ──
         files_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
         self.breadcrumb_box = Gtk.Box(spacing=2)
@@ -367,8 +359,8 @@ class Launcher(Gtk.Window):
 
         files_scroll = Gtk.ScrolledWindow()
         files_scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        files_scroll.get_style_context().add_class('grid-scroll')
-        self.files_list = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        files_scroll.get_style_context().add_class('list-scroll')
+        self.files_list = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         files_scroll.add(self.files_list)
         files_box.pack_start(files_scroll, True, True, 0)
         self.stack.add_named(files_box, "files")
@@ -406,41 +398,45 @@ class Launcher(Gtk.Window):
         GLib.idle_add(self._populate_apps, apps)
 
     def _populate_apps(self, apps):
-        for child in self.apps_grid.get_children():
-            self.apps_grid.remove(child)
+        for child in self.apps_list.get_children():
+            self.apps_list.remove(child)
 
         for name, app in apps:
-            tile = self._make_app_tile(name, app)
-            self.apps_grid.add(tile)
+            row = self._make_app_row(name, app)
+            self.apps_list.pack_start(row, False, False, 0)
 
-        self.apps_grid.show_all()
+        self.apps_list.show_all()
         self.app_count_lbl.set_text(f"{len(apps)} apps")
 
-    def _make_app_tile(self, name, app):
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        box.get_style_context().add_class('app-tile')
-        box.set_size_request(100, 90)
+    def _make_app_row(self, name, app):
+        evbox = Gtk.EventBox()
+        evbox.get_style_context().add_class('app-row')
+        evbox.set_can_focus(True)
+
+        row = Gtk.Box(spacing=12)
+        row.set_margin_top(2)
+        row.set_margin_bottom(2)
 
         pb = get_icon_pixbuf(app, ICON_SIZE)
         if pb:
             img = Gtk.Image.new_from_pixbuf(pb)
         else:
-            img = Gtk.Image.new_from_icon_name("application-x-executable",
-                                               Gtk.IconSize.DIALOG)
+            img = Gtk.Image.new_from_icon_name("application-x-executable", Gtk.IconSize.MENU)
         img.set_halign(Gtk.Align.CENTER)
-        box.pack_start(img, False, False, 0)
 
-        lbl = Gtk.Label(label=name if len(name) <= 12 else name[:11] + "…")
+        lbl = Gtk.Label(label=name)
         lbl.get_style_context().add_class('app-name')
-        lbl.set_halign(Gtk.Align.CENTER)
-        lbl.set_tooltip_text(name)
-        box.pack_start(lbl, False, False, 0)
+        lbl.set_halign(Gtk.Align.START)
 
-        box._app = app
-        return box
+        row.pack_start(img, False, False, 0)
+        row.pack_start(lbl, True, True, 0)
 
-    def _on_app_activate(self, flowbox, child):
-        box = child.get_child()
+        evbox.add(row)
+        evbox._app = app
+        evbox.connect("button-press-event", lambda w, e: self._launch_app(w))
+        return evbox
+
+    def _launch_app(self, box):
         if hasattr(box, '_app'):
             try:
                 box._app.launch([], None)
@@ -469,9 +465,11 @@ class Launcher(Gtk.Window):
     def _make_file_row(self, name, full_path):
         evbox = Gtk.EventBox()
         evbox.get_style_context().add_class('file-row')
+        evbox.set_can_focus(True)
 
         row = Gtk.Box(spacing=12)
-        row.set_margin_top(2); row.set_margin_bottom(2)
+        row.set_margin_top(2)
+        row.set_margin_bottom(2)
 
         icon_lbl = Gtk.Label(label=get_file_icon(full_path))
         icon_lbl.get_style_context().add_class('file-name')
@@ -550,31 +548,12 @@ class Launcher(Gtk.Window):
                 self.files_list.pack_start(self._make_file_row(name, full), False, False, 0)
             self.files_list.show_all()
 
-    def _on_grid_key(self, widget, event):
-        key = event.keyval
-        if key in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
-            selected = self.apps_grid.get_selected_children()
-            if selected:
-                self.apps_grid.emit("child-activated", selected[0])
-            return True
-        if key == Gdk.KEY_Escape:
-            self.apps_grid.unselect_all()
-            self.search.grab_focus()
-            return True
-        if event.string and event.string.isprintable():
-            self.search.grab_focus()
-            self.search.set_text(self.search.get_text() + event.string)
-            self.search.set_position(-1)
-            return True
-        return False
-
     def _on_search_key(self, widget, event):
         key = event.keyval
         if key == Gdk.KEY_Down:
             if self._cur_tab == "apps":
-                children = self.apps_grid.get_children()
+                children = self.apps_list.get_children()
                 if children:
-                    self.apps_grid.select_child(children[0])
                     children[0].grab_focus()
             elif self._cur_tab == "files":
                 children = self.files_list.get_children()
@@ -583,15 +562,14 @@ class Launcher(Gtk.Window):
             return True
         if key in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
             if self._cur_tab == "apps":
-                children = self.apps_grid.get_children()
+                children = self.apps_list.get_children()
                 if children:
-                    self.apps_grid.emit("child-activated", children[0])
+                    self._launch_app(children[0])
             elif self._cur_tab == "files":
                 children = self.files_list.get_children()
                 if children:
                     path = os.path.join(self._cur_dir,
                                         children[0].get_child()
-                                        .get_children()[0]
                                         .get_children()[1]
                                         .get_text())
                     self._on_file_click(path)
@@ -600,6 +578,31 @@ class Launcher(Gtk.Window):
 
     def _on_key(self, widget, event):
         key = event.keyval
+        
+        # Linear row navigation logic matching shared framework requirements
+        focused = self.get_focus()
+        if focused and isinstance(focused, Gtk.EventBox):
+            parent_box = focused.get_parent()
+            children = parent_box.get_children()
+            idx = children.index(focused)
+            
+            if key == Gdk.KEY_Down and idx < len(children) - 1:
+                children[idx + 1].grab_focus()
+                return True
+            elif key == Gdk.KEY_Up:
+                if idx > 0:
+                    children[idx - 1].grab_focus()
+                else:
+                    self.search.grab_focus()
+                return True
+            elif key in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+                if self._cur_tab == "apps":
+                    self._launch_app(focused)
+                elif self._cur_tab == "files":
+                    path = os.path.join(self._cur_dir, focused.get_child().get_children()[1].get_text())
+                    self._on_file_click(path)
+                return True
+
         if key == Gdk.KEY_Escape:
             if self._cur_dir != HOME and self._cur_tab == "files":
                 self._load_files(os.path.dirname(self._cur_dir))

@@ -72,7 +72,7 @@ hl.config({
         force_split = 0
     },
     decoration = {
-        rounding = 0,
+        rounding = 5,
         active_opacity = 1.0,
         inactive_opacity = 1.0,
         fullscreen_opacity = 1.0,
@@ -101,7 +101,7 @@ hl.animation({ leaf = "layers",     enabled = true, speed = 15, bezier = "myBezi
 -- 4. Workspace & Gestures
 -- Use workspace_rule instead of hl.workspace
 hl.workspace_rule({ 
-    workspace = "3", 
+    workspace = "1", 
     layout = "scrolling",
     layout_opts = { direction = "down" } 
 })
@@ -109,6 +109,11 @@ hl.workspace_rule({
 hl.workspace_rule({ 
     workspace = "2", 
     layout = "dwindle"
+})
+
+hl.workspace_rule({ 
+    workspace = "3", 
+    layout = "master"
 })
 
 hl.gesture({

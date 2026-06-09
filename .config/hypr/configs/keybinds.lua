@@ -18,7 +18,8 @@ hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("kitty --class kitty-themes -e ~/cust
 hl.bind(altMod .. " + N", hl.dsp.exec_cmd("~/.local/bin/nightlight"))
 
 -- App Launchers
-hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/Python-Widgets/launcher-widget.py"))
+-- hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/Python-Widgets/launcher-widget.py"))
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/S-Bar/bar-ui.py"))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("kitty --class yazi -e yazi"))
 -- hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("thunar"))
 hl.bind(altMod .. " + 1", hl.dsp.exec_cmd("kitty --class rtm -e python3 ~/arch-projects/RTM/rtm.py"))
@@ -44,6 +45,7 @@ hl.bind(mainMod .. "+ SPACE", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a -f hex"))
 hl.bind(altMod .. "+ P", hl.dsp.exec_cmd("kitty --class pass -e ~/custom-scripts/pass"))
 hl.bind(altMod .. "+ SPACE", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Hypr-Workspaces/hypr-workspaces.py"))
+hl.bind(altMod .. "+ D", hl.dsp.exec_cmd("python3 ~/arch-projects/HyprDash/main.py"))
 
 -- Navigation (Master Layout)
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
@@ -63,7 +65,7 @@ hl.bind(mainMod .. " + Minus", hl.dsp.layout("removemaster"))
 
 -- Workspaces
 -- Using integers for workspace IDs to ensure compatibility with the focus table
-for i = 1, 5 do
+for i = 1, 9 do
     hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = i }))
     hl.bind(mainMod .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
 end
@@ -91,3 +93,11 @@ hl.bind("ALT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 -- To see the hiden window and workspace you can use: 
 hl.bind("ALT + SHIFT + S", hl.dsp.workspace.toggle_special("magic"))
 
+-- Testing Minimise function
+hl.bind("ALT + X", function ()
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+    hl.dispatch(hl.dsp.window.move({workspace = "+0"}))
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+    hl.dispatch(hl.dsp.window.move({workspace = "special:minimize"}))
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+end)

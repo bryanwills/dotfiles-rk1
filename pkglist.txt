@@ -22,7 +22,6 @@ fd
 ffmpegthumbnailer
 figlet
 file-roller
-firefox
 foot
 fzf
 gcalcli
