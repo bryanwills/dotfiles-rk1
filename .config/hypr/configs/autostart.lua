@@ -4,8 +4,8 @@
 hl.on("hyprland.start", function () 
     -- 1. Core System & Polkit
     -- The hyprland.start event ensures these only run once at launch
-    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+    -- hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+    -- hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
     hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
 
     -- 2. Theme & Wallpaper
@@ -33,6 +33,9 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("kitty --class yazi -e yazi")
 
     -- Clock Widget
-    hl.exec_cmd("python3 ~/custom-scripts/Python-Widgets/desktop-clock.py")
+    --hl.exec_cmd("python3 ~/custom-scripts/Python-Widgets/desktop-clock.py")
+
+    -- HyprRings
+    hl.exec_cmd("python3 ~/arch-projects/HyprRings/main.py")
 end)
 

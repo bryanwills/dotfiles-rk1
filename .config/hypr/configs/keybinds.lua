@@ -21,6 +21,7 @@ hl.bind(altMod .. " + N", hl.dsp.exec_cmd("~/.local/bin/nightlight"))
 -- hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/Python-Widgets/launcher-widget.py"))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/S-Bar/bar-ui.py"))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("kitty --class yazi -e yazi"))
+hl.bind(mainMod .. " + 1", hl.dsp.exec_cmd("min"))
 -- hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("thunar"))
 hl.bind(altMod .. " + 1", hl.dsp.exec_cmd("kitty --class rtm -e python3 ~/arch-projects/RTM/rtm.py"))
 hl.bind(altMod .. " + 2", hl.dsp.exec_cmd("kitty --class budget-buddy -e python3 ~/arch-projects/Budget-Buddy/budget-buddy.py"))
@@ -41,7 +42,6 @@ hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kitty --class tt -e " .. os.getenv("
 hl.bind(altMod .. " + I", hl.dsp.exec_cmd("kitty --class sysinfo-widget -e /home/rk1/custom-scripts/Shell-Widgets/sysinfo-widget"))
 hl.bind(mainMod .. " + 0", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Control-Panel/theme-widget.py"))
 
-hl.bind(mainMod .. "+ SPACE", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a -f hex"))
 hl.bind(altMod .. "+ P", hl.dsp.exec_cmd("kitty --class pass -e ~/custom-scripts/pass"))
 hl.bind(altMod .. "+ SPACE", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Hypr-Workspaces/hypr-workspaces.py"))
@@ -71,7 +71,6 @@ for i = 1, 9 do
 end
 
 -- Screenshots & Hardware Keys
-
 -- Capture full screen and trigger a desktop notification upon success
 hl.bind("Print", hl.dsp.exec_cmd("grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png && notify-send 'Screenshot Captured'"))
 hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd([[slurp -b 00000000 -c ffff00 -w 1 | xargs -I {} sh -c "sleep 0.2 && grim -g '{}' ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png" && notify-send "Screenshot Captured"]]))
@@ -100,4 +99,9 @@ hl.bind("ALT + X", function ()
     hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
     hl.dispatch(hl.dsp.window.move({workspace = "special:minimize"}))
     hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+end)
+
+-- Toggle Pseudo On/Off
+hl.bind(mainMod .. "+ SPACE", function()
+    hl.dsp.window.pseudo({ action = "toggle" })
 end)

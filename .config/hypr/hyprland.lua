@@ -66,19 +66,26 @@ hl.config({
         direction = "right"
     },
     dwindle = {
-        preserve_split = true,
-        smart_split = false,
-        smart_resizing = true,
-        force_split = 0
+        force_split                  = 0,
+        preserve_split               = false,
+        smart_split                  = false,
+        smart_resizing               = true,
+        permanent_direction_override = false,
+        special_scale_factor         = 1,
+        split_width_multiplier       = 1.0,
+        use_active_for_splits        = true,
+        default_split_ratio          = 1.0,
+        split_bias                   = 0,
+        precise_mouse_move           = false
     },
     decoration = {
-        rounding = 5,
-        active_opacity = 1.0,
+        rounding = 10,
+        active_opacity = 0.8,
         inactive_opacity = 1.0,
-        fullscreen_opacity = 1.0,
+        fullscreen_opacity = 0.9,
         blur = {
             enabled = true,
-            size = 8,
+            size = 4,
         },
         shadow = {
             enabled = false,
@@ -113,7 +120,7 @@ hl.workspace_rule({
 
 hl.workspace_rule({ 
     workspace = "3", 
-    layout = "master"
+    layout = "scrolling"
 })
 
 hl.gesture({

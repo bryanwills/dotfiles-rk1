@@ -47,6 +47,7 @@ hl.window_rule({
 	float = false,
 	size = {900, 600},
 	center = true,
+	opacity = 0.8,
 	animation = "gnomed",
 })
 
@@ -146,6 +147,11 @@ hl.window_rule({
 
 -- Scheduler alert pop-up layout configuration
 hl.window_rule({
+	name = "Mirec",
+	
+})
+
+hl.window_rule({
     name = "schedule-alert",
     match = { class = "schedule-alert" },
     float = true,
@@ -185,9 +191,9 @@ hl.window_rule({
 	name = "budget-buddy",
 	match = { class = "budget-buddy"},
 	size = {740, 780},
-	move = {550, 3},
+	move = {600, 3},
 	float = true,
-	opacity = 0.9,
+	opacity = 0.8,
 	border_size = 2,
 	border_color = "rgb(767b7e)",
 	animation = "slide top"
@@ -198,7 +204,7 @@ hl.window_rule({
 	size = {800, 880},
 	move = {550, 3},
 	float = true,
-	opacity = 0.9,
+	opacity = 0.8,
 	border_size = 2,
 	border_color = "rgb(767b7e)",
 	animation = "slide top"
@@ -216,24 +222,21 @@ hl.window_rule({
     float = true,
     size = {1000, 850},
     center = true,
-    opacity = 0.9,
-    border_size = 2,
-    border_color = "rgb(767b7e)"
-
-    
+    opacity = 0.7,
+    border_size = 0
 })
 
 -- System & Terminal Tools
 hl.window_rule({
     name = "kitty",
     match = { class = "kitty" },
-    float = true,
-    size = {1545, 1069},
-    move = {364, 1},
     border_size = 0,
+    float = true,
+    size = {1350, 900},
+    move = {285, 30},
     workspace = 2,
     opacity = 0.8,
-    no_blur = false
+    no_blur = true
 })
 
 -- File Managers
@@ -241,19 +244,22 @@ hl.window_rule({
     name = "yazi",
     match = { class = "yazi" },
     float = true,
-    size = {1545, 1069},
+    size = {1350, 800},
     opacity = 0.8,
     workspace = 3,
-    move = {364, 1},
-    border_size = 0
+    move = {285, 30},
+    border_size = 0,
+    no_blur = true
 })
 
 hl.window_rule({
     name = "file-managers",
     match = { class = "thunar" },
     animation = "fade",
-    opacity = 0.9,
+    opacity = 0.8,
     workspace = 4,
+    size = {1350, 1060},
+    move = {285, 10},
     border_size = 0
 })
 
@@ -273,13 +279,20 @@ hl.window_rule({
     animation = "slide top",
     size = {600, 400},
     opacity = 0.9,
-    border_size = 0
-    
+    border_size = 0    
 })
 
 -- Browsers
-hl.window_rule({ name = "browsers", match = { class = "falcon" }, workspace = 1, opacity = 1.0, border_size = 0 })
-hl.window_rule({ name = "min-browser", match = { class = "Min" }, workspace = 1, opacity = 1.0, border_size = 0 })
+hl.window_rule({ 
+    name = "min-browser",
+    float = true,
+    match = { class = "min" }, 
+    workspace = 1,
+    size = {1350, 1060},
+    move = {285, 10},  
+    border_size = 0,
+    opacity = "0.8 override"
+})
 
 -- System Dialogs
 hl.window_rule({
@@ -309,3 +322,8 @@ hl.layer_rule({
     blur = true
 })
 
+hl.layer_rule({
+	name = "HyprRings",
+	match = { namespace = "hyprrings" },
+	xray = true,
+})

@@ -32,6 +32,10 @@ glow
 gnome-keyring
 grim
 gsimplecal
+gst-libav
+gst-plugins-bad
+gst-plugins-good
+gst-plugins-ugly
 gtk4-layer-shell
 gvfs
 htop
@@ -40,6 +44,7 @@ hyprpaper
 hyprpicker
 hyprpolkitagent
 hyprshot
+hyprshutdown
 hyprsunset
 id3v2
 intel-gpu-tools
@@ -86,6 +91,7 @@ podman
 polkit-kde-agent
 powertop
 pulseaudio-alsa
+python-cairo
 python-pip
 python-psutil
 python-pyqt6
