@@ -232,8 +232,8 @@ hl.window_rule({
     match = { class = "kitty" },
     border_size = 0,
     float = true,
-    size = {1350, 900},
-    move = {285, 30},
+    size = {1340, 1020},
+    move = {290, 30},
     workspace = 2,
     opacity = 0.8,
     no_blur = true
@@ -244,12 +244,13 @@ hl.window_rule({
     name = "yazi",
     match = { class = "yazi" },
     float = true,
-    size = {1350, 800},
+    size = {1340, 800},
+    move = {290, 30},
     opacity = 0.8,
     workspace = 3,
-    move = {285, 30},
     border_size = 0,
-    no_blur = true
+    no_blur = false,
+    animation = "slide top"
 })
 
 hl.window_rule({
@@ -285,13 +286,12 @@ hl.window_rule({
 -- Browsers
 hl.window_rule({ 
     name = "min-browser",
-    float = true,
-    match = { class = "min" }, 
+    match = { class = "min" },
+    float = true, 
     workspace = 1,
-    size = {1350, 1060},
-    move = {285, 10},  
     border_size = 0,
-    opacity = "0.8 override"
+    opacity = "0.9 override",
+    no_blur = false 
 })
 
 -- System Dialogs

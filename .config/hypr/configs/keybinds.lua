@@ -93,13 +93,7 @@ hl.bind("ALT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 hl.bind("ALT + SHIFT + S", hl.dsp.workspace.toggle_special("magic"))
 
 -- Testing Minimise function
-hl.bind("ALT + X", function ()
-    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
-    hl.dispatch(hl.dsp.window.move({workspace = "+0"}))
-    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
-    hl.dispatch(hl.dsp.window.move({workspace = "special:minimize"}))
-    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
-end)
+
 
 -- Toggle Pseudo On/Off
 hl.bind(mainMod .. "+ SPACE", function()
