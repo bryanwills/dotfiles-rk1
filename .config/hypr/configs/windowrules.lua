@@ -108,7 +108,7 @@ hl.window_rule({
     center = true,
     border_size = 0,
     animation = "gnomed",
-    opacity = 0.6
+    opacity = 0.8
 })
 
 hl.window_rule({
@@ -120,7 +120,7 @@ hl.window_rule({
     border_size = 0,
     animation = "slide right",
     no_max_size = true,
-    opacity = 0.6
+    opacity = 0.8
 })
 
 hl.window_rule({
@@ -142,13 +142,13 @@ hl.window_rule({
     border_size = 2,
     border_color = "rgb(767b7e)",
     animation = "gnomed",
-    opacity = 0.6
+    opacity = 0.8
 })
 
 -- Scheduler alert pop-up layout configuration
 hl.window_rule({
 	name = "Mirec",
-	
+	opacity = 0.8
 })
 
 hl.window_rule({
@@ -160,7 +160,7 @@ hl.window_rule({
     border_size = 2,
     border_color = "rgb(767b7e)",
     animation = "gnomed",
-    opacity = 0.6
+    opacity = 0.8
 })
 
 hl.window_rule({ 
@@ -235,8 +235,19 @@ hl.window_rule({
     size = {1340, 1020},
     move = {290, 30},
     workspace = 2,
-    opacity = 0.8,
+    opacity = 0.9,
     no_blur = true
+})
+
+hl.window_rule({
+	name = "foot",
+	match = { class = "foot"},
+	float = true,
+	size = {1340, 1020},
+	move = {290, 30},
+	border_size = 0,
+	opacity = 0.8,
+	no_blur = true
 })
 
 -- File Managers
@@ -306,7 +317,7 @@ hl.window_rule({
 -- Special workplace
 hl.workspace_rule({ 
     workspace = "special:magic",   
-    on_created_empty = "foot"
+    on_created_empty = ""
 })
 
 hl.window_rule({
