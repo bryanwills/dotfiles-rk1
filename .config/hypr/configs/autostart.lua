@@ -3,9 +3,8 @@
 
 hl.on("hyprland.start", function () 
     -- 1. Core System & Polkit
-    -- The hyprland.start event ensures these only run once at launch
-    -- hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-    -- hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+    -- Sequential chain to guarantee systemd recognizes the active session before any portal calls occur
+    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP && systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP && systemctl --user start graphical-session.target")
     hl.exec_cmd("/usr/lib/polkit-kde-authentication-agent-1")
 
     -- 2. Theme & Wallpaper
@@ -38,4 +37,3 @@ hl.on("hyprland.start", function ()
     -- HyprRings
     hl.exec_cmd("python3 ~/arch-projects/HyprRings/main.py")
 end)
-

@@ -52,7 +52,7 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	name = "file_chooser",
+	name = "Yazi-Picker",
 	match = { class = "file_chooser"},
 	float = true,
 	size = {900, 600},
