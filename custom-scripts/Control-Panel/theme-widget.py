@@ -75,7 +75,8 @@ ACCENTS = {
     "Fire": "rgba(255, 137, 22, 0.86)",
     "Flames": "#f8541f",
     "Brown": "#352e12",
-    "Pink": "#f25bff"
+    "Pink": "#f25bff",
+    "White": "#ffffff"
 }
 
 # --- Base Application Styling ---
@@ -314,8 +315,8 @@ class ThemeWidget(Gtk.Window):
         with open(THEME_FILE, "w", encoding="utf-8") as f:
             f.write(output_qss)
 
-        subprocess.run(["pkill", "-f", "control-panel.py"])
-        subprocess.Popen(["python3", os.path.expanduser("~/custom-scripts/Control-Panel/control-panel.py")])
+        # subprocess.run(["pkill", "-f", "control-panel.py"])
+        # subprocess.Popen(["python3", os.path.expanduser("~/custom-scripts/Control-Panel/control-panel.py")])
 
     def _on_key(self, _, event):
         if event.keyval == Gdk.KEY_Escape:

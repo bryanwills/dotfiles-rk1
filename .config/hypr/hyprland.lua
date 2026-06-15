@@ -47,8 +47,8 @@ hl.config({
         disable_hyprland_logo = true
     },
     general = {
-        gaps_in = 5,
-        gaps_out = 5,
+        gaps_in = 15,
+        gaps_out = 15,
         layout = "master"
     },
     master = {

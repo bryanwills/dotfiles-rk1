@@ -128,7 +128,7 @@ hl.window_rule({
     match = { class = "theme-widget.py" },
     float = true,
     size = { 440, 240 },
-    move = {1400, 0},
+    move = {1395, 0},
     border_size = 0,
     animation = "slide right",
 })
@@ -231,12 +231,11 @@ hl.window_rule({
     name = "kitty",
     match = { class = "kitty" },
     border_size = 0,
-    float = true,
-    size = {1340, 1020},
-    move = {290, 30},
+    float = false,
     workspace = 2,
     opacity = 0.9,
-    no_blur = true
+    no_blur = false,
+    animation = "slide bottom"
 })
 
 hl.window_rule({
@@ -254,14 +253,12 @@ hl.window_rule({
 hl.window_rule({
     name = "yazi",
     match = { class = "yazi" },
-    float = true,
-    size = {1340, 800},
-    move = {290, 30},
+    float = false,
     opacity = 0.8,
     workspace = 3,
     border_size = 0,
     no_blur = false,
-    animation = "slide top"
+    animation = "slide bottom"
 })
 
 hl.window_rule({
@@ -298,10 +295,10 @@ hl.window_rule({
 hl.window_rule({ 
     name = "min-browser",
     match = { class = "min" },
-    float = true, 
+    float = false, 
     workspace = 1,
     border_size = 0,
-    opacity = "0.9 override",
+    opacity = "0.8 override",
     no_blur = false 
 })
 

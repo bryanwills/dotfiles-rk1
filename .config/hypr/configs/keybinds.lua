@@ -88,7 +88,11 @@ hl.bind("ALT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 hl.bind("ALT + SHIFT + S", hl.dsp.workspace.toggle_special("magic"))
 
 -- Testing Minimise function
+-- Keybind to minimize the current active window
+hl.bind("ALT + X", hl.dsp.exec_cmd("sh -c 'python3 /home/rk1/.config/hypr/scripts/hypr-minimize.py minimize'"))
 
+-- Keybind to un-minimize windows sequentially into the layout stack
+hl.bind("ALT + SHIFT + X", hl.dsp.exec_cmd("sh -c 'python3 /home/rk1/.config/hypr/scripts/hypr-minimize.py restore'"))
 
 -- Toggle Pseudo On/Off
 hl.bind(mainMod .. "+ SPACE", function()
