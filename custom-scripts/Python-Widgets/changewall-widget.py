@@ -11,7 +11,7 @@ import os, subprocess, glob, threading, hashlib, re
 from concurrent.futures import ThreadPoolExecutor
 
 # --- Configuration ---
-WALLPAPER_DIR = os.path.expanduser("~/Pictures/Wallpapers")
+WALLPAPER_DIR = os.path.expanduser("~/Pictures/Wallpapers-Plain")
 CACHE_DIR     = os.path.expanduser("~/.cache/changewall-widget")
 THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
 THUMB_SIZE    = 160

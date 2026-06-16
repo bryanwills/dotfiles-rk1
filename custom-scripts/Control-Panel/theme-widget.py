@@ -30,33 +30,37 @@ STATE = {
 # --- Background Preset Profiles ---
 BG_PROFILES = {
     "dark": {
-        "bg": "rgba(53, 53, 54, 1)",
+        "bg": "rgba(53, 53, 54, 0.8)",
         "text": "#ffffff",
-        "hint": "#aaaaaa"
+        "hint": "#ffffff"
     },
     "d-glass": {
-        "bg": "rgba(0, 0, 0, 0.40)",
+        "bg": "rgba(0, 0, 0, 0.4)",
         "text": "#e0e6ed",
-        "hint": "#4c566a"
+        "hint": "#ffffff"
     },
-    
+    "clear": {
+        "bg": "rgba(0, 0, 0, 0)",
+        "text": "#e0e6ed",
+        "hint": "#ffffff"
+    },
     "light": {
-        "bg": "rgba(247, 247, 247, 0.9)",
+        "bg": "rgba(247, 247, 247, 0.7)",
         "text": "#000000",
         "hint": "#555555"
     },
     "l-glass": {
-        "bg": "rgba(255, 255, 255, 0.30)",
-        "text": "#282828",
-        "hint": "#666666"
+        "bg": "rgba(116, 183, 180, 0.4)",
+        "text": "#000000",
+        "hint": "#202928"
     },
     "paper": {
-        "bg": "rgba(251, 241, 199, 0.9)",
+        "bg": "rgba(251, 241, 199, 0.8)",
         "text": "#3c3836",
         "hint": "#7c6f64"
     },
     "translucent": {
-        "bg": "rgba(74, 74, 74, 0.75)",
+        "bg": "rgba(74, 74, 74, 0.6)",
         "text": "#ffffff",
         "hint": "#aaaaaa"
     }

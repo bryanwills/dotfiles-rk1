@@ -127,8 +127,8 @@ hl.window_rule({
     name = "theme-widget",
     match = { class = "theme-widget.py" },
     float = true,
-    size = { 440, 240 },
-    move = {1395, 0},
+    size = { 450, 240 },
+    move = {1365, 0},
     border_size = 0,
     animation = "slide right",
 })
