@@ -146,7 +146,6 @@ xf86-video-nouveau
 xorg-server
 xorg-xinit
 yay
-yay-debug
 yazi
 yt-dlp
 zip

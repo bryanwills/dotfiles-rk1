@@ -86,9 +86,10 @@ hl.config({
         blur = {
             enabled = true,
             size = 4,
+            passes = 3,
         },
         shadow = {
-            enabled = false,
+            enabled = true,
             range = 15,
             render_power = 4,
         }

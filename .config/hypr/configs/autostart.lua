@@ -36,4 +36,7 @@ hl.on("hyprland.start", function ()
 
     -- HyprRings
     hl.exec_cmd("python3 ~/arch-projects/HyprRings/main.py")
+
+    -- Cursor
+    hl.exec_cmd("hyprctl setcursor Empty-Butterfly-Yellow-vr8 24")
 end)
