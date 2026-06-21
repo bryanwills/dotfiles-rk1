@@ -15,12 +15,17 @@ By defining project workspaces, a single click launches an isolated Kitty termin
 - **Resource Efficient:** Built with performance in mind, consuming near-zero CPU cycles on fanless hardware configurations.
 - **Self-Contained Management:** Interactive creation, extraction, modification, and destruction panels directly from the widget layout—no manual JSON tracking required.
 - **Smart Routing:** Automatically separates development scripts, shell environments, and configuration files from generic targets, opening text data directly in Micro and directory paths in Yazi.
+- **Dual-Engine Architecture**: Choose between the graphical PyQt6 overlay or the ultra-fast, lightweight Zsh + fzf TUI menu version.
 
 ## Prerequisites
 
-The system layer relies on standard Linux package installations:
+For the Python UI version:
 
 `sudo pacman -S python-pyqt6 kitty micro yazi` or your package manager.
+
+For the Zsh + fzf TUI version:
+
+`sudo pacman -S zsh fzf kitty micro yazi jq`
 
 ## Installation
 
@@ -37,7 +42,9 @@ allow_remote_control yes
 listen_on unix:/tmp/kitty.sock
 ```
 
-2. Install the Widget Script
+2. Choose and Install Your Preferred Version
+
+**Option A**: Python + PyQt6 GUI Version
 
 Create a dedicated execution file inside your local path directory structure:
 
@@ -50,6 +57,20 @@ Paste the complete Python script code into this file, save it, and alter the sys
 Or you can run this from your terminal:
 
 `curl -sL "https://raw.githubusercontent.com/Rakosn1cek/dotfiles-rk1/refs/heads/main/custom-scripts/Hypr-Workspaces/hypr-workspaces.py" -o ~/.local/bin/hypr-workspace.py && chmod +x ~/.local/bin/hypr-workspace.py`
+
+**Option B**: Zsh + fzf TUI Version
+
+If you prefer a terminal-native, lightweight interface that renders perfectly over transparent backgrounds without GUI toolkit overhead, install the script version:
+
+`~/.local/bin/hypr-workspaces.sh`
+
+Paste the shell script logic into this file, save it, and make it executable:
+
+`chmod +x ~/.local/bin/hypr-workspaces.sh`
+
+Or install it directly via the terminal:
+
+`curl -sL "https://raw.githubusercontent.com/Rakosn1cek/dotfiles-rk1/refs/heads/main/custom-scripts/Hypr-Workspaces/hypr-workspaces.sh" -o ~/.local/bin/hypr-workspaces.sh && chmod +x ~/.local/bin/hypr-workspaces.sh`
 
 3. Add the Hyprland Window Rules and Keybindings
 
@@ -82,14 +103,22 @@ The core Python script is completely desktop-agnostic. While it defaults to work
 No special configuration files are required. When opened, the window manager will launch the widget as a standard independent window context. You can use your desktop's native "Window Rules" settings panel to strip away the title bar decorations and anchor the positioning coordinates to the right side of the screen display bounds.
 
 ## Usage & Workflow
-Opening the Widget:
 
-Pressing `Super + Space` initialises the borderless widget panel cleanly at the center or where ever you place it.
-
-## Managing Workspace Layouts
-- **Creating Profiles**: Click + New Workspace to slide open the creation form. Provide a project name, choose a workspace target directory (using the integrated directory selector pop-up via ...), and type a list of files separated strictly by commas without spaces (e.g., hyprland.lua,keybinds.lua,windowrules.lua). Click Save Workspace to commit the settings.
-- **Modifying Profiles**: Hitting the edit symbol freezes the index target name, shifts the sidebar layout open, and populates the field parameters with your directory paths and active file trackers for rapid refinement.
+### Python GUI Workflow
+- **Creating Profiles**: Click + New Workspace to slide open the creation form. Provide a project name, choose a workspace target directory (using the integrated directory selector pop-up via ...), and type a list of files separated strictly by commas without spaces. Click Save Workspace to commit.
+- **Modifying Profiles**: Hitting the edit symbol freezes the index target name, shifts the sidebar layout open, and populates the field parameters with your directory paths and active file trackers.
 - **Destroying Profiles (🗙)**: Clicking the red delete marker purges the index entry straight from the underlying configuration registry immediately.
+
+### Zsh + fzf TUI Workflow
+Navigation: Use the Up / Down arrow keys or standard vim-style j / k keys to browse your configured profiles within the right-hand split window.
+
+**Commands Interface**: The left-hand panel provides clear command shortcuts:
+
+Enter: Launch the highlighted project workspace profile.
+- n: Prompt to create a brand new profile layout directly in the shell. Leave field prompts empty and hit Enter to safely abort.
+- e: Edit the configuration parameters of the currently selected workspace.
+- x: Instantly delete the selected workspace profile from the registry.
+- q: Exit the interface panel cleanly.
 
 ## Launching Environment Targets
 Clicking a workspace entry button triggers the execution sequence:

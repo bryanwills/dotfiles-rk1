@@ -22,6 +22,15 @@ end
 
 -- App Launcher & Clipboard
 hl.window_rule({
+	name = "Hypr Workspaces",
+	match = { class = "hypr-workspaces"},
+	float = true,
+	size = {600, 350},
+	move = {650, 2},
+	animation = "slide top"
+})
+
+hl.window_rule({
 	name = "hyprdash",
 	match = { class = "hyprdash"},
 	float = true,
@@ -88,16 +97,6 @@ hl.window_rule({
     move = {355, 830},
     border_size = 0,
     animation = "gnomed",
-})
-
-hl.window_rule({
-    name = "Workspaces Profiles",
-    match = { title = "hypr-workspaces.py" },
-    float = true,
-    size = {450, 560},
-    move = {760, 12},
-    border_size = 0,
-    animation = "slide top",
 })
 
 hl.window_rule({
