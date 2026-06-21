@@ -34,7 +34,7 @@ hl.window_rule({
 hl.window_rule({
 	name = "S-Bar",
 	match = { title = "s-bar"},
-	float = true,
+	stay_focused = true,
 	size = {500, 500},
 	move = {700, 5},
 	border_size = 0,

@@ -74,6 +74,7 @@ man-pages
 micro
 min
 mpv
+mtpaint
 namcap
 nano
 network-manager-applet
