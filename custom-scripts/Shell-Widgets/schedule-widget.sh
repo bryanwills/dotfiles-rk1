@@ -10,7 +10,8 @@
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 SCRIPT_PATH="$SCRIPT_DIR/$(basename "$0")"
 
-if [[ "$1" == "--trigger-alert" ]]; then
+if [[ "$1" == "--trigger-alert" ]];
+then
     clear
     echo -e "\n\n  󰵅  REMINDER ALERT"
     echo -e "  ----------------------------------------"
@@ -41,5 +42,14 @@ esac
 
 echo "󰄬  Reminder scheduled."
 
-# Use the absolute path determined at runtime to ensure the trigger finds the script file
-nohup sh -c "sleep $seconds && kitty --class schedule-alert -e \"$SCRIPT_PATH\" --trigger-alert \"$message\"" >/dev/null 2>&1 &!
+# Capture the exact Wayland session environmental variables from the current active context
+local current_wayland="$WAYLAND_DISPLAY"
+local current_runtime="$XDG_RUNTIME_DIR"
+
+# Explicitly inject the display variables into the detached subshell environment
+(
+    sleep $seconds
+    export WAYLAND_DISPLAY="$current_wayland"
+    export XDG_RUNTIME_DIR="$current_runtime"
+    /usr/bin/kitty --class schedule-alert -e "$SCRIPT_PATH" --trigger-alert "$message"
+) <&- >&- 2>&- &!

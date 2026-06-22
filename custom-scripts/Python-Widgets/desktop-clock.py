@@ -33,8 +33,8 @@ class DesktopClock(Gtk.Application):
         Gtk4LayerShell.set_layer(window, Gtk4LayerShell.Layer.BACKGROUND)
         Gtk4LayerShell.set_anchor(window, Gtk4LayerShell.Edge.LEFT, True)
         Gtk4LayerShell.set_anchor(window, Gtk4LayerShell.Edge.TOP, True)
-        Gtk4LayerShell.set_margin(window, Gtk4LayerShell.Edge.LEFT, 60)
-        Gtk4LayerShell.set_margin(window, Gtk4LayerShell.Edge.TOP, 60)
+        Gtk4LayerShell.set_margin(window, Gtk4LayerShell.Edge.LEFT, 820)
+        Gtk4LayerShell.set_margin(window, Gtk4LayerShell.Edge.TOP, 5)
         Gtk4LayerShell.set_keyboard_mode(window, Gtk4LayerShell.KeyboardMode.NONE)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)

@@ -6,13 +6,11 @@
 local widgets = {
     { name = "keybinds-widget", match = { class = "keybinds" }, float = true, size = {750, 650}, move = {585, 1}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
     { name = "aliases-widget", match = { class = "show-aliases" }, float = true, size = {750, 650}, move = {585, 1}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
-    { name = "clipbox-widget", match = { title = "clipbox-widget" }, float = true, size = {700, 680}, move = {600, 3}, border_size = 0, border_color = "rgb(767b7e)", animation = "slide down" },
     { name = "control-panel-widget", match = { title = "control-panel.py" }, float = true, size = {750, 650}, move = {585, 50}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.9 },
     { name = "audio-widget", match = { class = "Audio Switcher" }, float = true, move = {710, 0}, size = {500, 250}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
     { name = "mirec-widget", match = { class = "Mirec" }, float = true, move = {5, 1}, size = {500, 300}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide left", opacity = 0.7 },
     { name = "bt-widget", match = { class = "bt-menu" }, float = true, move = {660, 0}, size = {600, 400}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
     { name = "wifi-widget", match = { class = "floating_wifi" }, float = true, move = {560, 1}, size = {700, 400}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
-    { name = "notif-widget", match = { class = "notif-widget.py" }, float = true, move = {800, 1}, size = {400, 600}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide top", opacity = 0.7 },
     { name = "tt-widget", match = { class = "tt" }, float = true, move = {5, 0}, size = {550, 350}, border_size = 2, border_color = "rgb(767b7e)", animation = "slide left", opacity = 0.7 }
 }
 
@@ -21,6 +19,30 @@ for _, rule in ipairs(widgets) do
 end
 
 -- App Launcher & Clipboard
+hl.window_rule({
+    name = "clipbox", 
+    match = { class = "clipbox" }, 
+    float = true, 
+    size = {900, 450}, 
+    move = {500, 2}, 
+    border_size = 2, 
+    border_color = "rgb(767b7e)",
+    opacity = 0.7, 
+    animation = "slide down"
+})
+
+hl.window_rule({
+	name = "Notifications",
+	match = { class = "notif" },
+	float = true,
+	size = {800, 400},
+	move = {600, 2},
+	border_size = 2, 
+	border_color = "rgb(767b7e)",
+	opacity = 0.7,
+	animation = "slide top"
+})
+
 hl.window_rule({
 	name = "Hypr Workspaces",
 	match = { class = "hypr-workspaces"},
@@ -82,15 +104,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "App Launcher",
-    match = { title = "launcher-widget" },
-    float = true,
-    move = {2, 2},
-    border_size = 0,
-    animation = "fadeIn",
-})
-
-hl.window_rule({
     name = "Wallpaper Changer",
     match = { class = "changewall-widget.py" },
     float = true,
@@ -146,20 +159,20 @@ hl.window_rule({
 
 -- Scheduler alert pop-up layout configuration
 hl.window_rule({
-	name = "Mirec",
-	opacity = 0.8
-})
-
-hl.window_rule({
     name = "schedule-alert",
     match = { class = "schedule-alert" },
     float = true,
     size = { 500, 200 },
     center = true,
     border_size = 2,
-    border_color = "rgb(767b7e)",
+    border_color = "rgb(ff0008)",
     animation = "gnomed",
     opacity = 0.8
+})
+
+hl.window_rule({
+	name = "Mirec",
+	opacity = 0.8
 })
 
 hl.window_rule({ 

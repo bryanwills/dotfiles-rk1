@@ -11,22 +11,34 @@ case "${QUERY:l}" in
     "downloads") /home/rk1/.local/bin/floating-yazi ~/Downloads; exit 0 ;;
 esac
 
-# 2. Match desktop entries (Apps)
-APP_MATCH=$(ls /usr/share/applications/ ~/.local/share/applications/ 2>/dev/null | grep -i "${QUERY}" | head -n 1)
-if [[ -n "$APP_MATCH" ]]; then
-    # Parse the Exec key out of the matched application entry file cleanly
-    EXEC_CMD=$(awk -F= '/^Exec=/ {print $2; exit}' /usr/share/applications/$APP_MATCH ~/.local/share/applications/$APP_MATCH 2>/dev/null | sed 's/%[fFuU]//g')
-    [[ -n "$EXEC_CMD" ]] && exec ${(z)EXEC_CMD} &!
+# 2. Match desktop entries (Apps) via native Zsh glob paths
+local app_paths=(
+    /usr/share/applications/*(N)
+    ~/.local/share/applications/*(N)
+)
+
+local app_match=""
+for f in "${app_paths[@]}"; do
+    if [[ "${f:t:l}" == *"${QUERY:l}"* ]]; then
+        app_match="$f"
+        break
+    fi
+done
+
+if [[ -n "$app_match" ]]; then
+    # Parse the Exec key cleanly from the confirmed absolute path location
+    local exec_cmd=$(awk -F= '/^Exec=/ {print $2; exit}' "$app_match" 2>/dev/null | sed 's/%[fFuU]//g')
+    [[ -n "$exec_cmd" ]] && exec ${(z)exec_cmd} &!
     exit 0
 fi
 
-# 3. Fallback: Quick directory search
-FILE_MATCH=$(fd --hidden --exclude .git . "$HOME" 2>/dev/null | grep -i "${QUERY}" | head -n 1)
-if [[ -n "$FILE_MATCH" ]]; then
-    if [[ -d "$FILE_MATCH" ]]; then
-        exec /home/rk1/.local/bin/floating-yazi "$FILE_MATCH" &!
+# 3. Fallback: Optimized direct path search using native fd filtering
+local file_match=$(fd --hidden --exclude .git --type d --type f "${QUERY}" "$HOME" 2>/dev/null | head -n 1)
+if [[ -n "$file_match" ]]; then
+    if [[ -d "$file_match" ]]; then
+        exec /home/rk1/.local/bin/floating-yazi "$file_match" &!
     else
-        exec xdg-open "$FILE_MATCH" &!
+        exec xdg-open "$file_match" &!
     fi
     exit 0
 fi
