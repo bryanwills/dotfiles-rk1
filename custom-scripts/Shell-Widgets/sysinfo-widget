@@ -67,6 +67,7 @@ print -l "${metrics_stack[@]}" | \
         --margin=1,2 \
         --header "$HEADER_TEXT" \
         --header-first \
+        --color="header:#565f89,prompt:#565f89" 
         --info inline \
         --prompt "󰄘 Info: " \
         > /dev/null

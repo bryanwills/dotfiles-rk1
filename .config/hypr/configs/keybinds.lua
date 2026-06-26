@@ -20,7 +20,7 @@ hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/S-Bar/b
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("kitty --class yazi -e yazi"))
 
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kitty --class tt -e " .. os.getenv("HOME") .. "/.local/bin/tt tui"))
-hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Control-Panel/control-panel.py"))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("kitty --class cal -e ~/custom-scripts/Calendar/cal.sh"))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Python-Widgets/changewall-widget.py"))
 hl.bind(mainMod .. " + 0", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Control-Panel/theme-widget.py"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("kitty --class bt-menu -e $HOME/custom-scripts/bluetooth/bt"))

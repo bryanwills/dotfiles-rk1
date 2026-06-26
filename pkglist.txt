@@ -17,7 +17,6 @@ dmidecode
 dosfstools
 dunst
 efibootmgr
-fastfetch
 fd
 ffmpegthumbnailer
 figlet
@@ -98,6 +97,7 @@ python-psutil
 python-pyqt6
 python-pywal
 python-rich
+python-textual
 qalculate-gtk
 qt5-wayland
 qt6-wayland

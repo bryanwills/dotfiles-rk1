@@ -20,6 +20,18 @@ end
 
 -- App Launcher & Clipboard
 hl.window_rule({
+	name = "Calendar",
+	match = { class = "cal" },
+	float = true,
+	size = {1000, 450},
+	center = true,
+	border_size = 2,
+	border_color = "rgb(767b7e)",
+	opacity = 0.7,
+	animation = "gnomed"
+})
+
+hl.window_rule({
     name = "clipbox", 
     match = { class = "clipbox" }, 
     float = true, 
@@ -139,8 +151,8 @@ hl.window_rule({
     name = "theme-widget",
     match = { class = "theme-widget.py" },
     float = true,
-    size = { 450, 240 },
-    move = {1365, 0},
+    size = { 550, 340},
+    move = {1370, 1},
     border_size = 0,
     animation = "slide right",
 })
@@ -245,7 +257,7 @@ hl.window_rule({
     border_size = 0,
     float = false,
     workspace = 2,
-    opacity = 0.9,
+    opacity = 0.7,
     no_blur = false,
     animation = "slide bottom"
 })
@@ -266,11 +278,11 @@ hl.window_rule({
     name = "yazi",
     match = { class = "yazi" },
     float = false,
-    opacity = 0.8,
+    opacity = 0.7,
     workspace = 3,
     border_size = 0,
     no_blur = false,
-    animation = "slide bottom"
+    animation = "gnomed"
 })
 
 hl.window_rule({
@@ -310,7 +322,7 @@ hl.window_rule({
     float = false, 
     workspace = 1,
     border_size = 0,
-    opacity = "0.8 override",
+    opacity = "0.6 override",
     no_blur = false 
 })
 

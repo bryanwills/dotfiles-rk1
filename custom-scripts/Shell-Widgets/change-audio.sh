@@ -17,7 +17,7 @@ HEADER_TEXT="
 menu() {
     local prompt="$1"
     # Removed --print-query to prevent accidental triggers on ESC or empty searches
-    fzf --prompt="$prompt" --reverse --height=30% --border --header "$HEADER_TEXT" --header-first
+    fzf --prompt="$prompt" --reverse --height=30% --border --header "$HEADER_TEXT" --header-first --color="header:#565f89,prompt:#565f89"
 }
 
 # Parsing outputs (sinks) and inputs (sources) using wpctl

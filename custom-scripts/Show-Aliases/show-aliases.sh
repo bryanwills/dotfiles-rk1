@@ -28,6 +28,7 @@ selected=$(echo "$alias_list" | column -t -s '➜' | fzf --ansi \
     --border \
     --margin=5% \
     --prompt="Alias > " \
+    --color="header:#565f89,prompt:#565f89" \
     --reverse \
     --preview-window="bottom:5:wrap" \
     --preview="echo 'Full Command:'; echo {2..}")

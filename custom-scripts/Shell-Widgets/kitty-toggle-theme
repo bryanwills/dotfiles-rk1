@@ -23,7 +23,7 @@ themes=(
     "Dumbledore"
     "Hachiko"
     "Vesper"
-    "Grass"
+    "Glossy Light"
     "Retrowave Light"
     "Hacker Movie"
 )
@@ -39,6 +39,7 @@ while true; do
     CHOICE=$(printf '%s\n' "${themes[@]}" | fzf \
         --header="$HEADER_TEXT" \
         --header-first \
+        --color="header:#565f89,prompt:#565f89" \
         --prompt="> " \
         --height=100% \
         --reverse \

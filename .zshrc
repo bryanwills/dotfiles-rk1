@@ -10,7 +10,8 @@ export LESS_TERMCAP_so=$'\e[1;33m'
 export LESS_TERMCAP_se=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[4;36m'
 export LESS_TERMCAP_ue=$'\e[0m'
-export MANPAGER='less -R'
+# export MANPAGER='less -R'
+export MANPAGER="oversight"
 export PAGER="oversight"
 
 # --- Completion ---
@@ -27,8 +28,8 @@ local _git_icon=$'\uf418'
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git:*' check-for-changes yes
 zstyle ':vcs_info:git:*' check-for-staged-changes yes
-zstyle ':vcs_info:git:*' formats " %F{141}${_git_icon} %b%f%c%u"
-zstyle ':vcs_info:git:*' actionformats " %F{141}${_git_icon} %b%f %F{red}(%a)%f%c%u"
+zstyle ':vcs_info:git:*' formats " %F{green}${_git_icon} %b%f%c%u"
+zstyle ':vcs_info:git:*' actionformats " %F{green}${_git_icon} %b%f %F{red}(%a)%f%c%u"
 zstyle ':vcs_info:git:*' stagedstr " %F{green}+%i%f"
 zstyle ':vcs_info:git:*' unstagedstr " %F{red}!%u%f"
 

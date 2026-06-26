@@ -76,6 +76,7 @@ run_widget_loop() {
             --border=rounded
             --margin=1,2
             --height=22
+            --color="header:#565f89,prompt:#565f89"
             --prompt="Clipboard ($current_mode) [$count] "
             --preview-window=left,24,border-right
             --preview="echo '$cmd_menu'"

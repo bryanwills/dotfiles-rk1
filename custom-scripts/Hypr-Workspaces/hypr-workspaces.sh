@@ -151,6 +151,7 @@ run_tui() {
             --margin=1,2 \
             --height=15 \
             --prompt="Select Workspace" \
+            --color="header:#565f89,prompt:#565f89" \
             --preview-window=left,18,border-right \
             --preview="echo '$cmd_menu'" \
             --expect="n,e,x,q")

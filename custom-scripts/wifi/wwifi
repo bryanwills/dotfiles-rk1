@@ -29,6 +29,7 @@ selected_network=$(nmcli --terse --fields "SSID,BARS,SECURITY,IN-USE" device wif
         --border rounded \
         --header "$HEADER_TEXT" \
         --header-first \
+        --color="header:#565f89,prompt:#565f89" \
         --info inline \
         --tabstop=20 \
 )

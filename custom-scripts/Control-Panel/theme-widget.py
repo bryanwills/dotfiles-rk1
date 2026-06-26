@@ -54,6 +54,11 @@ BG_PROFILES = {
         "text": "#000000",
         "hint": "#202928"
     },
+    "teal": {
+        "bg": "rgba(0, 128, 129, 0.4)",
+        "text": "#000000",
+        "hint": "#ffffff"
+    },
     "paper": {
         "bg": "rgba(251, 241, 199, 0.8)",
         "text": "#3c3836",
@@ -80,7 +85,8 @@ ACCENTS = {
     "Flames": "#f8541f",
     "Brown": "#352e12",
     "Pink": "#f25bff",
-    "White": "#ffffff"
+    "White": "#ffffff",
+    "Teal": "#008081"
 }
 
 # --- Base Application Styling ---
@@ -107,7 +113,8 @@ class ThemeWidget(Gtk.Window):
         self.set_keep_above(True)
         self.set_decorated(False)
         self.set_resizable(False)
-        self.set_default_size(460, 240)
+        # Increased height to fit multi-row selectors comfortably
+        self.set_default_size(550, 340)
         
         # Apply transparency handling capabilities
         screen = self.get_screen()
@@ -181,60 +188,107 @@ class ThemeWidget(Gtk.Window):
         sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
         main_box.pack_start(sep, False, False, 0)
 
-        # --- Row 1: Background Mode Selector ---
-        row1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        # Size group to enforce uniform width across row label columns
+        label_group = Gtk.SizeGroup(mode=Gtk.SizeGroupMode.HORIZONTAL)
+
+        # --- Mode Section: Row 1 ---
+        row1_1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         row1_lbl = Gtk.Label(label="Mode:")
+        row1_lbl.set_xalign(0.0)
         row1_lbl.get_style_context().add_class("row-label")
-        row1.pack_start(row1_lbl, False, False, 0)
+        label_group.add_widget(row1_lbl)
+        row1_1.pack_start(row1_lbl, False, False, 0)
 
-        # --- Row 1: Background Mode Selector ---
-        for mode_name in BG_PROFILES.keys():
-            btn_label = mode_name.capitalize()
-            
-            if mode_name == "dark": btn_label = "󰖔 Dark"
-            elif mode_name == "d-glass": btn_label = "󰛢 D-Glass"
-            elif mode_name == "light": btn_label = "󰖙 Light"
-            elif mode_name == "l-glass": btn_label = "󰛢 L-Glass"
-            elif mode_name == "paper": btn_label = "󰃛 Paper"
-            elif mode_name == "translucent": btn_label = " Gray"
+        # --- Mode Section: Row 2 ---
+        row1_2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        row1_spacer = Gtk.Label()
+        label_group.add_widget(row1_spacer)
+        row1_2.pack_start(row1_spacer, False, False, 0)
 
-            btn = Gtk.Button(label=btn_label)
-            btn.get_style_context().add_class("mode-btn")
-            btn.connect("clicked", self._set_base_mode, mode_name)
-            row1.pack_start(btn, True, True, 0)
+        modes = list(BG_PROFILES.keys())
+        mid_mode = (len(modes) + 1) // 2
 
-        main_box.pack_start(row1, False, False, 0)
+        for mode_name in modes[:mid_mode]:
+            btn = self._make_mode_button(mode_name)
+            row1_1.pack_start(btn, True, True, 0)
 
-        # --- Row 2: Accent Dots Palette ---
-        row2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        for mode_name in modes[mid_mode:]:
+            btn = self._make_mode_button(mode_name)
+            row1_2.pack_start(btn, True, True, 0)
+
+        main_box.pack_start(row1_1, False, False, 0)
+        main_box.pack_start(row1_2, False, False, 0)
+
+        # Spacer break between structural modules
+        main_box.pack_start(Gtk.Box(), False, False, 2)
+
+        # --- Accent Section: Row 1 ---
+        row2_1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         row2_lbl = Gtk.Label(label="Accent:")
+        row2_lbl.set_xalign(0.0)
         row2_lbl.get_style_context().add_class("row-label")
-        row2.pack_start(row2_lbl, False, False, 0)
+        label_group.add_widget(row2_lbl)
+        row2_1.pack_start(row2_lbl, False, False, 0)
 
-        dots_container = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        for name, hex_code in ACCENTS.items():
-            dot_btn = Gtk.Button()
-            dot_btn.get_style_context().add_class("color-dot")
-            
-            # Inject explicit background color overrides to fill the circles
-            dot_prov = Gtk.CssProvider()
-            dot_prov.load_from_data(f"button {{ background-color: {hex_code}; background-image: none; }}".encode())
-            dot_btn.get_style_context().add_provider(dot_prov, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-            
-            dot_btn.connect("clicked", self._set_accent_mode, hex_code)
-            dot_btn.set_tooltip_text(name)
-            dots_container.pack_start(dot_btn, False, False, 0)
+        # --- Accent Section: Row 2 ---
+        row2_2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        row2_spacer = Gtk.Label()
+        label_group.add_widget(row2_spacer)
+        row2_2.pack_start(row2_spacer, False, False, 0)
 
-        row2.pack_start(dots_container, True, True, 0)
-        main_box.pack_start(row2, False, False, 0)
+        accents_list = list(ACCENTS.items())
+        mid_accent = (len(accents_list) + 1) // 2
+
+        dots_container1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        for name, hex_code in accents_list[:mid_accent]:
+            dot_btn = self._make_accent_dot(name, hex_code)
+            dots_container1.pack_start(dot_btn, False, False, 0)
+        row2_1.pack_start(dots_container1, True, True, 0)
+
+        dots_container2 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        for name, hex_code in accents_list[mid_accent:]:
+            dot_btn = self._make_accent_dot(name, hex_code)
+            dots_container2.pack_start(dot_btn, False, False, 0)
+        row2_2.pack_start(dots_container2, True, True, 0)
+
+        main_box.pack_start(row2_1, False, False, 0)
+        main_box.pack_start(row2_2, False, False, 0)
+
+    def _make_mode_button(self, mode_name):
+        btn_label = mode_name.capitalize()
+        if mode_name == "dark": btn_label = "󰖔 Dark"
+        elif mode_name == "d-glass": btn_label = "󰛢 D-Glass"
+        elif mode_name == "light": btn_label = "󰖙 Light"
+        elif mode_name == "l-glass": btn_label = "󰛢 L-Glass"
+        elif mode_name == "teal": btn_label = " Teal"
+        elif mode_name == "paper": btn_label = "󰃛 Paper"
+        elif mode_name == "translucent": btn_label = " Gray"
+
+        btn = Gtk.Button(label=btn_label)
+        btn.get_style_context().add_class("mode-btn")
+        btn.connect("clicked", self._set_base_mode, mode_name)
+        return btn
+
+    def _make_accent_dot(self, name, hex_code):
+        dot_btn = Gtk.Button()
+        dot_btn.get_style_context().add_class("color-dot")
+        
+        dot_prov = Gtk.CssProvider()
+        dot_prov.load_from_data(f"button {{ background-color: {hex_code}; background-image: none; }}".encode())
+        dot_btn.get_style_context().add_provider(dot_prov, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        
+        dot_btn.connect("clicked", self._set_accent_mode, hex_code)
+        dot_btn.set_tooltip_text(name)
+        return dot_btn
 
     def _position_window(self):
         display = Gdk.Display.get_default()
         monitor = display.get_primary_monitor() or display.get_monitor(0)
         geo = monitor.get_geometry()
         
-        x = geo.x + (geo.width - 440) // 1
-        y = geo.y + geo.height - 240 - 40
+        x = geo.x + (geo.width - 550) // 1
+        # Adjusted height parameter offset tracking for structural balance
+        y = geo.y + geo.height - 340 - 40
         self.move(x, y)
 
     def _set_base_mode(self, _, mode):

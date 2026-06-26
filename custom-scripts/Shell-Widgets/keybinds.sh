@@ -39,4 +39,4 @@ grep -E '^bind[a-z]*' "$CONFIG" | \
             printf "%-10s | %-10s | ➜  %s\n", mod, key, desc
     }' | \
     column -t -s '|' | \
-    fzf --header "$HEADER_TEXT" --header-first --reverse
+    fzf --header "$HEADER_TEXT" --header-first --reverse --color="header:#565f89,prompt:#565f89" 
