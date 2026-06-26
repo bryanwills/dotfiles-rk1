@@ -60,7 +60,7 @@ run_widget_loop() {
             --border=rounded
             --margin=1,2
             --height=20
-            --color="header:#565f89,prompt:#565f89" 09
+            --color="header:#565f89,prompt:#565f89"
             --prompt="Notifications [$count] → "
             --preview-window=left,22,border-right
             --preview="echo '$cmd_menu'"

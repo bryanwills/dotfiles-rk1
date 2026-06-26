@@ -15,7 +15,6 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exit())
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("kitty --class kitty-themes -e ~/custom-scripts/Shell-Widgets/kitty-toggle-theme"))
 hl.bind(mainMod .." + M", hl.dsp.exec_cmd("min"))
--- hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/Python-Widgets/launcher-widget.py"))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("python3 $HOME/custom-scripts/S-Bar/bar-ui.py"))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("kitty --class yazi -e yazi"))
 
@@ -26,7 +25,7 @@ hl.bind(mainMod .. " + 0", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Con
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("kitty --class bt-menu -e $HOME/custom-scripts/bluetooth/bt"))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a -f hex"))
 hl.bind(mainMod .. " + A", hl.dsp.exec_cmd("kitty --class 'Audio Switcher' -e ~/custom-scripts/Shell-Widgets/change-audio.sh"))
-hl.bind(mainMod .. " +N", hl.dsp.exec_cmd("kitty --class notif -e ~/custom-scripts/Shell-Widgets/notif.sh" ))
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("kitty --class notif -e ~/custom-scripts/Shell-Widgets/notif.sh"))
 
 
 -- AltMod Keybinds
@@ -34,17 +33,15 @@ hl.bind(altMod .. " + W", hl.dsp.exec_cmd("kitty --class floating_wifi -e ~/cust
 hl.bind(altMod .. " + M", hl.dsp.exec_cmd("kitty --class music --app-id=music kew"))
 hl.bind(altMod .. " + R", hl.dsp.exec_cmd("kitty --class 'Mirec' -e $HOME/arch-projects/MIREC/mirec"))
 hl.bind(altMod .. " + C", hl.dsp.exec_cmd("kitty --class clipbox -e ~/custom-scripts/Shell-Widgets/clipbox.sh"))
--- hl.bind(altMod .. " + T", hl.dsp.exec_cmd("kitty --class schedule-widget -e /home/rk1/custom-scripts/Shell-Widgets/schedule-widget"))
 hl.bind(altMod .. " + I", hl.dsp.exec_cmd("kitty --class sysinfo-widget -e /home/rk1/custom-scripts/Shell-Widgets/sysinfo-widget"))
 hl.bind(altMod .. " + A", hl.dsp.exec_cmd("kitty --class show-aliases -e $HOME/custom-scripts/Show-Aliases/show-aliases.sh"))
 hl.bind(altMod .. " + B", hl.dsp.exec_cmd("kitty --class keybinds -e $HOME/custom-scripts/Shell-Widgets/keybinds.sh"))
-hl.bind(altMod .. "+ P", hl.dsp.exec_cmd("kitty --class pass -e ~/custom-scripts/pass"))
---hl.bind(altMod .. "+ SPACE", hl.dsp.exec_cmd("python3 /home/rk1/custom-scripts/Hypr-Workspaces/hypr-workspaces.py"))
-hl.bind(altMod .. "+ SPACE", hl.dsp.exec_cmd("kitty --class hypr-workspaces -e $HOME/custom-scripts/Hypr-Workspaces/hypr-workspaces.sh"))
+hl.bind(altMod .. " + P", hl.dsp.exec_cmd("kitty --class pass -e ~/custom-scripts/pass"))
+hl.bind(altMod .. " + 3", hl.dsp.exec_cmd("kitty --class hypr-workspaces -e $HOME/custom-scripts/Hypr-Workspaces/hypr-workspaces.sh"))
 hl.bind(altMod .. " + N", hl.dsp.exec_cmd("~/.local/bin/nightlight"))
 hl.bind(altMod .. " + 1", hl.dsp.exec_cmd("kitty --class rtm -e python3 ~/arch-projects/RTM/rtm.py"))
 hl.bind(altMod .. " + 2", hl.dsp.exec_cmd("kitty --class budget-buddy -e python3 ~/arch-projects/Budget-Buddy/budget-buddy.py"))
--- hl.bind(altMod .. "+ D", hl.dsp.exec_cmd("python3 ~/arch-projects/HyprDash/main.py"))
+hl.bind(altMod .. " + 4", hl.dsp.exec_cmd("kitty --class wr-manager -e $HOME/custom-scripts/Shell-Widgets/wr-manager"))
 
 -- Navigation (Master Layout)
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))

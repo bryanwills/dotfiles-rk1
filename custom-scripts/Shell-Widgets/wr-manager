@@ -1,0 +1,336 @@
+#!/usr/bin/env lua
+
+-- ----------------------------------------------------------------------------------------
+-- HYPRLAND LUA WINDOW RULE MANAGER TUI
+-- June 2026 v1.3.0 — All Rules Included
+-- ----------------------------------------------------------------------------------------
+
+local rules_file = os.getenv("HOME") .. "/.config/hypr/configs/windowrules.lua"
+local selected_index = 1
+local tabs = { "widgets", "apps", "workspaces", "layers" }
+local tab_index = 1
+local mode = "LIST"          
+local running = true
+
+local function clear_screen() io.write("\27[2J\27[H") end
+local function reset_colors() io.write("\27[0m") end
+local function bold_text() io.write("\27[1m") end
+local function invert_colors() io.write("\27[7m") end
+local function dim_text() io.write("\27[2m") end
+
+local function set_raw_mode(enable)
+    if enable then
+        os.execute("stty -icanon -echo min 1 time 0")
+    else
+        os.execute("stty sane")
+    end
+end
+
+local function load_rules()
+    _G.hl = {
+        window_rule = function() end,
+        workspace_rule = function() end,
+        layer_rule = function() end
+    }
+    local chunk = loadfile(rules_file)
+    if chunk then return chunk() end
+    return nil
+end
+
+local function serialize_table(t)
+    local parts = {}
+    local order = { "name", "match", "float", "size", "move", "center", "stay_focused", "border_size", "border_color", "opacity", "animation", "no_blur", "workspace", "on_created_empty", "blur", "xray" }
+    local seen = {}
+
+    for _, k in ipairs(order) do
+        if t[k] ~= nil then
+            seen[k] = true
+            if k == "match" then
+                if t.match.class or t.match.title then
+                    local m_type = t.match.class and "class" or "title"
+                    local m_val = t.match.class or t.match.title
+                    table.insert(parts, string.format("match = { %s = %q }", m_type, m_val))
+                elseif t.match.namespace then
+                    table.insert(parts, string.format("match = { namespace = %q }", t.match.namespace))
+                elseif t.match.workspace then
+                    table.insert(parts, string.format("match = { workspace = %q }", t.match.workspace))
+                end
+            elseif k == "size" or k == "move" then
+                table.insert(parts, string.format("%s = {%s, %s}", k, t[k][1], t[k][2]))
+            elseif type(t[k]) == "string" then
+                table.insert(parts, string.format("%s = %q", k, t[k]))
+            else
+                table.insert(parts, string.format("%s = %s", k, tostring(t[k])))
+            end
+        end
+    end
+
+    for k, v in pairs(t) do
+        if not seen[k] then
+            if type(v) == "string" then table.insert(parts, string.format("%s = %q", k, v))
+            else table.insert(parts, string.format("%s = %s", k, tostring(v))) end
+        end
+    end
+
+    return "{\n            " .. table.concat(parts, ",\n            ") .. "\n        }"
+end
+
+local function save_rules(data)
+    local f = io.open(rules_file, "w")
+    if not f then return end
+    
+    f:write("-- Window and Layer Rules for Hyprland v0.55\n")
+    f:write("-- Auto-generated via Rule Manager TUI\n\n")
+    f:write("local rules = {\n    widgets = {\n")
+    for i, rule in ipairs(data.widgets or {}) do
+        f:write("        " .. serialize_table(rule) .. (i < #data.widgets and ",\n" or "\n"))
+    end
+    f:write("    },\n    apps = {\n")
+    for i, rule in ipairs(data.apps or {}) do
+        f:write("        " .. serialize_table(rule) .. (i < #data.apps and ",\n" or "\n"))
+    end
+    f:write("    },\n    workspaces = {\n")
+    for i, rule in ipairs(data.workspaces or {}) do
+        f:write("        " .. serialize_table(rule) .. (i < #data.workspaces and ",\n" or "\n"))
+    end
+    f:write("    },\n    layers = {\n")
+    for i, rule in ipairs(data.layers or {}) do
+        f:write("        " .. serialize_table(rule) .. (i < #data.layers and ",\n" or "\n"))
+    end
+    f:write("    }\n}\n\n")
+    f:write([[if hl then
+    if hl.window_rule then
+        for _, rule in ipairs(rules.widgets) do hl.window_rule(rule) end
+        for _, rule in ipairs(rules.apps)    do hl.window_rule(rule) end
+    end
+    if hl.workspace_rule then
+        for _, rule in ipairs(rules.workspaces) do hl.workspace_rule(rule) end
+    end
+    if hl.layer_rule then
+        for _, rule in ipairs(rules.layers) do hl.layer_rule(rule) end
+    end
+end
+
+return rules
+]])
+    f:close()
+end
+
+local function prompt_field(label, current_value)
+    set_raw_mode(false)
+    clear_screen()
+    bold_text()
+    print("\n  󰏫  EDIT FIELD")
+    print(string.rep("-", 50))
+    reset_colors()
+    print("  Current configuration for [" .. label .. "]: " .. tostring(current_value or "none"))
+    io.write("  Enter new value (or leave blank to clear): ")
+    local input = io.read()
+    set_raw_mode(true)
+    
+    if input == "" then return nil end
+    if input == "true" then return true end
+    if input == "false" then return false end
+    if tonumber(input) then return tonumber(input) end
+    return input
+end
+
+local function draw_interface(data)
+    clear_screen()
+    bold_text()
+    print("  󰘔  HYPRLAND WINDOW RULE MANAGER")
+    reset_colors()
+    
+    for i, t_name in ipairs(tabs) do
+        if i == tab_index then
+            invert_colors() io.write(string.format("  [ %s ]  ", t_name:upper())) reset_colors()
+        else
+            dim_text() io.write(string.format("  [ %s ]  ", t_name:upper())) reset_colors()
+        end
+    end
+    io.write("\n")
+    print(string.rep("=", 100))
+
+    local active_tab = tabs[tab_index]
+    local target_list = data[active_tab] or {}
+    local active_rule = target_list[selected_index] or {}
+
+    if mode == "LIST" then
+        local details = {}
+        
+        if active_tab == "widgets" or active_tab == "apps" then
+            table.insert(details, string.format("Rule Name    : %s", tostring(active_rule.name or "unnamed")))
+            if active_rule.match then
+                local m_type = active_rule.match.class and "class" or (active_rule.match.title and "title" or "workspace")
+                local m_val = active_rule.match.class or active_rule.match.title or active_rule.match.workspace
+                table.insert(details, string.format("Match Type   : %s", m_type))
+                table.insert(details, string.format("Match Pattern: %s", tostring(m_val)))
+            else
+                table.insert(details, "Match Type   : unset")
+                table.insert(details, "Match Pattern: unset")
+            end
+            table.insert(details, string.format("Floating     : %s", tostring(active_rule.float or "unset")))
+            table.insert(details, string.format("Size (W x H) : %s", active_rule.size and (active_rule.size[1] .. "x" .. active_rule.size[2]) or "unset"))
+            table.insert(details, string.format("Pos (X, Y)   : %s", active_rule.move and (active_rule.move[1] .. "," .. active_rule.move[2]) or "unset"))
+            table.insert(details, string.format("Centered     : %s", tostring(active_rule.center or "unset")))
+            table.insert(details, string.format("Border Size  : %s", tostring(active_rule.border_size or "unset")))
+            table.insert(details, string.format("Border Colour: %s", tostring(active_rule.border_color or "unset")))
+            table.insert(details, string.format("Opacity      : %s", tostring(active_rule.opacity or "unset")))
+            table.insert(details, string.format("Animation    : %s", tostring(active_rule.animation or "unset")))
+            table.insert(details, string.format("Workspace    : %s", tostring(active_rule.workspace or "unset")))
+        elseif active_tab == "workspaces" then
+            table.insert(details, string.format("Workspace ID : %s", tostring(active_rule.workspace or "unnamed")))
+            table.insert(details, string.format("On Empty Cmd : %s", tostring(active_rule.on_created_empty or "none")))
+        elseif active_tab == "layers" then
+            table.insert(details, string.format("Layer Name   : %s", tostring(active_rule.name or "unnamed")))
+            if active_rule.match then
+                table.insert(details, string.format("Namespace Id : %s", tostring(active_rule.match.namespace or "unset")))
+            end
+            table.insert(details, string.format("Blur Filter  : %s", tostring(active_rule.blur or "unset")))
+            table.insert(details, string.format("Xray Mode    : %s", tostring(active_rule.xray or "unset")))
+        end
+
+        local max_rows = math.max(#target_list, #details + 2)
+
+        for i = 1, max_rows do
+            local left_str = ""
+            local is_selected = (i == selected_index)
+            if i <= #target_list then
+                local rule = target_list[i]
+                local indicator = is_selected and "> " or "  "
+                local display_name = rule.name or rule.workspace or "unnamed"
+                
+                -- Extended width padding limit to match full line allocation bounds
+                left_str = string.format("%s%-30s", indicator, display_name)
+            else
+                left_str = string.rep(" ", 32)
+            end
+
+            local right_str = ""
+            if i == 1 then
+                right_str = "┌──────────────────────────────────────────────┐"
+            elseif i == max_rows then
+                right_str = "└──────────────────────────────────────────────┘"
+            else
+                local detail_idx = i - 1
+                if detail_idx <= #details then
+                    right_str = string.format("│ %-44s │", details[detail_idx])
+                else
+                    right_str = "│                                              │"
+                end
+            end
+
+            if is_selected and i <= #target_list then
+                invert_colors() io.write(left_str) reset_colors()
+                io.write("  " .. right_str .. "\n")
+            else
+                io.write(left_str .. "  " .. right_str .. "\n")
+            end
+        end
+
+        io.write("\n" .. string.rep("-", 100) .. "\n")
+        bold_text() io.write("  Controls: ") reset_colors()
+        print("[j/k]: Move | [Tab]: Swap Section | [e]: Edit Rule | [d]: Delete | [q]: Save & Exit")
+        
+    elseif mode == "EDIT" then
+        local display_title = active_rule.name or active_rule.workspace or "unnamed"
+        print(string.format("\n  Modifying Configuration for: %s", display_title))
+        print(string.rep("-", 50))
+        
+        if active_tab == "widgets" or active_tab == "apps" then
+            print("  [1] Rule Name:        " .. tostring(active_rule.name))
+            print("  [2] Float Toggle:     " .. tostring(active_rule.float))
+            print("  [3] Opacity Value:    " .. tostring(active_rule.opacity))
+            print("  [4] Animation Scheme: " .. tostring(active_rule.animation))
+            print("  [5] Target Workspace: " .. tostring(active_rule.workspace))
+            print("  [6] Change Size:      " .. (active_rule.size and (active_rule.size[1] .. "x" .. active_rule.size[2]) or "unset"))
+            print("  [7] Change Position:  " .. (active_rule.move and (active_rule.move[1] .. "," .. active_rule.move[2]) or "unset"))
+        elseif active_tab == "workspaces" then
+            print("  [1] Workspace ID:     " .. tostring(active_rule.workspace))
+            print("  [2] On Empty Cmd:     " .. tostring(active_rule.on_created_empty))
+        elseif active_tab == "layers" then
+            print("  [1] Layer Name:       " .. tostring(active_rule.name))
+            print("  [2] Blur Filter:      " .. tostring(active_rule.blur))
+            print("  [3] Xray Render:      " .. tostring(active_rule.xray))
+        end
+        print("\n  Press matching field key to configure | [b]: Back to items list")
+    end
+end
+
+local function run_tui()
+    local data = load_rules()
+    if not data then return end
+
+    set_raw_mode(true)
+    
+    while running do
+        local active_tab = tabs[tab_index]
+        local current_list = data[active_tab] or {}
+        draw_interface(data)
+        
+        local char = io.read(1)
+        
+        if mode == "LIST" then
+            if char == "q" then
+                running = false
+            elseif char == "\t" then
+                tab_index = (tab_index % #tabs) + 1
+                selected_index = 1
+            elseif char == "j" and selected_index < #current_list then
+                selected_index = selected_index + 1
+            elseif char == "k" and selected_index > 1 then
+                selected_index = selected_index - 1
+            elseif char == "d" and #current_list > 0 then
+                table.remove(current_list, selected_index)
+                selected_index = math.max(1, #current_list)
+            elseif char == "e" and #current_list > 0 then
+                mode = "EDIT"
+            end
+            
+        elseif mode == "EDIT" then
+            local rule = current_list[selected_index]
+            if char == "b" then
+                mode = "LIST"
+            elseif active_tab == "widgets" or active_tab == "apps" then
+                if char == "1" then 
+                    rule.name = prompt_field("Rule Name", rule.name)
+                elseif char == "2" then 
+                    rule.float = prompt_field("Float Toggle", rule.float)
+                elseif char == "3" then 
+                    rule.opacity = prompt_field("Opacity Value", rule.opacity)
+                elseif char == "4" then 
+                    rule.animation = prompt_field("Animation Scheme", rule.animation)
+                elseif char == "5" then 
+                    rule.workspace = prompt_field("Target Workspace", rule.workspace)
+                elseif char == "6" then
+                    -- Intercept geometry arrays for window sizes safely
+                    rule.size = prompt_geometry("Size Width / Height")
+                elseif char == "7" then
+                    -- Intercept geometry arrays for position tracking points
+                    rule.move = prompt_geometry("Coordinates X / Y")
+                end
+            elseif active_tab == "workspaces" then
+                if char == "1" then 
+                    rule.workspace = prompt_field("Workspace ID", rule.workspace)
+                elseif char == "2" then 
+                    rule.on_created_empty = prompt_field("On Empty Cmd", rule.on_created_empty) 
+                end
+            elseif active_tab == "layers" then
+                if char == "1" then 
+                    rule.name = prompt_field("Layer Name", rule.name)
+                elseif char == "2" then 
+                    rule.blur = prompt_field("Blur Filter", rule.blur)
+                elseif char == "3" then 
+                    rule.xray = prompt_field("Xray Render", rule.xray) 
+                end
+            end
+        end
+    end
+    
+    set_raw_mode(false)
+    save_rules(data)
+    clear_screen()
+    print("Configurations written to file cleanly.")
+end
+
+run_tui()

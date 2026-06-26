@@ -10,33 +10,47 @@
 #----------------------------------------------------------------------------------
 
 
-CONFIG="$HOME/.config/hypr/configs/keybinds.conf"
+CONFIG="$HOME/.config/hypr/configs/keybinds.lua"
 
 HEADER_TEXT="
-		     󰢭  HYPRLAND KEYBINDS v0.1.0
+		      󰢭  HYPRLAND KEYBINDS v0.1.0
 		 Minimalist Hyprland keybinds view widget
 "
 
 
-# 1. Fetch bind and bindd
-# 2. Convert $mainMod to SUPER
-# 3. Use sed to remove the 'bindd =' part
-grep -E '^bind[a-z]*' "$CONFIG" | \
-    sed "s/\$mainMod/SUPER/g" | \
-    sed -E 's/^bind[a-z]* *= *//g' | \
+# 1. Filter lines containing the hl.bind function
+# 2. Strip the initial function call characters
+# 3. Parse the key combination and the command logic separately
+grep 'hl.bind' "$CONFIG" | \
+    sed -E 's/^[ \t]*hl\.bind\(//' | \
     awk -F, '{
-        # Field 1: Modifier
-        mod = $1; gsub(/^[ \t]+|[ \t]+$/, "", mod);
-        if (mod == "") mod = "NONE";
+        # Isolate the complete key binding definition (the first argument)
+        key_part = $1;
+        
+        # Rebuild the remaining fields to capture the entire command payload
+        cmd_part = "";
+        for(i=2; i<=NF; i++) {
+            cmd_part = (cmd_part == "") ? $i : cmd_part "," $i;
+        }
+        
+        # Strip syntax characters, quotes, and clean up concatenation dots
+        gsub(/"/, "", key_part);
+        gsub(/[ \t]*\.\.[ \t]*/, " ", key_part);
+        gsub(/^[ \t]+|[ \t]+$/, "", key_part);
+        
+        # Clean up trailing function characters from the payload definition
+        gsub(/^[ \t]+|[ \t]+$/, "", cmd_part);
+        sub(/\)[ \t]*$/, "", cmd_part);
+        
+        # Extract the inner raw command if wrapped in an executive helper call
+        if (cmd_part ~ /^hl\.dsp\.exec_cmd\(.*\)$/) {
+            sub(/^hl\.dsp\.exec_cmd\(/, "", cmd_part);
+            sub(/\)$/, "", cmd_part);
+        }
+        gsub(/^"|"$/, "", cmd_part);
 
-        # Field 2: Key
-        key = $2; gsub(/^[ \t]+|[ \t]+$/, "", key);
-
-        # Field 3: Description (for bindd) or Command (for bind)
-        desc = $3; gsub(/^[ \t]+|[ \t]+$/, "", desc);
-
-        if (mod != "" && key != "")
-            printf "%-10s | %-10s | ➜  %s\n", mod, key, desc
+        if (key_part != "")
+            printf "%-25s | ➜  %s\n", key_part, cmd_part
     }' | \
     column -t -s '|' | \
-    fzf --header "$HEADER_TEXT" --header-first --reverse --color="header:#565f89,prompt:#565f89" 
+    fzf --header "$HEADER_TEXT" --header-first --reverse --color="header:#565f89,prompt:#565f89"
