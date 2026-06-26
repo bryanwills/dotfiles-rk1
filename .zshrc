@@ -67,45 +67,6 @@ export FIGLET_FONTDIR="/usr/share/figlet/fonts"
 cdpath=(. ~)
 
 # --- Aliases ---
-alias la="lsd -a"
-alias nal="nano -l"
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias mc="micro"
-alias update="sudo pacman -Syu"
-alias install="sudo pacman -S"
-alias cleanup='sudo pacman -Rns $(pacman -Qtdq); sudo paccache -rk2'
-alias keys="~/custom-scripts/keybinds.sh"
-alias dashboard="python3 ~/custom-scripts/Dashboard/dashboard.py"
-alias hyprconf='micro -multiopen vsplit ~/.config/hypr/configs/keybinds.lua ~/.config/hypr/configs/windowrules.lua'
-alias reclaim="python3 ~/arch-projects/Reclaim-Linux/reclaim-linux.py"
-alias als="~/custom-scripts/Show-Aliases/show-aliases.sh"
-alias lg='lazygit'
-alias bt="~/custom-scripts/bluetooth/bt"
-
-# --- YouTube Download Aliases ---
-alias song='yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --embed-metadata -o "~/Music/%(title)s.%(ext)s"'
-alias album='yt-dlp -x --audio-format mp3 --audio-quality 0 --yes-playlist --embed-thumbnail --embed-metadata --parse-metadata "playlist_index:%(track_number)s" -o "~/Music/%(album,playlist_title)s/%(playlist_index)02d - %(title)s.%(ext)s"'
-
-# Alias to run the AUR/GitHub release automator
-alias uprelease='~/arch-projects/arch-update-check/release.sh'
-
-# Arch Update Check before updating system
-# alias upcheck="/usr/bin/arch-update-check"
-alias upcheck="~/arch-projects/arch-update-check/arch-update-check.sh"
-
-# Timeshift aliases
-alias restore-list='timeshift --list'
-alias restore-now='sudo timeshift --restore'
-
-# Project Time Tracker
-alias t='tt tui'
-alias ts='tt stop'
-
-# Added by XC-Manager
-alias orphaned="pacman -Qdt"
  
 # --- Functions ---
 function y() {

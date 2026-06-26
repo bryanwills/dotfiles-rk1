@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # ------------------------------------------------------------------------
-# Theme Configuration - Standalone styling control for Control Panel
+# Theme Configuration - Standalone styling control for all widgets
 # VERSION: 0.1.0
 # Author: Lukas Grumlik - Rakosn1cek
 # May 2026
@@ -17,7 +17,7 @@ import subprocess
 import re
 
 # --- Core Configuration Paths ---
-THEME_FILE = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
+THEME_FILE = os.path.expanduser("~/custom-scripts/current-theme.css")
 
 # --- Default Fallback State ---
 STATE = {

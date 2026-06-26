@@ -17,7 +17,7 @@ WIDGET_W      = 500
 WIDGET_H      = 500
 ICON_SIZE     = 42
 HOME          = os.path.expanduser("~")
-THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
+THEME_FILE    = os.path.expanduser("~/custom-scripts/current-theme.css")
 
 def load_control_panel_colors():
     """Extracts raw styling colors directly out of the generated current-theme.css structure."""

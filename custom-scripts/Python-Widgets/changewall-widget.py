@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor
 # --- Configuration ---
 WALLPAPER_DIR = os.path.expanduser("~/Pictures/Wallpapers")
 CACHE_DIR     = os.path.expanduser("~/.cache/changewall-widget")
-THEME_FILE    = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
+THEME_FILE    = os.path.expanduser("~/custom-scripts/current-theme.css")
 THUMB_SIZE    = 160
 WIDGET_HEIGHT = 220
 WIDGET_MARGIN = 335

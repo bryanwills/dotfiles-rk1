@@ -17,7 +17,7 @@ gi.require_version('Gtk4LayerShell', '1.0')
 
 from gi.repository import Gtk, Gdk, GLib, Gtk4LayerShell
 
-THEME_FILE = os.path.expanduser("~/custom-scripts/Control-Panel/current-theme.css")
+THEME_FILE = os.path.expanduser("~/custom-scripts/current-theme.css")
 
 class DesktopClock(Gtk.Application):
     def __init__(self):

@@ -111,17 +111,20 @@ hl.animation({ leaf = "layers",     enabled = true, speed = 15, bezier = "myBezi
 hl.workspace_rule({ 
     workspace = "1", 
     layout = "scrolling",
+    default_name = "Browsers",
     layout_opts = { direction = "down" } 
 })
 
 hl.workspace_rule({ 
     workspace = "2", 
-    layout = "dwindle"
+    layout = "dwindle",
+    default_name = "Terminals"
 })
 
 hl.workspace_rule({ 
     workspace = "3", 
-    layout = "scrolling"
+    layout = "scrolling",
+    default_name = "Files"
 })
 
 hl.gesture({
