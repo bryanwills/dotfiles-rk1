@@ -29,8 +29,8 @@ local rules = {
             name = "windowrules-tui",
             match = { class = "wr-manager" },
             float = true,
-            size = {1100, 700},
             center = true,
+            size = {1100, 700},
             border_size = 2,
             border_color = "rgb(767b7e)",
             opacity = 0.7,
@@ -135,8 +135,8 @@ local rules = {
             name = "schedule-widget",
             match = { class = "schedule-widget" },
             float = true,
-            size = {450, 120},
             center = true,
+            size = {450, 120},
             border_size = 2,
             border_color = "rgb(767b7e)",
             opacity = 0.8,
@@ -146,8 +146,8 @@ local rules = {
             name = "schedule-alert",
             match = { class = "schedule-alert" },
             float = true,
-            size = {500, 200},
             center = true,
+            size = {500, 200},
             border_size = 2,
             border_color = "rgb(ff0008)",
             opacity = 0.8,
@@ -181,8 +181,8 @@ local rules = {
             name = "Calendar",
             match = { class = "cal" },
             float = true,
-            size = {1000, 450},
             center = true,
+            size = {1000, 450},
             border_size = 2,
             border_color = "rgb(767b7e)",
             opacity = 0.7,
@@ -240,8 +240,8 @@ local rules = {
             name = "floating yazi",
             match = { class = "floating_yazi" },
             float = false,
-            size = {900, 600},
             center = true,
+            size = {900, 600},
             opacity = 0.8,
             animation = "gnomed"
         },
@@ -249,16 +249,16 @@ local rules = {
             name = "Yazi-Picker",
             match = { class = "file_chooser" },
             float = true,
-            size = {900, 600},
             center = true,
+            size = {900, 600},
             animation = "gnomed"
         },
         {
             name = "pass-manager",
             match = { class = "pass" },
             float = true,
-            size = {800, 400},
             center = true,
+            size = {800, 400},
             border_size = 0,
             opacity = 0.8,
             animation = "gnomed"
@@ -277,20 +277,20 @@ local rules = {
             name = "music-player",
             match = { class = "music" },
             float = true,
-            size = {1000, 850},
             center = true,
+            size = {1000, 850},
             border_size = 0,
             opacity = 0.7
         },
         {
             name = "kitty",
             match = { class = "kitty" },
+            workspace = 2,
             float = false,
             border_size = 0,
             opacity = 0.7,
             animation = "slide bottom",
-            no_blur = false,
-            workspace = 2
+            no_blur = false
         },
         {
             name = "foot",
@@ -305,30 +305,30 @@ local rules = {
         {
             name = "yazi",
             match = { class = "yazi" },
+            workspace = 3,
             float = false,
             border_size = 0,
             opacity = 0.7,
             animation = "gnomed",
-            no_blur = false,
-            workspace = 3
+            no_blur = false
         },
         {
             name = "file-managers",
             match = { class = "thunar" },
+            workspace = 4,
             size = {1350, 1060},
             move = {285, 10},
             border_size = 0,
             opacity = 0.8,
-            animation = "fade",
-            workspace = 4
+            animation = "fade"
         },
         {
             name = "geany-rule",
             match = { class = "geany" },
+            workspace = 5,
             border_size = 0,
             opacity = 0.9,
-            animation = "fade",
-            workspace = 5
+            animation = "fade"
         },
         {
             name = "qalculate-rule",
@@ -341,11 +341,11 @@ local rules = {
         {
             name = "min-browser",
             match = { class = "min" },
+            workspace = 1,
             float = false,
             border_size = 0,
             opacity = "0.6 override",
-            no_blur = false,
-            workspace = 1
+            no_blur = false
         },
         {
             name = "save-open-rule",
